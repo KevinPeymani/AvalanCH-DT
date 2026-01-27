@@ -84,10 +84,14 @@ const MapApp = {
           },
           label: {
             text: station.station_abbr,
-            backgroundColor: "rgb(0,0,0)",
+            showBackground: true,
+            backgroundColor: new Cesium.Color(0,0,0,0.5),
             font: '10pt sans-serif',
             verticalOrigin: Cesium.VerticalOrigin.TOP,
-            pixelOffset: new Cesium.Cartesian2(0, 50)
+            pixelOffset: new Cesium.Cartesian2(0, 20),
+            eyeOffset: new Cesium.Cartesian3(0, 0, -30),
+            distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 150000),
+            disableDepthTestDistance: Number.POSITIVE_INFINITY
           },
           description: `
             <div style="font-family: sans-serif;">
