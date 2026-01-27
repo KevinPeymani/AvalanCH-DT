@@ -23,7 +23,7 @@ const MapApp = {
 
   async init() {
     this.viewer = new Cesium.Viewer('cesiumContainer', {
-      terrain: await Cesium.CesiumTerrainProvider({ url: "https://3d.geo.admin.ch/ch.swisstopo.terrain.3d/v1/" }),
+      terrainProvider: await Cesium.CesiumTerrainProvider({ url: "https://3d.geo.admin.ch/ch.swisstopo.terrain.3d/v1/" }),
       timeline: false,
       animation: false,
     });
@@ -80,13 +80,14 @@ const MapApp = {
             color: Cesium.Color.DEEPSKYBLUE,
             outlineColor: Cesium.Color.WHITE,
             outlineWidth: 2,
-            heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND
+            heightReference: Cesium.HeightReference
           },
           label: {
             text: station.station_abbr,
+            backgroundColor: "rgb(0,0,0)",
             font: '10pt sans-serif',
             verticalOrigin: Cesium.VerticalOrigin.TOP,
-            pixelOffset: new Cesium.Cartesian2(0, 10)
+            pixelOffset: new Cesium.Cartesian2(0, 50)
           },
           description: `
             <div style="font-family: sans-serif;">
