@@ -69,6 +69,7 @@ const MapApp = {
 
       stations.forEach(station => {
         this.viewer.entities.add({
+          category: 'weather-station',
           name: station.station_name,
           position: Cesium.Cartesian3.fromDegrees(
             station.lon,
@@ -105,6 +106,15 @@ const MapApp = {
     } catch (error) {
       console.error("Error loading weather stations:", error);
     }
+  },
+    toggleWeatherLabels(isVisible) {
+    const entities = this.viewer.entities.values;
+    entities.forEach(entity => {
+      // On ne cible que les entités qui ont notre catégorie
+      if (entity.category === 'weather-station' && entity.label) {
+        entity.label.show = isVisible;
+      }
+    });
   }
 
 };
@@ -116,3 +126,7 @@ await MapApp.init();
 // Example: Adding an info point on top
 MapApp.addInfoPoint(7.4474, 46.9480, "Bern", "Swiss Capital");
 MapApp.addWeatherStations();
+
+document.getElementById('labelToggle').addEventListener('change', (e) => {
+  MapApp.toggleWeatherLabels(e.target.checked);
+});
