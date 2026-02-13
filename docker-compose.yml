@@ -1,0 +1,91 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: swiss_broker
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: simulation_secure
+    networks:
+      - swiss-net
+
+  nginx:
+    image: nginx:alpine
+    container_name: swiss_gateway
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./infrastructure/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - api
+    networks:
+      - swiss-net
+
+  db:
+    image: timescale/timescaledb-ha:pg16
+    container_name: swiss_db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: swiss_twin
+    volumes:
+      - ./data/postgres:/home/postgres/pgdata/data
+    networks:
+      - swiss-net
+
+  api:
+    build: ./services/api-gateway
+    container_name: swiss_api
+    environment:
+      - BROKER_URL=amqp://admin:simulation_secure@rabbitmq:5672/
+      - DB_HOST=db
+    depends_on:
+      - rabbitmq
+      - db
+    networks:
+      - swiss-net
+
+  worker-sim:
+    build: ./services/compute-worker
+    image: swiss_worker_img
+    deploy:
+      replicas: 2
+    environment:
+      - BROKER_URL=amqp://admin:simulation_secure@rabbitmq:5672/
+      - DB_HOST=db
+      - WORKER_TYPE=simulation
+    depends_on:
+      - rabbitmq
+    networks:
+      - swiss-net
+
+  worker-ingest:
+    image: swiss_worker_img
+    container_name: swiss_ingest
+    environment:
+      - BROKER_URL=amqp://admin:simulation_secure@rabbitmq:5672/
+      - DB_HOST=db
+      - WORKER_TYPE=ingestion
+    networks:
+      - swiss-net
+
+  mapproxy:
+    image: ghcr.io/mapproxy/mapproxy/mapproxy:6.0.1-alpine-nginx
+    container_name: swiss_mapproxy
+    restart: on-failure
+    volumes:
+      - ./infra/mapproxy/mapproxy.yml:/mapproxy/config/mapproxy.yaml
+      - ./cache/mapproxy_cache_data:/mapproxy/config/cache_data
+      - ./infra/mapproxy/logging.ini:/mapproxy/config/logging.ini
+    ports:
+      - "8080:80"
+    networks:
+      - swiss-net
+
+networks:
+  swiss-net:
+    driver: bridge

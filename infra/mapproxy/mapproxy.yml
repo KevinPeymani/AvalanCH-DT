@@ -1,0 +1,56 @@
+services:
+  demo:
+  tms:
+    use_grid_names: true
+    origin: 'nw'
+  wmts:
+  wms:
+    md:
+      title: Swiss Digital Twin Proxy
+
+layers:
+  - name: swissimage_layer
+    title: SwissIMAGE Aerial
+    sources: [swissimage_cache]
+
+  - name: swissalti3d_layer
+    title: SwissAlti3D Hillshade
+    sources: [swissalti3d_cache]
+
+caches:
+  swissimage_cache:
+    grids: [webmercator]
+    sources: [swissimage_wms]
+    cache:
+      type: file
+      directory: /mapproxy/cache_data/swissimage
+
+  swissalti3d_cache:
+    grids: [webmercator]
+    sources: [swissalti3d_wms]
+    cache:
+      type: file
+      directory: /mapproxy/cache_data/swissalti3d
+
+sources:
+  swissimage_wms:
+    type: wms
+    req:
+      url: https://wms.geo.admin.ch/
+      layers: ch.swisstopo.swissimage
+      transparent: true
+
+  swissalti3d_wms:
+    type: wms
+    req:
+      url: https://wms.geo.admin.ch/
+      layers: ch.swisstopo.swissalti3d-reliefschattierung # Hillshade visual
+      # Pour les données d'élévation brutes, MapProxy n'est pas l'outil idéal pour Cesium 
+      # (il faut du Quantized Mesh), mais c'est utile pour la mini-map ou les textures.
+      transparent: true
+
+grids:
+  webmercator:
+    base: GLOBAL_WEBMERCATOR
+    srs: 'EPSG:3857'
+    # Tile Grid compatible avec Cesium/Google Maps/OSM
