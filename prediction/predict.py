@@ -5,18 +5,21 @@ import json
 from tensorflow.keras.models import load_model
 
 from run_pipeline import setup_snowpack_files, run_snowpack
-from parse_profile import extract_stability_indices
+from parse_profile import extract_all_features
 
 def predict_danger():
     # 1. LIVE DATA (Try changing TA to 5.0 and VW to 30.0 to see the prediction change!)
     live_imis = {
         'TA': 5.0,
         'RH': 85.0,
-        'VW': 30.0,
+        'VW': 80.0,
         'DW': 270.0,
         'ISWR': 450.0,
-        'HS_meas': 120.0,
+        'HS_meas': 250.0,
         'TSG': -0.5,
+        'HN24': 150.0,
+        'HN72_24': 250.0,
+        'HN24_7d': 400.0,
     }
 
     # 2. RUN MODEL
@@ -24,7 +27,7 @@ def predict_danger():
     run_snowpack(end_time)
 
     # 3. PARSE
-    parsed_pro = extract_stability_indices("output/DAV3_IMIS_LIVE.pro")
+    parsed_pro = extract_all_features("output/DAV3_IMIS_LIVE.pro", "output/DAV3_IMIS_LIVE.smet")
     
     # Merge dictionaries
     combined_data = {**live_imis, **parsed_pro}

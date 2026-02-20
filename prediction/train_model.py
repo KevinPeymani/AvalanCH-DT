@@ -24,6 +24,9 @@ def train_avalanche_model(csv_path="data_rf2_tidy.csv"):
         'sn38_pwl',    # Natural Stability
         'Sd',          # Deformation Stability
         'ccl_pwl',     # Critical Cut Length
+        'HN24',         # New Snow 24h
+        'HN72_24',      # New Snow 72h-24h
+        'HN24_7d',      # New Snow 24h-7d
     ]
     
     top_features = [
@@ -39,7 +42,7 @@ def train_avalanche_model(csv_path="data_rf2_tidy.csv"):
 ]
     
     # Check if they exist in the CSV, keep only those
-    features_to_keep = [f for f in core_features if f in df.columns]
+    features_to_keep = [f for f in top_features if f in df.columns]
     
     X = df[features_to_keep]
     y = df['dangerLevel']
