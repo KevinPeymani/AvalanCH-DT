@@ -1,0 +1,48 @@
+[gd_scene load_steps=6 format=3 uid="uid://bq1e6r34havvq"]
+
+[ext_resource type="Script" uid="uid://os0pisvho3ob" path="res://addons/cesium_godot/scripts/georeference_camera_controller.gd" id="1_a202f"]
+[ext_resource type="Script" uid="uid://nswtgljpdwkw" path="res://world_environment.gd" id="2_noarx"]
+
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_a202f"]
+energy_multiplier = 6.8
+
+[sub_resource type="Sky" id="Sky_noarx"]
+sky_material = SubResource("PhysicalSkyMaterial_a202f")
+
+[sub_resource type="Environment" id="Environment_a0tk4"]
+resource_local_to_scene = true
+background_mode = 2
+sky = SubResource("Sky_noarx")
+sky_rotation = Vector3(0, 0, -0.710349)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="CesiumGeoreference" type="CesiumGeoreference" parent="."]
+ecefX = 4.31048e+06
+ecefY = 745014.0
+ecefZ = 4.63227e+06
+latitude = 46.832
+longitude = 9.806
+altitude = 4478.0
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+
+[node name="_Cesium3DTileset_26657" type="Cesium3DTileset" parent="CesiumGeoreference"]
+generate_missing_normals_smooth = true
+ion_asset_id = 1
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+
+[node name="CesiumIonRasterOverlay" type="CesiumIonRasterOverlay" parent="CesiumGeoreference/_Cesium3DTileset_26657"]
+asset_id = 2
+visible = false
+
+[node name="Camera3D" type="Camera3D" parent="CesiumGeoreference/_Cesium3DTileset_26657" node_paths=PackedStringArray("globe_node", "tilesets")]
+script = ExtResource("1_a202f")
+globe_node = NodePath("../..")
+tilesets = [NodePath("..")]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="CesiumGeoreference"]
+transform = Transform3D(-0.98289, 0.00712313, -0.184063, -0.00662331, -0.999972, -0.00333008, -0.184079, -0.00205401, 0.982909, 0, 0.0183496, 0.686918)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="CesiumGeoreference"]
+environment = SubResource("Environment_a0tk4")
+script = ExtResource("2_noarx")
