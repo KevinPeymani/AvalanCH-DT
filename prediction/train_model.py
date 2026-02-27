@@ -40,9 +40,10 @@ def train_avalanche_model(csv_path="data_rf2_tidy.csv"):
     'S4', 'Sn', 'ccl_pwl', 'sk38_pwl',      # Advanced stability indices
     'LWR_net', 'ILWR'                       # Radiation
 ]
+    features = top_features + core_features
     
     # Check if they exist in the CSV, keep only those
-    features_to_keep = [f for f in top_features if f in df.columns]
+    features_to_keep = [f for f in features if f in df.columns]
     
     X = df[features_to_keep]
     y = df['dangerLevel']
@@ -63,17 +64,21 @@ def train_avalanche_model(csv_path="data_rf2_tidy.csv"):
     with open('imis_scaler.pkl', 'wb') as f:
         pickle.dump(scaler, f)
         
-    # Build a slightly smaller network since we have fewer features
+
     model = Sequential([
+        
         Dense(64, activation='relu', input_shape=(len(features_to_keep),)),
-        Dropout(0.2),
+        Dropout(0.1),
         Dense(32, activation='relu'),
+        Dropout(0.1),
+        Dense(16, activation='relu'),
         Dropout(0.1),
         Dense(5, activation='softmax')
     ])
     
     model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
-    model.fit(X_train_scaled, y_train, validation_data=(X_test_scaled, y_test), epochs=30, batch_size=64)
+    model.optimizer.learning_rate = 0.001
+    model.fit(X_train_scaled, y_train, validation_data=(X_test_scaled, y_test), epochs=100, batch_size=64)
     model.save('avalanche_model.h5')
     print(f"Trained on {len(features_to_keep)} core features!")
 
