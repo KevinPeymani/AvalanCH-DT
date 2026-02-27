@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: avalanche-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"   # management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: simulation_secure
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: avalanche-api
+    depends_on:
+      - rabbitmq
+    environment:
+      BROKER_URL: amqp://admin:simulation_secure@rabbitmq:5672/
+      JOBS_DIR: /data/jobs
+    volumes:
+      - ./data:/data
+    ports:
+      - "8000:8000"
+    command: >
+      uvicorn app.main:app --host 0.0.0.0 --port 8000
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - rabbitmq
+    environment:
+      BROKER_URL: amqp://admin:simulation_secure@rabbitmq:5672/
+      JOBS_DIR: /data/jobs
+      MAX_CONCURRENT_JOBS: 1
+    volumes:
+      - ./data:/data
+    command: python -m app.worker
+
+volumes:
+  rabbitmq_data:
