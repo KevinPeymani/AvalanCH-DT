@@ -14,28 +14,61 @@ QUEUE_NAME = os.getenv("QUEUE_NAME", "simulation_queue")
 MAX_CONCURRENT_JOBS = int(os.getenv("MAX_CONCURRENT_JOBS", "1"))
 
 
+from pathlib import Path
+import shutil
+from typing import Dict, Any
+import urllib.parse
+
+def is_remote(uri: str) -> bool:
+    parsed = urllib.parse.urlparse(uri)
+    return parsed.scheme in ("http", "https", "s3")
+
 async def prepare_inputs(job_id: str, payload: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Prepare avalanche_dir/Inputs from dem_uri + rel_uri + avalanche_type + quality.
-    This is the missing glue between REST and AvaFrame.
+    Prepare avalanche_dir/Inputs from dem_uri + rel_uri.
 
-    For now: creates Inputs/ folders only (stub).
-    Replace with:
-      - copy/download DEM -> Inputs/DEM/
-      - copy/download REL -> Inputs/REL/
-      - write Inputs/CFGs/com1DFACfg.ini based on avalanche_type/quality/params
+    Supports:
+      - local paths (for dev)
+      - http/https/s3 (future prod)
     """
+
     ava_dir = storage.avalanche_dir(job_id)
-    (ava_dir / "Inputs").mkdir(parents=True, exist_ok=True)
-    (ava_dir / "Inputs" / "DEM").mkdir(parents=True, exist_ok=True)
-    (ava_dir / "Inputs" / "REL").mkdir(parents=True, exist_ok=True)
-    (ava_dir / "Inputs" / "CFGs").mkdir(parents=True, exist_ok=True)
+    inputs_dir = ava_dir / "Inputs"
+    dem_dir = inputs_dir / "DEM"
+    rel_dir = inputs_dir / "REL"
+    cfg_dir = inputs_dir / "CFGs"
+
+    dem_dir.mkdir(parents=True, exist_ok=True)
+    rel_dir.mkdir(parents=True, exist_ok=True)
+    cfg_dir.mkdir(parents=True, exist_ok=True)
+
+    dem_uri = payload.get("dem_uri")
+    rel_uri = payload.get("rel_uri")
+
+    if not dem_uri or not rel_uri:
+        raise ValueError("dem_uri and rel_uri are required")
+
+    # ---- DEM handling ----
+    dem_dest = dem_dir / Path(dem_uri).name
+    if is_remote(dem_uri):
+        #await download_file(dem_uri, dem_dest)   # implement later
+        raise ValueError("remote DEM not supported yet")
+    else:
+        shutil.copy(Path(dem_uri), dem_dest)
+
+    # ---- REL handling ----
+    rel_dest = rel_dir / Path(rel_uri).name
+    if is_remote(rel_uri):
+        #await download_file(rel_uri, rel_dest)
+        raise ValueError("remote REL not supported yet")
+    else:
+        shutil.copy(Path(rel_uri), rel_dest)
 
     return {
         "prepared": True,
-        "inputsDir": str(ava_dir / "Inputs"),
-        "dem_uri": payload.get("dem_uri"),
-        "rel_uri": payload.get("rel_uri"),
+        "inputsDir": str(inputs_dir),
+        "dem_path": str(dem_dest),
+        "rel_path": str(rel_dest),
         "quality": payload.get("quality"),
         "avalanche_type": payload.get("avalanche_type"),
     }

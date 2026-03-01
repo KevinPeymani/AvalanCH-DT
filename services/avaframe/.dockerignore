@@ -1,6 +1,27 @@
-**
+# Ignore python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
 
-!services/avaframe/**
-!libs/common_utils/**
-!pyproject.toml
-!README.md
+# Virtualenvs
+.venv/
+venv/
+
+# Git
+.git/
+.gitignore
+
+# Local data / outputs (don't bake into image)
+data/
+Outputs/
+Work/
+
+# OS/editor
+.DS_Store
+.idea/
+.vscode/
+
+# Node / frontend if any
+node_modules/
+dist/

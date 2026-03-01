@@ -1,0 +1,6 @@
+**
+
+!services/avaframe/**
+!libs/common_utils/**
+!pyproject.toml
+!README.md
