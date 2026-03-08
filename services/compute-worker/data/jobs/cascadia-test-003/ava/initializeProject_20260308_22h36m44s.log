@@ -1,0 +1,12 @@
+1, 130667718916992 - logUtils - INFO - Started logging at: 20260308_22h36m44s
+1, 130667718916992 - logUtils - INFO - Also logging to: /data/jobs/cascadia-test-003/ava/initializeProject_20260308_22h36m44s.log
+1, 130667718916992 - logUtils - INFO - AvaFrame Version: 2.0b2
+1, 130667718916992 - init_project - INFO - JOB init_project start
+1, 130667718916992 - init_project - INFO - Initializing project: /data/jobs/cascadia-test-003/ava
+1, 130667718916992 - initializeProject - INFO - Running initialization sequence for avalanche ava
+1, 130667718916992 - initializeProject - WARNING - Folder ava already exists. Continuing
+1, 130667718916992 - initializeProject - INFO - Done initializing avalanche ava
+1, 130667718916992 - init_project - INFO - Project initialized.
+1, 130667718916992 - init_project - INFO - DEM copied to: /data/jobs/cascadia-test-003/ava/Inputs/dem.tif
+1, 130667718916992 - init_project - INFO - REL copied to: /data/jobs/cascadia-test-003/ava/Inputs/REL/ca_avalanche_m_keepnodata.tif
+1, 130667718916992 - init_project - INFO - CFG prepared at: /data/jobs/cascadia-test-003/ava/Inputs/CFGs/local_com1DFACfg.ini

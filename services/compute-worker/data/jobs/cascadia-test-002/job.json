@@ -1,0 +1,45 @@
+{
+  "job_id": "cascadia-test-002",
+  "status": "failed",
+  "created_at": "2026-03-08T22:35:52+00:00",
+  "started_at": "2026-03-08T22:36:37+00:00",
+  "finished_at": "2026-03-08T22:36:37+00:00",
+  "error": {
+    "message": "AssertionError: Work directory /data/jobs/cascadia-test-002/ava/Work/com1DFA already exists - delete first!",
+    "traceback": "Traceback (most recent call last):\n  File \"/app/app/worker.py\", line 223, in main\n    await process_message(payload, channel)\n  File \"/app/app/worker.py\", line 201, in process_message\n    return run_simulation(payload)\n  File \"/app/app/worker.py\", line 178, in run_simulation\n    result = JOB_REGISTRY[job](ava_dir, **params)\n  File \"/app/app/jobs/operational_simulation.py\", line 160, in run\n    _, plotDict, reportDictList, _ = com1DFA.com1DFAMain(cfgMain, cfgInfo=cfgCom1DFA)\n  File \"/opt/venv/lib/python3.10/site-packages/avaframe/com1DFA/com1DFA.py\", line 150, in com1DFAMain\n    simDict, outDir, inputSimFiles, simDFExisting = com1DFAPreprocess(cfgMain, typeCfgInfo, cfgInfo)\n  File \"/opt/venv/lib/python3.10/site-packages/avaframe/com1DFA/com1DFA.py\", line 105, in com1DFAPreprocess\n    inputSimFilesAll, outDir, simDFExisting, simNameExisting = com1DFATools.initializeInputs(\n  File \"/opt/venv/lib/python3.10/site-packages/avaframe/com1DFA/com1DFATools.py\", line 341, in initializeInputs\n    _, outDir = inDirs.initialiseRunDirs(avalancheDir, modName, cleanRemeshedRasters)\n  File \"/opt/venv/lib/python3.10/site-packages/avaframe/in3Utils/initialiseDirs.py\", line 48, in initialiseRunDirs\n    raise AssertionError(message)\nAssertionError: Work directory /data/jobs/cascadia-test-002/ava/Work/com1DFA already exists - delete first!\n",
+    "worker_type": "simulation"
+  },
+  "request": {
+    "job_id": "cascadia-test-002",
+    "job": "simulation",
+    "inputs": {
+      "dem_uri": "/examples/avaParabola/Inputs/dem.tif",
+      "rel_uri": "/examples/avaParabola/Inputs/REL/ca_avalanche_m_keepnodata.tif"
+    },
+    "simulation": {
+      "avalanche_type": "dry",
+      "quality": "default",
+      "snow_density_kg_m3": 200,
+      "release_thickness_m": 1.0,
+      "auto_init": true
+    }
+  },
+  "result": {
+    "stage": "ingestion",
+    "forwarded_to": "simulation_queue",
+    "prep": {
+      "prepared": true,
+      "status": "initialized",
+      "avalancheDir": "/data/jobs/cascadia-test-002/ava",
+      "inputsDir": "/data/jobs/cascadia-test-002/ava/Inputs",
+      "dem_path": "/data/jobs/cascadia-test-002/ava/Inputs/dem.tif",
+      "rel_path": "/data/jobs/cascadia-test-002/ava/Inputs/REL/ca_avalanche_m_keepnodata.tif",
+      "cfg_path": "/data/jobs/cascadia-test-002/ava/Inputs/CFGs/local_com1DFACfg.ini"
+    }
+  },
+  "outputs_dir": "/data/jobs/cascadia-test-002/ava/Outputs",
+  "paths": {
+    "job_dir": "/data/jobs/cascadia-test-002",
+    "avalanche_dir": "/data/jobs/cascadia-test-002/ava"
+  }
+}
