@@ -1,0 +1,24 @@
+1, 138277631712128 - logUtils - INFO - Started logging at: 20260308_22h24m28s
+1, 138277631712128 - logUtils - INFO - Also logging to: /data/jobs/cascadia-test-001/ava/initializeProject_20260308_22h24m28s.log
+1, 138277631712128 - logUtils - INFO - AvaFrame Version: 2.0b2
+1, 138277631712128 - init_project - INFO - JOB init_project start
+1, 138277631712128 - init_project - INFO - Initializing project: /data/jobs/cascadia-test-001/ava
+1, 138277631712128 - initializeProject - INFO - Running initialization sequence for avalanche ava
+1, 138277631712128 - initializeProject - WARNING - Folder ava already exists. Continuing
+1, 138277631712128 - initializeProject - INFO - Folder exists: /data/jobs/cascadia-test-001/ava/Inputs, Skipping
+1, 138277631712128 - initializeProject - INFO - Folder exists: /data/jobs/cascadia-test-001/ava/Inputs/RES, Skipping
+1, 138277631712128 - initializeProject - INFO - Folder exists: /data/jobs/cascadia-test-001/ava/Inputs/REL, Skipping
+1, 138277631712128 - initializeProject - INFO - Folder exists: /data/jobs/cascadia-test-001/ava/Inputs/SECREL, Skipping
+1, 138277631712128 - initializeProject - INFO - Folder exists: /data/jobs/cascadia-test-001/ava/Inputs/ENT, Skipping
+1, 138277631712128 - initializeProject - INFO - Folder exists: /data/jobs/cascadia-test-001/ava/Inputs/POINTS, Skipping
+1, 138277631712128 - initializeProject - INFO - Folder exists: /data/jobs/cascadia-test-001/ava/Inputs/LINES, Skipping
+1, 138277631712128 - initializeProject - INFO - Folder exists: /data/jobs/cascadia-test-001/ava/Inputs/POLYGONS, Skipping
+1, 138277631712128 - initializeProject - INFO - Folder exists: /data/jobs/cascadia-test-001/ava/Inputs/RELTH, Skipping
+1, 138277631712128 - initializeProject - INFO - Folder exists: /data/jobs/cascadia-test-001/ava/Inputs/RASTERS, Skipping
+1, 138277631712128 - initializeProject - INFO - Folder exists: /data/jobs/cascadia-test-001/ava/Outputs, Skipping
+1, 138277631712128 - initializeProject - INFO - Folder exists: /data/jobs/cascadia-test-001/ava/Work, Skipping
+1, 138277631712128 - initializeProject - INFO - Done initializing avalanche ava
+1, 138277631712128 - init_project - INFO - Project initialized.
+1, 138277631712128 - init_project - INFO - DEM copied to: /data/jobs/cascadia-test-001/ava/Inputs/DEM/dem.tif
+1, 138277631712128 - init_project - INFO - REL copied to: /data/jobs/cascadia-test-001/ava/Inputs/REL/ca_avalanche_m_keepnodata.tif
+1, 138277631712128 - init_project - INFO - CFG prepared at: /data/jobs/cascadia-test-001/ava/Inputs/CFGs/local_com1DFACfg.ini

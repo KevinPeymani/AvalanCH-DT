@@ -1,0 +1,5 @@
+1, 137887209667456 - logUtils - INFO - Started logging at: 20260308_21h56m15s
+1, 137887209667456 - logUtils - INFO - Also logging to: /data/jobs/cascadia-test-001/ava/operationalSimulation_20260308_21h56m15s.log
+1, 137887209667456 - logUtils - INFO - AvaFrame Version: 2.0b2
+1, 137887209667456 - operational_simulation - INFO - JOB operational_simulation start
+1, 137887209667456 - operational_simulation - INFO - Current avalanche: /data/jobs/cascadia-test-001/ava

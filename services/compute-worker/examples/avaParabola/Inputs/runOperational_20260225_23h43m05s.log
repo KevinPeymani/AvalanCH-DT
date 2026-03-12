@@ -1,0 +1,11 @@
+1358, 132668499910656 - logUtils - INFO - Started logging at: 20260225_23h43m05s
+1358, 132668499910656 - logUtils - INFO - Also logging to: data/avaParabola/Inputs/runOperational_20260225_23h43m05s.log
+1358, 132668499910656 - logUtils - INFO - AvaFrame Version: 1.13.2
+1358, 132668499910656 - runOperational - INFO - MAIN SCRIPT
+1358, 132668499910656 - runOperational - INFO - Current avalanche: data/avaParabola/Inputs/
+1358, 132668499910656 - cfgUtils - INFO - Reading config from: /home/kevin/.local/lib/python3.10/site-packages/avaframe/com1DFA/com1DFACfg.ini
+1358, 132668499910656 - initializeProject - INFO - Cleaned data/avaParabola/Inputs/Inputs/remeshedRasters directory
+1358, 132668499910656 - initializeProject - INFO - Cleaned data/avaParabola/Inputs/Outputs/com1DFA/configurationFiles/configurationFilesLatest directory
+1358, 132668499910656 - cfgUtils - INFO - No existing simulations in Outputs found
+1358, 132668499910656 - getInput - INFO - Release area files are: []
+1358, 132668499910656 - getInput - ERROR - No topography .asc / .tif file in data/avaParabola/Inputs//Inputs/
