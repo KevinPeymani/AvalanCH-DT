@@ -1,2 +1,28 @@
 **/.vscode/
 **/.venv/
+
+# Python caches
+**/__pycache__/
+**/*.pyc
+
+# Grid service local artifacts
+services/grid-service/build/
+services/grid-service/docker.log
+
+# Legacy local folder kept during migration tests
+prediction/grid_service/
+
+# Runtime outputs and generated runs
+prediction/grid_runs/
+
+# Local prediction artifacts (large / machine-specific)
+prediction/*.h5
+prediction/*.keras
+prediction/*.pkl
+prediction/*.tif
+prediction/data_rf2_tidy.csv
+
+# Local runtime templates and generated weather/snowpack files
+prediction/input/
+prediction/output/
+prediction/cfgfiles/

@@ -1,0 +1,29 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: grid_broker
+    restart: unless-stopped
+    ports:
+      - "5673:5672"
+      - "15673:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: simulation_secure
+
+  grid-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    image: avalanch-grid-worker:latest
+    restart: unless-stopped
+    environment:
+      BROKER_URL: amqp://admin:simulation_secure@rabbitmq:5672/
+      GRID_QUEUE: grid_queue
+      # Optional: custom Snowpack binary in container
+      # SNOWPACK_BIN: /opt/snowpack/bin/snowpack
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ../..:/workspace
+      # Optional: mount snowpack runtime
+      # - /path/to/snowpack:/opt/snowpack:ro

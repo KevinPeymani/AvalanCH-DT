@@ -82,6 +82,22 @@ services:
       - ./services/compute-worker/data:/data
       - ./services/compute-worker/examples:/examples
 
+  worker-grid:
+    build: ./services/grid-service
+    image: swiss_grid_worker_img
+    restart: unless-stopped
+    networks:
+      - swiss-net
+    environment:
+      - BROKER_URL=amqp://admin:simulation_secure@swiss_broker:5672/
+      - GRID_QUEUE=grid_queue
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./:/workspace
+      # Optional: custom Snowpack runtime in container
+      # - /path/to/snowpack:/opt/snowpack:ro
+
   mapproxy:
     image: ghcr.io/mapproxy/mapproxy/mapproxy:6.0.1-alpine-nginx
     container_name: swiss_mapproxy

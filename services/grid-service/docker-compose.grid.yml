@@ -1,0 +1,21 @@
+services:
+  grid-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: avalanch-grid-service:latest
+    environment:
+      DEM_PATH: prediction/swissalti3d_2024_2610-1092_2_2056_5728.tif
+      SMET_TEMPLATE: prediction/input/DAV3.smet
+      SNO_TEMPLATE: prediction/input/DAV3.sno
+      INI_TEMPLATE: prediction/cfgfiles/io.ini
+      OUTPUT_ROOT: prediction/grid_runs/docker_run_001
+      THREADS: 2
+      STRIDE: 10
+      FEATURE_COLUMNS: prediction/feature_columns.json
+      FEATURES_CSV: snowpack_features.csv
+      END_TIME: 2026-03-12T00:00:00
+      CELL_SIZE: 5.0
+    volumes:
+      - ../..:/workspace
+    working_dir: /workspace

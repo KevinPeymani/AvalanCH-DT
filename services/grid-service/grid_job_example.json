@@ -1,0 +1,14 @@
+{
+  "dem": "prediction/swissalti3d_2024_2610-1092_2_2056_5728.tif",
+  "smet_template": "prediction/input/DAV3.smet",
+  "sno_template": "prediction/input/DAV3.sno",
+  "ini_template": "prediction/cfgfiles/io.ini",
+  "output_root": "prediction/grid_runs/queue_run_001",
+  "threads": 8,
+  "stride": 2,
+  "feature_columns": "prediction/feature_columns.json",
+  "features_csv": "snowpack_features.csv",
+  "end_time": "2026-03-12T00:00:00",
+  "cell_size": 5.0,
+  "max_cells": 100
+}

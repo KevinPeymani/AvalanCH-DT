@@ -1,0 +1,10 @@
+build/
+*.log
+*.tmp
+*.swp
+*.swo
+__pycache__/
+*.pyc
+.git/
+.gitignore
+.vscode/

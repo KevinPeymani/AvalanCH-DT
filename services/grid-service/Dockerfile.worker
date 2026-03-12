@@ -1,0 +1,52 @@
+FROM ubuntu:24.04 AS builder
+
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    cmake \
+    pkg-config \
+    libgdal-dev \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /src
+COPY . /src
+RUN cmake -S /src -B /src/build -DCMAKE_BUILD_TYPE=Release \
+    && cmake --build /src/build -j \
+    && strip /src/build/grid_snowpack_service || true
+
+FROM ubuntu:24.04 AS runtime
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV BROKER_URL=amqp://admin:simulation_secure@rabbitmq:5672/
+ENV GRID_QUEUE=grid_queue
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgdal34t64 \
+    python3 \
+    python3-pip \
+    bash \
+    tini \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+COPY requirements-worker.txt /app/requirements-worker.txt
+RUN python3 -m pip install --no-cache-dir --break-system-packages -r /app/requirements-worker.txt
+
+COPY --from=builder /src/build/grid_snowpack_service /usr/local/bin/grid_snowpack_service
+COPY snowpack-runtime /opt/snowpack
+COPY worker.py /app/worker.py
+
+ENV PATH="/opt/snowpack/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+ENV LD_LIBRARY_PATH="/opt/snowpack/lib"
+
+RUN useradd -m -u 10001 appuser \
+    && mkdir -p /workspace \
+    && chown -R appuser:appuser /workspace /app
+
+USER appuser
+
+WORKDIR /workspace
+CMD ["/usr/bin/tini", "--", "python3", "/app/worker.py"]

@@ -19,3 +19,16 @@ The neural network training and config can be experimented in the `model.ipynb` 
 The Snowpack releases that are found in the [Downloads](https://code.wsl.ch/snow-models/snowpack/-/releases) bundle MeteoIO and Snowpack but NOT [Inishell](https://code.wsl.ch/snow-models/inishell/-/releases) that has to be downloaded separately. They are available for Linux, Windows and osX and contain an HTML documentation (either in the start menu or in the share sub-folder of the installation directory).
 
 Inishell is used to configure Snowpack and MeteoIO. It is a graphical user interface that allows to create the configuration files for Snowpack and MeteoIO.
+
+## Run SNOWPACK for each DEM cell (C++ service)
+
+For large raster-based runs, use the C++ service in `services/grid-service/`.
+
+It will:
+- read a DEM `.tif`
+- compute `altitude`, `latitude`, `longitude`, `SlopeAngle`, `SlopeAzi` for each valid cell
+- reuse per-worker temporary input/output files while running Snowpack in parallel
+- extract only the needed instant Snowpack features
+- write one compact CSV with selected feature columns plus topography fields
+
+See full usage and build instructions in `services/grid-service/README.md`.
