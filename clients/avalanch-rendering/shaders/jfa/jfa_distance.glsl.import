@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://dbmet1c8sgnew"
+path="res://.godot/imported/jfa_distance.glsl-5dabd9faa21baffc583d8f6a65089272.res"
+
+[deps]
+
+source_file="res://shaders/jfa/jfa_distance.glsl"
+dest_files=["res://.godot/imported/jfa_distance.glsl-5dabd9faa21baffc583d8f6a65089272.res"]
+
+[params]
+

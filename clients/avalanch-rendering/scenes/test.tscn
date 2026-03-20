@@ -1,0 +1,92 @@
+[gd_scene format=3 uid="uid://cmu0rgfx17brl"]
+
+[ext_resource type="ArrayMesh" uid="uid://bqrr1ebe1jv8j" path="res://test_rendering/mesh/terrain.res" id="1_iyx0m"]
+[ext_resource type="Shader" uid="uid://dx4kwloou21xd" path="res://test_rendering/mesh/terrain_material.gdshader" id="2_74lek"]
+[ext_resource type="Shader" uid="uid://cbl330n7pl31d" path="res://avalanche4.gdshader" id="3_j5jx5"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ykrsh"]
+render_priority = 0
+shader = ExtResource("2_74lek")
+shader_parameter/grass_dark = Color(0.15, 0.22, 0.1, 1)
+shader_parameter/grass_light = Color(0.25, 0.35, 0.15, 1)
+shader_parameter/rock_dark = Color(0.2, 0.2, 0.2, 1)
+shader_parameter/rock_light = Color(0.35, 0.32, 0.3, 1)
+shader_parameter/snow_color = Color(0.9, 0.9, 1, 1)
+shader_parameter/terrain_scale = 1000.0
+shader_parameter/snow_height = 1500.0
+shader_parameter/snow_spread = 250.0
+shader_parameter/slope_threshold = 0.829
+shader_parameter/slope_spread = 0.095
+
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_37kl0"]
+
+[sub_resource type="Sky" id="Sky_8uh7m"]
+sky_material = SubResource("PhysicalSkyMaterial_37kl0")
+
+[sub_resource type="Environment" id="Environment_6uqi0"]
+background_mode = 2
+sky = SubResource("Sky_8uh7m")
+
+[sub_resource type="BoxMesh" id="BoxMesh_37kl0"]
+lightmap_size_hint = Vector2i(24, 36)
+flip_faces = true
+size = Vector3(2, 2, 2)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_6uqi0"]
+frequency = 0.0056
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_6uqi0"]
+width = 1024
+height = 1024
+noise = SubResource("FastNoiseLite_6uqi0")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ppyta"]
+render_priority = 0
+shader = ExtResource("3_j5jx5")
+shader_parameter/sun_dir = Vector3(1.67, 0.8, 0.5)
+shader_parameter/sun_color = Vector3(1, 0.95, 0.9)
+shader_parameter/ambient_color = Vector3(0.1, 0.125, 0.175)
+shader_parameter/snow_color = Vector3(0.72, 0.76, 0.8)
+shader_parameter/density_multiplier = 0.02
+shader_parameter/cloud_radius = 800.0
+shader_parameter/cloud_center = Vector3(1000, 2500, 0)
+shader_parameter/cloud_scale = 5000.0
+shader_parameter/cloud_height = 500.0
+shader_parameter/show_cloud = true
+shader_parameter/solid_radius = 1000.0
+shader_parameter/solid_center = Vector3(-1000, 600, 0)
+shader_parameter/terrain_blend = 80.0
+shader_parameter/max_steps = 256
+shader_parameter/noise_freq = 0.01
+shader_parameter/noise_amp = 0.235
+shader_parameter/clouds = SubResource("NoiseTexture2D_6uqi0")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_6uqi0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iyx0m"]
+albedo_color = Color(0.3253535, 0.20034775, 0.11481296, 1)
+
+[node name="Node3D" type="Node3D" unique_id=806873507]
+
+[node name="mountain" type="MeshInstance3D" parent="." unique_id=1047139765]
+visible = false
+mesh = ExtResource("1_iyx0m")
+surface_material_override/0 = SubResource("ShaderMaterial_ykrsh")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1175321956]
+environment = SubResource("Environment_6uqi0")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1854045845]
+transform = Transform3D(0.66042113, 0.30198872, -0.687493, 0, 0.91556436, 0.4021715, 0.7508954, -0.26560256, 0.60465807, 0, 0, 0)
+
+[node name="snow" type="MeshInstance3D" parent="." unique_id=2039406843]
+transform = Transform3D(3815.9426, 0, 0, 0, 1424.4608, 0, 0, 0, 2263.1555, -4.696045, 1450.3982, -9.16626)
+cast_shadow = 0
+mesh = SubResource("BoxMesh_37kl0")
+surface_material_override/0 = SubResource("ShaderMaterial_ppyta")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=928410325]
+transform = Transform3D(100000, 0, 0, 0, 100000, 0, 0, 0, 100000, 0, 0, 0)
+mesh = SubResource("PlaneMesh_6uqi0")
+surface_material_override/0 = SubResource("StandardMaterial3D_iyx0m")

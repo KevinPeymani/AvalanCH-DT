@@ -1,0 +1,35 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://b6rhf172b17kc"]
+
+[ext_resource type="Shader" uid="uid://bj1e4labo4bru" path="res://shaders/raymarching/avalanche_sdf.gdshader" id="1_1npx1"]
+
+[sub_resource type="Texture3DRD" id="Texture3DRD_1sa6f"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_1npx1")
+shader_parameter/sdf_size = Vector3(64, 64, 64)
+shader_parameter/depth_test_bias = 0.0018692
+shader_parameter/ambient_color = Color(0.2, 0.25, 0.35, 1)
+shader_parameter/snow_color = Color(0.9, 0.95, 1, 1)
+shader_parameter/snow_cloud_color = Color(0.9, 0.95, 1, 1)
+shader_parameter/raymarching_steps = 64
+shader_parameter/hit_epsilon = 0.001
+shader_parameter/normal_sample_scale = 1.0
+shader_parameter/snow_shadow_step = 0.5
+shader_parameter/show_dusty_snow = true
+shader_parameter/density_multiplier = 2.0
+shader_parameter/raytracing_steps = 64
+shader_parameter/snow_dust_height = 0.00189999995193
+shader_parameter/dusty_snow_shadow_step = 0.00369799999975
+shader_parameter/shadow_softness = 2.0
+shader_parameter/shadow_factor_a = 1.0
+shader_parameter/shadow_factor_b = 1.0
+shader_parameter/shadow_steps = 40
+shader_parameter/shadow_epsilon = 0.001
+shader_parameter/shadow_normal_bias = 0.01
+shader_parameter/shadow_distribution_power = 1.0
+shader_parameter/sun_dir = Vector3(-0.5065711, 0.40014112, 0.76372296)
+shader_parameter/sun_color = Color(1, 1, 1, 1)
+shader_parameter/sun_energy = 1.0
+shader_parameter/sun_size = 1.0
+shader_parameter/sdf = SubResource("Texture3DRD_1sa6f")

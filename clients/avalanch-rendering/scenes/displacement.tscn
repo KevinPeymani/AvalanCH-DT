@@ -1,0 +1,81 @@
+[gd_scene format=3 uid="uid://dnqyby8mejkpd"]
+
+[ext_resource type="Shader" uid="uid://1ywo6dbbfqqv" path="res://scenes/terrain_displacement.gdshader" id="1_bg6w3"]
+[ext_resource type="Texture2D" uid="uid://de6eo70nqon1c" path="res://data/avalanche1/ca_exp1_elev.exr" id="2_2nyue"]
+[ext_resource type="Shader" uid="uid://73fr47ru43my" path="res://avalanche5.gdshader" id="3_e718p"]
+[ext_resource type="Texture2D" uid="uid://brb1mhujjkqtk" path="res://data/avalanche1/ca_exp1_hflow_max.exr" id="4_rrrf5"]
+[ext_resource type="Script" uid="uid://bw8uxsxnxhjuh" path="res://jfa_tool.gd" id="5_e718p"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_2nyue"]
+subdivide_width = 64
+subdivide_depth = 64
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ladcx"]
+render_priority = 0
+shader = ExtResource("1_bg6w3")
+shader_parameter/terrain = ExtResource("2_2nyue")
+shader_parameter/height_scale = 0.0004393
+shader_parameter/mesh_size = Vector2(2, 2)
+shader_parameter/grass_dark = Color(0.15, 0.22, 0.1, 1)
+shader_parameter/grass_light = Color(0.25, 0.35, 0.15, 1)
+shader_parameter/rock_dark = Color(0.2, 0.2, 0.2, 1)
+shader_parameter/rock_light = Color(0.35, 0.32, 0.3, 1)
+shader_parameter/snow_color = Color(0.9, 0.95, 1, 1)
+shader_parameter/terrain_scale = 0.455
+shader_parameter/snow_height = 8.04
+shader_parameter/snow_spread = 1.0
+shader_parameter/slope_threshold = 0.955
+shader_parameter/slope_spread = 0.2
+
+[sub_resource type="BoxMesh" id="BoxMesh_rrrf5"]
+flip_faces = true
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ladcx"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_e718p"]
+noise = SubResource("FastNoiseLite_ladcx")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e718p"]
+render_priority = 0
+shader = ExtResource("3_e718p")
+shader_parameter/sun_dir = Vector3(0.5, 0.8, 0.3)
+shader_parameter/sun_color = Vector3(1, 0.95, 0.9)
+shader_parameter/ambient_color = Vector3(0.2, 0.25, 0.35)
+shader_parameter/snow_color = Vector3(0.9, 0.95, 1)
+shader_parameter/density_multiplier = 0.2
+shader_parameter/cloud_radius = 0.195
+shader_parameter/cloud_center = Vector3(0, -0.009, 0)
+shader_parameter/cloud_scale = 0.643
+shader_parameter/cloud_height = 0.129
+shader_parameter/show_cloud = false
+shader_parameter/solid_radius = 0.204
+shader_parameter/solid_center = Vector3(-0.09, 0.525, 0.32)
+shader_parameter/terrain_blend = 0.0
+shader_parameter/max_steps = 64
+shader_parameter/noise_freq = 1.0
+shader_parameter/noise_amp = 0.0
+shader_parameter/clouds = SubResource("NoiseTexture2D_e718p")
+shader_parameter/snow = ExtResource("4_rrrf5")
+shader_parameter/terrain = ExtResource("2_2nyue")
+shader_parameter/height_scale = 0.0004393
+
+[node name="Displacement" type="Node3D" unique_id=278350733]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1275911858]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=908975521]
+mesh = SubResource("PlaneMesh_2nyue")
+surface_material_override/0 = SubResource("ShaderMaterial_ladcx")
+
+[node name="snow" type="MeshInstance3D" parent="." unique_id=1994740353]
+transform = Transform3D(2, 0, 0, 0, 1.3, 0, 0, 0, 2, 0, 0.6357268, 0)
+mesh = SubResource("BoxMesh_rrrf5")
+surface_material_override/0 = SubResource("ShaderMaterial_e718p")
+
+[node name="Tool" type="Node" parent="." unique_id=524021878]
+script = ExtResource("5_e718p")
+heightmap = ExtResource("2_2nyue")
+hflow = ExtResource("4_rrrf5")
+hflow_scale = 10.0
