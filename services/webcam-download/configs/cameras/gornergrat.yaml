@@ -1,0 +1,54 @@
+camera:
+  roundshot_page_id: 1042
+  name: "Gornergrat"
+  slug: "/gornergrat"
+  page_url: "https://zermatt.roundshot.com/gornergrat"
+
+  location:
+    country: "Switzerland"
+    region: "Zermatt"
+    latitude: 45.98314
+    longitude: 7.78331
+    elevation_m: 3110
+    north_deg: 270
+    fov_deg: 360
+
+  provider:
+    brand: "roundshot"
+    product_line: "livecam"
+    generation: "4"
+    timezone: "Europe/Zurich"
+
+  capabilities:
+    archive: true
+    timelapse: true
+    video_archive: false
+    gps_coordinates: true
+    cam_inactive: false
+    nightvision: false
+
+  data_access:
+    base_url: "https://storage.roundshot.com"
+    preview_url: "https://storage.roundshot.com/5dd571e14c8d10.06684428/2026-03-19/06-20-00/2026-03-19-06-20-00_centerprev.jpg"
+    storage_camera_id: "5dd571e14c8d10.06684428"
+    requires_auth: false
+
+  temporal:
+    available_24h: true
+    schedule:
+      - start: "05:40"
+        end: "18:30"
+        step_minutes: 10
+        type: "day"
+
+      - start: "19:00"
+        end: "06:30"
+        step_minutes: 20
+        type: "night"
+
+  image:
+
+    resolution:
+      width: 9753
+      height: 2048
+    is_panorama: true

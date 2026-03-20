@@ -1,0 +1,62 @@
+camera:
+  roundshot_page_id: 1048
+  name: "Riffelberg"
+  slug: "/riffelberg"
+  page_url: "https://zermatt.roundshot.com/riffelberg"
+
+  location:
+    country: "Switzerland"
+    region: "Zermatt"
+    latitude: 45.994334
+    longitude: 7.755911
+    elevation_m: 2590
+    north_deg: 130
+    fov_deg: 50
+
+  provider:
+    brand: "roundshot"
+    product_line: "livecam"
+    generation: "1"
+    timezone: "Europe/Zurich"
+
+  capabilities:
+    archive: true
+    timelapse: false
+    video_archive: true
+    gps_coordinates: true
+    cam_inactive: false
+    nightvision: false
+
+  data_access:
+    base_url: "https://storage.roundshot.com"
+    preview_url: "https://storage.roundshot.com/5dd5762379f403.02309480/2026-03-19/16-00-00/2026-03-19-16-00-00_centerprev.jpg"
+    storage_camera_id: "5dd5762379f403.02309480"
+    requires_auth: false
+
+  temporal:
+    available_24h: true
+    schedule:
+      - start: "05:40"
+        end: "19:20"
+        step_minutes: 10
+        type: "day"
+
+      - start: "19:20"
+        end: "22:00"
+        step_minutes: 20
+        type: "night"
+
+      - start: "22:00"
+        end: "22:00"
+        step_minutes: 10
+        type: "night"
+
+  image:
+    variants:
+      - "_centerprev.jpg"
+      - "_half.jpg"
+      - "_full.jpg"
+    resolution:
+      width: 3072
+      height: 2048
+    is_panorama: true

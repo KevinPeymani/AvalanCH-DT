@@ -1,0 +1,53 @@
+camera:
+  roundshot_page_id: 2660
+  name: "Schwarzsee"
+  slug: "/schwarzsee"
+  page_url: "https://zermatt.roundshot.com/schwarzsee"
+
+  location:
+    country: "Switzerland"
+    region: "Zermatt"
+    latitude: 45.991835
+    longitude: 7.709443
+    elevation_m: 2593
+    north_deg: 200
+    fov_deg: 360
+
+  provider:
+    brand: "roundshot"
+    product_line: "livecam"
+    generation: "5"
+    timezone: "Europe/Zurich"
+
+  capabilities:
+    archive: true
+    timelapse: true
+    video_archive: false
+    gps_coordinates: true
+    cam_inactive: false
+    nightvision: true
+
+  data_access:
+    base_url: "https://storage.roundshot.com"
+    preview_url: "https://storage.roundshot.com/6985fbe4a66ae0.39376263/2026-03-19/15-40-00/2026-03-19-15-40-00_centerprev.jpg"
+    storage_camera_id: "6985fbe4a66ae0.39376263"
+    requires_auth: false
+
+  temporal:
+    available_24h: true
+    schedule:
+      - start: "05:40"
+        end: "18:30"
+        step_minutes: 10
+        type: "day"
+
+      - start: "19:00"
+        end: "06:30"
+        step_minutes: 20
+        type: "night"
+
+  image:
+    resolution:
+      width: 11346
+      height: 2048
+    is_panorama: true

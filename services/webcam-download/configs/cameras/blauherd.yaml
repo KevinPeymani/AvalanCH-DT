@@ -1,0 +1,53 @@
+camera:
+  roundshot_page_id: 2662
+  name: "Blauherd"
+  slug: "/blauherd"
+  page_url: "https://zermatt.roundshot.com/blauherd"
+
+  location:
+    country: "Switzerland"
+    region: "Zermatt"
+    latitude: 46.016699
+    longitude: 7.786053
+    elevation_m: 2582
+    north_deg: 35
+    fov_deg: 360
+
+  provider:
+    brand: "roundshot"
+    product_line: "livecam"
+    generation: "5"
+    timezone: "Europe/Zurich"
+  capabilities:
+    archive: true
+    timelapse: true
+    video_archive: false
+    gps_coordinates: true
+    cam_inactive: false
+    nightvision: true
+
+  data_access:
+    base_url: "https://storage.roundshot.com"
+    preview_url: "https://storage.roundshot.com/6985febf903e98.41120783/2026-03-19/15-50-00/2026-03-19-15-50-00_centerprev.jpg"
+    storage_camera_id: "6985febf903e98.41120783"
+    requires_auth: false
+
+  temporal:
+    available_24h: true
+    schedule:
+      - start: "06:40"
+        end: "18:30"
+        step_minutes: 10
+        type: "day"
+
+      - start: "19:00"
+        end: "06:30"
+        step_minutes: 20
+        type: "night"
+
+
+  image:
+    resolution:
+      width: 14309
+      height: 2048
+    is_panorama: true

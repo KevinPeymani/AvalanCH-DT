@@ -1,0 +1,50 @@
+camera:
+  roundshot_page_id: 1046
+  name: "Zermatterhof"
+  slug: "/zermatterhof"
+  page_url: "https://zermatt.roundshot.com/zermatterhof"
+
+  location:
+    country: "Switzerland"
+    region: "Zermatt"
+    latitude: 46.01934
+    longitude: 7.74603
+    elevation_m: 1620
+    north_deg: 220
+    fov_deg: 360
+
+  provider:
+    brand: "roundshot"
+    product_line: "livecam"
+    generation: "4"
+    timezone: "Europe/Zurich"
+
+  capabilities:
+    archive: true
+    timelapse: true
+    video_archive: false
+    gps_coordinates: true
+    cam_inactive: false
+    nightvision: false
+
+  data_access:
+    base_url: "https://storage.roundshot.com"
+    preview_url: "https://storage.roundshot.com/5dd57433a13c58.72193378/2026-03-18/18-30-00/2026-03-18-18-30-00_centerprev.jpg"
+    storage_camera_id: "5dd57433a13c58.72193378"
+    requires_auth: false
+
+  temporal:
+    available_24h: false
+    schedule:
+      - start: "06:40"
+        end: "18:30"
+        step_minutes: 10
+        type: "day"
+
+
+  image:
+    variants:
+    resolution:
+      width: 11483
+      height: 2048
+    is_panorama: true

@@ -1,0 +1,51 @@
+camera:
+  roundshot_page_id: 1040
+  name: "Randa"
+  slug: "/randa"
+  page_url: "https://zermatt.roundshot.com/randa"
+
+  location:
+    country: "Switzerland"
+    region: "Zermatt"
+    latitude: 46.100447
+    longitude: 7.783302
+    elevation_m: 1270
+    north_deg: 190
+    fov_deg: 360
+
+  provider:
+    brand: "roundshot"
+    product_line: "livecam"
+    generation: "3"
+    timezone: "Europe/Zurich"
+
+  capabilities:
+    archive: true
+    timelapse: true
+    video_archive: false
+    gps_coordinates: true
+    cam_inactive: true
+    nightvision: false
+
+  data_access:
+    base_url: "https://storage.roundshot.com"
+    preview_url: "https://storage.roundshot.com/5dcc1e9e030070.06377080/2026-01-07/19-00-00/2026-01-07-19-00-00_centerprev.jpg"
+    storage_camera_id: "5dcc1e9e030070.06377080"
+    requires_auth: false
+
+  temporal:
+    available_24h: false
+    schedule:
+      - start: "05:40"
+        end: "18:30"
+        step_minutes: 10
+      - start: "19:00"
+        end: "23:59"
+        step_minutes: 20
+
+
+  image:
+    resolution:
+      width: 10752
+      height: 2048
+    is_panorama: true
