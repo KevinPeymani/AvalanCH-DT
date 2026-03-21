@@ -18,8 +18,11 @@ extends Node3D
 @export var lod_levels: int = 5
 @export var tile_load_radius: float = 2.0
 @export var meters_per_unit: float = 10.0
+@export var max_elevation_meters: float = 4000.0
+@export var mesh_subdivisions: int = 32
 
 @export var wms_server_url: String = "http://localhost:8080/mapproxy/service"
+@export var wms_alti_server_url: String = "http://localhost:8081/geoserver/switzerland/wms"
 @export var max_concurrent_requests: int = 8
 
 var active_tiles: Dictionary = {}
@@ -30,12 +33,56 @@ var request_queue: Array = []
 var total_batch_requests: int = 0
 var completed_batch_requests: int = 0
 
+var generated_shader: Shader
+
+var default_shader_code = """
+shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_burley, specular_schlick_ggx;
+
+uniform sampler2D albedo_tex : source_color, filter_linear_mipmap;
+uniform sampler2D height_tex : hint_default_black, filter_linear_mipmap;
+
+uniform vec3 uv_scale_albedo = vec3(1.0);
+uniform vec3 uv_offset_albedo = vec3(0.0);
+uniform vec3 uv_scale_height = vec3(1.0);
+uniform vec3 uv_offset_height = vec3(0.0);
+
+uniform float height_scale = 100.0; 
+uniform bool use_debug = false;
+uniform vec3 debug_color = vec3(1.0);
+
+void vertex() {
+	vec2 height_uv = UV * uv_scale_height.xy + uv_offset_height.xy;
+	// Grabs the red channel of the grayscale DEM
+	float h = 1. - texture(height_tex, height_uv).r; 
+	VERTEX.y += h * height_scale;
+}
+
+void fragment() {
+	if (use_debug) {
+		ALBEDO = debug_color;
+	} else {
+		vec2 albedo_uv = UV * uv_scale_albedo.xy + uv_offset_albedo.xy;
+		ALBEDO = texture(albedo_tex, albedo_uv).rgb;
+	}
+}
+"""
+
+func _ready():
+	_get_shader()
+
 func _process(delta: float):
 	time_since_update += delta
 	if time_since_update > 0.5:
 		time_since_update = 0.0
 		_update_chunks()
 	_process_queue()
+
+func _get_shader() -> Shader:
+	if not generated_shader:
+		generated_shader = Shader.new()
+		generated_shader.code = default_shader_code
+	return generated_shader
 
 func _get_camera() -> Camera3D:
 	if Engine.is_editor_hint():
@@ -94,6 +141,8 @@ func _spawn_tile(cx: float, cy: float, size: float, lod: int):
 	var mi = MeshInstance3D.new()
 	var mesh = PlaneMesh.new()
 	mesh.size = Vector2(size / meters_per_unit, size / meters_per_unit)
+	mesh.subdivide_width = mesh_subdivisions
+	mesh.subdivide_depth = mesh_subdivisions
 	mi.mesh = mesh
 	
 	mi.set_meta("lod", lod)
@@ -101,11 +150,17 @@ func _spawn_tile(cx: float, cy: float, size: float, lod: int):
 	mi.set_meta("cy", cy)
 	mi.set_meta("size", size)
 	
-	mi.position = Vector3((cx - center_e) / meters_per_unit, lod * 0.5, -(cy - center_n) / meters_per_unit)
+	mi.position = Vector3((cx - center_e) / meters_per_unit, 0.05 * lod, -(cy - center_n) / meters_per_unit)
 	
-	var mat = StandardMaterial3D.new()
-	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	var aabb_size = size / meters_per_unit
+	mi.custom_aabb = AABB(Vector3(-aabb_size/2.0, -1000.0/meters_per_unit, -aabb_size/2.0), Vector3(aabb_size, 10000.0/meters_per_unit, aabb_size))
+	
+	var mat = ShaderMaterial.new()
+	mat.shader = _get_shader()
 	mat.render_priority = lod
+	mat.set_shader_parameter("uv_scale_albedo", Vector3.ONE)
+	mat.set_shader_parameter("uv_scale_height", Vector3.ONE)
+	mat.set_shader_parameter("height_scale", max_elevation_meters / meters_per_unit)
 	mi.material_override = mat
 	
 	if lod == lod_levels - 1:
@@ -122,73 +177,14 @@ func _spawn_tile(cx: float, cy: float, size: float, lod: int):
 	_apply_material(mi, lod)
 	
 	var half = size / 2.0
-	var url = wms_server_url + "?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=ch.swisstopo.swissimage&STYLES=&CRS=EPSG:2056&BBOX=%f,%f,%f,%f&WIDTH=512&HEIGHT=512&FORMAT=image/jpeg" % [cx - half, cy - half, cx + half, cy + half]
 	
-	request_queue.append({"url": url, "mi": mi})
-	total_batch_requests += 1
-
-func _on_downloaded(result: int, code: int, headers: PackedStringArray, body: PackedByteArray, mi, http):
-	if is_instance_valid(http):
-		http.queue_free()
-		
-	if result == HTTPRequest.RESULT_SUCCESS and code == 200 and is_instance_valid(mi):
-		var img = Image.new()
-		if img.load_jpg_from_buffer(body) == OK:
-			var tex = ImageTexture.create_from_image(img)
-			mi.set_meta("tex", tex)
-			_update_materials()
-			
-	_update_progress()
-
-func _apply_material(mi: MeshInstance3D, lod: int):
-	var mat = mi.material_override as StandardMaterial3D
-	if not mat: return
+	var url_albedo = wms_server_url + "?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=ch.swisstopo.swissimage&STYLES=&CRS=EPSG:2056&BBOX=%f,%f,%f,%f&WIDTH=512&HEIGHT=512&FORMAT=image/jpeg" % [cx - half, cy - half, cx + half, cy + half]
+	request_queue.append({"url": url_albedo, "mi": mi, "type": "albedo"})
 	
-	if visualize_lod:
-		mat.albedo_texture = null
-		mat.albedo_color = lod_colors[lod % lod_colors.size()]
-		mat.uv1_scale = Vector3.ONE
-		mat.uv1_offset = Vector3.ZERO
-		return
-
-	mat.albedo_color = Color.WHITE
-	if mi.has_meta("tex"):
-		mat.albedo_texture = mi.get_meta("tex")
-		mat.uv1_scale = Vector3.ONE
-		mat.uv1_offset = Vector3.ZERO
-		return
-
-	var cx = mi.get_meta("cx")
-	var cy = mi.get_meta("cy")
-	var size = mi.get_meta("size")
+	var url_height = wms_alti_server_url + "?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=switzerland:swissalti3d&STYLES=&CRS=EPSG:2056&BBOX=%f,%f,%f,%f&WIDTH=128&HEIGHT=128&FORMAT=image/png" % [cx - half, cy - half, cx + half, cy + half]
+	request_queue.append({"url": url_height, "mi": mi, "type": "height"})
 	
-	var parent_tex = null
-	var p_lod = lod - 1
-	var p_cx = cx
-	var p_cy = cy
-	var p_size = size
-	
-	while p_lod >= 0:
-		p_size = base_size / pow(2.0, p_lod)
-		p_cx = (floor(cx / p_size) * p_size) + (p_size / 2.0)
-		p_cy = (floor(cy / p_size) * p_size) + (p_size / 2.0)
-		var p_key = Vector3(p_cx, p_cy, p_lod)
-		
-		if active_tiles.has(p_key) and is_instance_valid(active_tiles[p_key]) and active_tiles[p_key].has_meta("tex"):
-			parent_tex = active_tiles[p_key].get_meta("tex")
-			break
-		p_lod -= 1
-		
-	if parent_tex:
-		mat.albedo_texture = parent_tex
-		mat.uv1_scale = Vector3(size / p_size, size / p_size, 1.0)
-		var u_offset = ((cx - size / 2.0) - (p_cx - p_size / 2.0)) / p_size
-		var v_offset = ((p_cy + p_size / 2.0) - (cy + size / 2.0)) / p_size
-		mat.uv1_offset = Vector3(u_offset, v_offset, 0.0)
-	else:
-		mat.albedo_texture = null
-		mat.uv1_scale = Vector3.ONE
-		mat.uv1_offset = Vector3.ZERO
+	total_batch_requests += 2
 
 func _get_active_request_count() -> int:
 	var count = 0
@@ -202,21 +198,46 @@ func _process_queue():
 	while active < max_concurrent_requests and request_queue.size() > 0:
 		var req = request_queue.pop_front()
 		if is_instance_valid(req["mi"]):
-			_execute_request(req["url"], req["mi"])
+			_execute_request(req["url"], req["mi"], req["type"])
 			active += 1
 		else:
 			total_batch_requests -= 1
 
-func _execute_request(url: String, mi: MeshInstance3D):
+func _execute_request(url: String, mi: MeshInstance3D, req_type: String):
 	var http = HTTPRequest.new()
 	http.timeout = 10.0
 	add_child(http)
-	http.request_completed.connect(_on_downloaded.bind(mi, http))
+	http.request_completed.connect(_on_downloaded.bind(mi, http, req_type))
 	
 	var err = http.request(url)
 	if err != OK:
 		http.queue_free()
 		_update_progress()
+
+func _on_downloaded(result: int, code: int, headers: PackedStringArray, body: PackedByteArray, mi, http, req_type: String):
+	if is_instance_valid(http):
+		http.queue_free()
+		
+	if result == HTTPRequest.RESULT_SUCCESS and code == 200 and is_instance_valid(mi):
+		var img = Image.new()
+		var decode_err = FAILED
+		
+		if req_type == "albedo":
+			decode_err = img.load_jpg_from_buffer(body)
+		elif req_type == "height":
+			decode_err = img.load_png_from_buffer(body)
+			
+		if decode_err == OK:
+			var tex = ImageTexture.create_from_image(img)
+			if req_type == "albedo":
+				mi.set_meta("tex_albedo", tex)
+			elif req_type == "height":
+				mi.set_meta("tex_height", tex)
+			_update_materials()
+		else:
+			printerr("Decode failed for ", req_type)
+			
+	_update_progress()
 
 func _update_progress():
 	completed_batch_requests += 1
@@ -233,6 +254,65 @@ func _update_materials():
 	for mi in active_tiles.values():
 		if is_instance_valid(mi):
 			_apply_material(mi, mi.get_meta("lod"))
+
+func _apply_material(mi: MeshInstance3D, lod: int):
+	var mat = mi.material_override as ShaderMaterial
+	if not mat: return
+	
+	if visualize_lod:
+		mat.set_shader_parameter("use_debug", true)
+		mat.set_shader_parameter("debug_color", lod_colors[lod % lod_colors.size()])
+		return
+	else:
+		mat.set_shader_parameter("use_debug", false)
+
+	var cx = mi.get_meta("cx")
+	var cy = mi.get_meta("cy")
+	var size = mi.get_meta("size")
+
+	if mi.has_meta("tex_albedo"):
+		mat.set_shader_parameter("albedo_tex", mi.get_meta("tex_albedo"))
+		mat.set_shader_parameter("uv_scale_albedo", Vector3.ONE)
+		mat.set_shader_parameter("uv_offset_albedo", Vector3.ZERO)
+	else:
+		var found = false
+		var p_lod = lod - 1
+		while p_lod >= 0 and not found:
+			var p_size = base_size / pow(2.0, p_lod)
+			var p_cx = (floor(cx / p_size) * p_size) + (p_size / 2.0)
+			var p_cy = (floor(cy / p_size) * p_size) + (p_size / 2.0)
+			var p_key = Vector3(p_cx, p_cy, p_lod)
+			
+			if active_tiles.has(p_key) and is_instance_valid(active_tiles[p_key]) and active_tiles[p_key].has_meta("tex_albedo"):
+				mat.set_shader_parameter("albedo_tex", active_tiles[p_key].get_meta("tex_albedo"))
+				mat.set_shader_parameter("uv_scale_albedo", Vector3(size / p_size, size / p_size, 1.0))
+				var u_offset = ((cx - size / 2.0) - (p_cx - p_size / 2.0)) / p_size
+				var v_offset = ((p_cy + p_size / 2.0) - (cy + size / 2.0)) / p_size
+				mat.set_shader_parameter("uv_offset_albedo", Vector3(u_offset, v_offset, 0.0))
+				found = true
+			p_lod -= 1
+
+	if mi.has_meta("tex_height"):
+		mat.set_shader_parameter("height_tex", mi.get_meta("tex_height"))
+		mat.set_shader_parameter("uv_scale_height", Vector3.ONE)
+		mat.set_shader_parameter("uv_offset_height", Vector3.ZERO)
+	else:
+		var found = false
+		var p_lod = lod - 1
+		while p_lod >= 0 and not found:
+			var p_size = base_size / pow(2.0, p_lod)
+			var p_cx = (floor(cx / p_size) * p_size) + (p_size / 2.0)
+			var p_cy = (floor(cy / p_size) * p_size) + (p_size / 2.0)
+			var p_key = Vector3(p_cx, p_cy, p_lod)
+			
+			if active_tiles.has(p_key) and is_instance_valid(active_tiles[p_key]) and active_tiles[p_key].has_meta("tex_height"):
+				mat.set_shader_parameter("height_tex", active_tiles[p_key].get_meta("tex_height"))
+				mat.set_shader_parameter("uv_scale_height", Vector3(size / p_size, size / p_size, 1.0))
+				var u_offset = ((cx - size / 2.0) - (p_cx - p_size / 2.0)) / p_size
+				var v_offset = ((p_cy + p_size / 2.0) - (cy + size / 2.0)) / p_size
+				mat.set_shader_parameter("uv_offset_height", Vector3(u_offset, v_offset, 0.0))
+				found = true
+			p_lod -= 1
 
 func _clear_meshes():
 	var keys_to_remove = []

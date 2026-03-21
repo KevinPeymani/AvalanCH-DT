@@ -110,6 +110,18 @@ services:
       - "8080:80"
     networks:
       - swiss-net
+  geoserver:
+    image: kartoza/geoserver:latest
+    ports:
+      - "8081:8080"
+    environment:
+      - INITIAL_MEMORY=2G
+      - MAXIMUM_MEMORY=4G
+      - GEOSERVER_ADMIN_USER=admin
+      - GEOSERVER_ADMIN_PASSWORD=geoserver
+      - GEOSERVER_FILESYSTEM_SANDBOX=/opt/geospatial_data
+    volumes:
+      - /home/remy/heavydata/digitaltwin/zermatt_zone2:/opt/geospatial_data
 
 networks:
   swiss-net:
