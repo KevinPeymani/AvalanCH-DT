@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://c2qixh132kixc"]
 
 [ext_resource type="Texture2D" uid="uid://u5mtgn3qdtct" path="res://landscape/zermatt-3d_0.png" id="1_allp0"]
-[ext_resource type="Shader" uid="uid://cbl330n7pl31d" path="res://avalanche4.gdshader" id="2_5etdx"]
+[ext_resource type="Shader" uid="uid://cbl330n7pl31d" path="res://shaders/avalanche4.gdshader" id="2_5etdx"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hwbo1"]
 resource_name = "material_0"

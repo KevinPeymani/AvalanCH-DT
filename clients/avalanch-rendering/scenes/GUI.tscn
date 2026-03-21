@@ -1,32 +1,69 @@
 [gd_scene format=3 uid="uid://biktl7koqedgm"]
 
 [ext_resource type="Script" uid="uid://c2u3aqi8gvqyi" path="res://scripts/gui.gd" id="1_jbthi"]
+[ext_resource type="Theme" uid="uid://bhajvkyhrac1h" path="res://ui/main_style.tres" id="2_5j4t3"]
 
-[node name="GUI" type="MarginContainer" unique_id=1804471206]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5j4t3"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+draw_center = false
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[node name="GUI" type="Panel" unique_id=105370275]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
+theme = ExtResource("2_5j4t3")
+theme_override_styles/panel = SubResource("StyleBoxFlat_5j4t3")
 script = ExtResource("1_jbthi")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1921705608]
-layout_mode = 2
-alignment = 2
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1047920040]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer" unique_id=1532952559]
+[node name="Panel" type="Panel" parent="MarginContainer" unique_id=271962879]
 layout_mode = 2
+theme = ExtResource("2_5j4t3")
 
-[node name="Frame count text" type="Label" parent="VBoxContainer/VBoxContainer" unique_id=1915182989]
+[node name="Button" type="Button" parent="MarginContainer/Panel" unique_id=2101065302]
+layout_mode = 0
+offset_left = 42.0
+offset_top = 68.0
+offset_right = 193.0
+offset_bottom = 109.0
+pivot_offset_ratio = Vector2(0.5, 0.5)
+text = "Click the button"
+flat = true
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/Panel" unique_id=1532952559]
+layout_mode = 0
+offset_top = 573.0
+offset_right = 1120.0
+offset_bottom = 616.0
+
+[node name="Frame count text" type="Label" parent="MarginContainer/Panel/VBoxContainer2" unique_id=1915182989]
 unique_name_in_owner = true
 layout_mode = 2
 text = "10"
 
-[node name="Frame slider" type="HSlider" parent="VBoxContainer/VBoxContainer" unique_id=1562412893]
+[node name="Frame slider" type="HSlider" parent="MarginContainer/Panel/VBoxContainer2" unique_id=1562412893]
 unique_name_in_owner = true
 layout_mode = 2
 max_value = 40.0
@@ -36,4 +73,4 @@ tick_count = 40
 ticks_on_borders = true
 ticks_position = 3
 
-[connection signal="value_changed" from="VBoxContainer/VBoxContainer/Frame slider" to="." method="_on_frame_slider_value_changed"]
+[connection signal="value_changed" from="MarginContainer/Panel/VBoxContainer2/Frame slider" to="." method="_on_frame_slider_value_changed"]

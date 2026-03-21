@@ -2,7 +2,7 @@
 
 [ext_resource type="Shader" uid="uid://bj1e4labo4bru" path="res://shaders/raymarching/avalanche_sdf.gdshader" id="1_ndq8a"]
 [ext_resource type="Texture2D" uid="uid://de6eo70nqon1c" path="res://data/avalanche1/ca_exp1_elev.exr" id="3_77uaj"]
-[ext_resource type="Script" uid="uid://bw8uxsxnxhjuh" path="res://jfa_tool.gd" id="3_vlxli"]
+[ext_resource type="Script" uid="uid://bw8uxsxnxhjuh" path="res://scripts/jfa_tool.gd" id="3_vlxli"]
 [ext_resource type="Texture2D" uid="uid://brb1mhujjkqtk" path="res://data/avalanche1/ca_exp1_hflow_max.exr" id="4_77uaj"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_vvum2"]

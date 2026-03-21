@@ -1,4 +1,4 @@
-extends MarginContainer
+extends Panel
 
 var frame: int;
 @export var snow: MeshInstance3D;

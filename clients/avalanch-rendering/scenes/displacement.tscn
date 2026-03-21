@@ -2,9 +2,9 @@
 
 [ext_resource type="Shader" uid="uid://1ywo6dbbfqqv" path="res://scenes/terrain_displacement.gdshader" id="1_bg6w3"]
 [ext_resource type="Texture2D" uid="uid://de6eo70nqon1c" path="res://data/avalanche1/ca_exp1_elev.exr" id="2_2nyue"]
-[ext_resource type="Shader" uid="uid://73fr47ru43my" path="res://avalanche5.gdshader" id="3_e718p"]
+[ext_resource type="Shader" uid="uid://73fr47ru43my" path="res://shaders/avalanche5.gdshader" id="3_e718p"]
 [ext_resource type="Texture2D" uid="uid://brb1mhujjkqtk" path="res://data/avalanche1/ca_exp1_hflow_max.exr" id="4_rrrf5"]
-[ext_resource type="Script" uid="uid://bw8uxsxnxhjuh" path="res://jfa_tool.gd" id="5_e718p"]
+[ext_resource type="Script" uid="uid://bw8uxsxnxhjuh" path="res://scripts/jfa_tool.gd" id="5_e718p"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_2nyue"]
 subdivide_width = 64
@@ -26,6 +26,8 @@ shader_parameter/snow_height = 8.04
 shader_parameter/snow_spread = 1.0
 shader_parameter/slope_threshold = 0.955
 shader_parameter/slope_spread = 0.2
+shader_parameter/min_h = 999.0
+shader_parameter/max_h = 3009.0
 
 [sub_resource type="BoxMesh" id="BoxMesh_rrrf5"]
 flip_faces = true

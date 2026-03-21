@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://x3gl44yldxg4"]
 
-[ext_resource type="Shader" uid="uid://dv4pcn0jt577x" path="res://trees.gdshader" id="1_lvwx8"]
+[ext_resource type="Shader" uid="uid://dv4pcn0jt577x" path="res://shaders/trees.gdshader" id="1_lvwx8"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ysiov"]
 

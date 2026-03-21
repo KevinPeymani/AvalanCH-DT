@@ -2,7 +2,7 @@
 
 [ext_resource type="ArrayMesh" uid="uid://bqrr1ebe1jv8j" path="res://test_rendering/mesh/terrain.res" id="1_iyx0m"]
 [ext_resource type="Shader" uid="uid://dx4kwloou21xd" path="res://test_rendering/mesh/terrain_material.gdshader" id="2_74lek"]
-[ext_resource type="Shader" uid="uid://cbl330n7pl31d" path="res://avalanche4.gdshader" id="3_j5jx5"]
+[ext_resource type="Shader" uid="uid://cbl330n7pl31d" path="res://shaders/avalanche4.gdshader" id="3_j5jx5"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ykrsh"]
 render_priority = 0

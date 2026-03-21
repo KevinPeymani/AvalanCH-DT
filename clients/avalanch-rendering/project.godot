@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="avalanch-rendering"
-run/main_scene="uid://dpd238qp8bnfa"
+run/main_scene="uid://dhplbcnhkbhvi"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
