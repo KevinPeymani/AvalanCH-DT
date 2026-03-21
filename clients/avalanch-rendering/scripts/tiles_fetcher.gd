@@ -12,8 +12,8 @@ extends Node3D
 		visualize_lod = value
 		_update_materials()
 
-@export var center_e: float = 2600000.0
-@export var center_n: float = 1200000.0
+@export var center_e: float = 2623000.0
+@export var center_n: float = 1098000.0
 @export var base_size: float = 65536.0
 @export var lod_levels: int = 5
 @export var tile_load_radius: float = 2.0
@@ -22,8 +22,10 @@ extends Node3D
 @export var mesh_subdivisions: int = 32
 
 @export var wms_server_url: String = "http://localhost:8080/mapproxy/service"
-@export var wms_alti_server_url: String = "http://localhost:8081/geoserver/switzerland/wms"
+@export var wms_elevation_url: String = "http://localhost:8081/geoserver/switzerland/wms"
 @export var max_concurrent_requests: int = 8
+
+@export var terrain_shader: Shader = preload("res://shaders/terrain_swissalti3d.gdshader")
 
 var active_tiles: Dictionary = {}
 var lod_colors: Array[Color] = [Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.CYAN, Color.MAGENTA]
@@ -33,56 +35,12 @@ var request_queue: Array = []
 var total_batch_requests: int = 0
 var completed_batch_requests: int = 0
 
-var generated_shader: Shader
-
-var default_shader_code = """
-shader_type spatial;
-render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_burley, specular_schlick_ggx;
-
-uniform sampler2D albedo_tex : source_color, filter_linear_mipmap;
-uniform sampler2D height_tex : hint_default_black, filter_linear_mipmap;
-
-uniform vec3 uv_scale_albedo = vec3(1.0);
-uniform vec3 uv_offset_albedo = vec3(0.0);
-uniform vec3 uv_scale_height = vec3(1.0);
-uniform vec3 uv_offset_height = vec3(0.0);
-
-uniform float height_scale = 100.0; 
-uniform bool use_debug = false;
-uniform vec3 debug_color = vec3(1.0);
-
-void vertex() {
-	vec2 height_uv = UV * uv_scale_height.xy + uv_offset_height.xy;
-	// Grabs the red channel of the grayscale DEM
-	float h = 1. - texture(height_tex, height_uv).r; 
-	VERTEX.y += h * height_scale;
-}
-
-void fragment() {
-	if (use_debug) {
-		ALBEDO = debug_color;
-	} else {
-		vec2 albedo_uv = UV * uv_scale_albedo.xy + uv_offset_albedo.xy;
-		ALBEDO = texture(albedo_tex, albedo_uv).rgb;
-	}
-}
-"""
-
-func _ready():
-	_get_shader()
-
 func _process(delta: float):
 	time_since_update += delta
 	if time_since_update > 0.5:
 		time_since_update = 0.0
 		_update_chunks()
 	_process_queue()
-
-func _get_shader() -> Shader:
-	if not generated_shader:
-		generated_shader = Shader.new()
-		generated_shader.code = default_shader_code
-	return generated_shader
 
 func _get_camera() -> Camera3D:
 	if Engine.is_editor_hint():
@@ -150,13 +108,13 @@ func _spawn_tile(cx: float, cy: float, size: float, lod: int):
 	mi.set_meta("cy", cy)
 	mi.set_meta("size", size)
 	
-	mi.position = Vector3((cx - center_e) / meters_per_unit, 0.05 * lod, -(cy - center_n) / meters_per_unit)
+	mi.position = Vector3((cx - center_e) / meters_per_unit, lod * 0.5, -(cy - center_n) / meters_per_unit)
 	
 	var aabb_size = size / meters_per_unit
 	mi.custom_aabb = AABB(Vector3(-aabb_size/2.0, -1000.0/meters_per_unit, -aabb_size/2.0), Vector3(aabb_size, 10000.0/meters_per_unit, aabb_size))
 	
 	var mat = ShaderMaterial.new()
-	mat.shader = _get_shader()
+	mat.shader = terrain_shader
 	mat.render_priority = lod
 	mat.set_shader_parameter("uv_scale_albedo", Vector3.ONE)
 	mat.set_shader_parameter("uv_scale_height", Vector3.ONE)
@@ -181,7 +139,7 @@ func _spawn_tile(cx: float, cy: float, size: float, lod: int):
 	var url_albedo = wms_server_url + "?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=ch.swisstopo.swissimage&STYLES=&CRS=EPSG:2056&BBOX=%f,%f,%f,%f&WIDTH=512&HEIGHT=512&FORMAT=image/jpeg" % [cx - half, cy - half, cx + half, cy + half]
 	request_queue.append({"url": url_albedo, "mi": mi, "type": "albedo"})
 	
-	var url_height = wms_alti_server_url + "?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=switzerland:swissalti3d&STYLES=&CRS=EPSG:2056&BBOX=%f,%f,%f,%f&WIDTH=128&HEIGHT=128&FORMAT=image/png" % [cx - half, cy - half, cx + half, cy + half]
+	var url_height = wms_elevation_url + "?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=switzerland:swissalti3d&STYLES=&CRS=EPSG:2056&BBOX=%f,%f,%f,%f&WIDTH=128&HEIGHT=128&FORMAT=image/png&TRANSPARENT=TRUE" % [cx - half, cy - half, cx + half, cy + half]
 	request_queue.append({"url": url_height, "mi": mi, "type": "height"})
 	
 	total_batch_requests += 2
@@ -234,8 +192,6 @@ func _on_downloaded(result: int, code: int, headers: PackedStringArray, body: Pa
 			elif req_type == "height":
 				mi.set_meta("tex_height", tex)
 			_update_materials()
-		else:
-			printerr("Decode failed for ", req_type)
 			
 	_update_progress()
 
