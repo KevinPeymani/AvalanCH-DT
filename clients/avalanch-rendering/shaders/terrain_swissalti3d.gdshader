@@ -10,11 +10,13 @@ uniform vec3 uv_scale_height = vec3(1.0);
 uniform vec3 uv_offset_height = vec3(0.0);
 
 uniform float height_scale = 100.0; 
+uniform float skirt_depth = 20.0;
 uniform bool use_debug = false;
 uniform vec3 debug_color = vec3(1.0);
 
 void vertex() {
-	vec2 height_uv = UV * uv_scale_height.xy + uv_offset_height.xy;
+	vec2 inset_uv = UV * (127.0 / 128.0) + (0.5 / 128.0);
+	vec2 height_uv = inset_uv * uv_scale_height.xy + uv_offset_height.xy;
 	vec4 h_sample = texture(height_tex, height_uv);
 	
 	float h = h_sample.r;
@@ -23,6 +25,10 @@ void vertex() {
 	}
 	
 	VERTEX.y += h * height_scale;
+	
+	if (UV.x < 0.001 || UV.x > 0.999 || UV.y < 0.001 || UV.y > 0.999) {
+		VERTEX.y -= skirt_depth;
+	}
 }
 
 void fragment() {

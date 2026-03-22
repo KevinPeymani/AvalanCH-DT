@@ -16,7 +16,7 @@ extends Node3D
 @export var center_n: float = 1098000.0
 @export var base_size: float = 65536.0
 @export var lod_levels: int = 5
-@export var tile_load_radius: float = 2.0
+@export var tile_load_radius: float = 1.5
 @export var meters_per_unit: float = 10.0
 @export var max_elevation_meters: float = 4000.0
 @export var mesh_subdivisions: int = 32
@@ -28,6 +28,7 @@ extends Node3D
 @export var terrain_shader: Shader = preload("res://shaders/terrain_swissalti3d.gdshader")
 
 var active_tiles: Dictionary = {}
+var texture_cache: Dictionary = {} # Stores {Vector3(cx,cy,lod): {"albedo": tex, "height": tex}}
 var lod_colors: Array[Color] = [Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.CYAN, Color.MAGENTA]
 var time_since_update: float = 0.0
 
@@ -60,21 +61,19 @@ func _update_chunks():
 	
 	var required_tiles = {}
 	
-	for lod in range(lod_levels):
-		var tile_size = base_size / pow(2.0, lod)
-		var view_dist = tile_size * tile_load_radius
-		
-		var min_x = floor((cam_e - view_dist) / tile_size)
-		var max_x = floor((cam_e + view_dist) / tile_size)
-		var min_y = floor((cam_n - view_dist) / tile_size)
-		var max_y = floor((cam_n + view_dist) / tile_size)
-		
-		for x in range(min_x, max_x + 1):
-			for y in range(min_y, max_y + 1):
-				var cx = (x * tile_size) + (tile_size / 2.0)
-				var cy = (y * tile_size) + (tile_size / 2.0)
-				var key = Vector3(cx, cy, lod)
-				required_tiles[key] = true
+	# Create the base LOD 0 grid
+	var root_size = base_size
+	var view_dist = root_size * tile_load_radius
+	var min_x = floor((cam_e - view_dist) / root_size)
+	var max_x = floor((cam_e + view_dist) / root_size)
+	var min_y = floor((cam_n - view_dist) / root_size)
+	var max_y = floor((cam_n + view_dist) / root_size)
+	
+	for x in range(min_x, max_x + 1):
+		for y in range(min_y, max_y + 1):
+			var cx = (x * root_size) + (root_size / 2.0)
+			var cy = (y * root_size) + (root_size / 2.0)
+			_process_quadtree(cx, cy, root_size, 0, cam_e, cam_n, required_tiles)
 
 	var keys_to_remove = []
 	for key in active_tiles.keys():
@@ -95,6 +94,22 @@ func _update_chunks():
 			request_queue.remove_at(i)
 			total_batch_requests -= 1
 
+func _process_quadtree(cx: float, cy: float, size: float, lod: int, cam_e: float, cam_n: float, required: Dictionary):
+	var dist = Vector2(cx, cy).distance_to(Vector2(cam_e, cam_n))
+	var subdivide_dist = size * tile_load_radius
+	
+	# Subdivide if close to camera
+	if dist < subdivide_dist and lod < lod_levels - 1:
+		var half = size / 2.0
+		var quart = size / 4.0
+		_process_quadtree(cx - quart, cy - quart, half, lod + 1, cam_e, cam_n, required)
+		_process_quadtree(cx + quart, cy - quart, half, lod + 1, cam_e, cam_n, required)
+		_process_quadtree(cx - quart, cy + quart, half, lod + 1, cam_e, cam_n, required)
+		_process_quadtree(cx + quart, cy + quart, half, lod + 1, cam_e, cam_n, required)
+	else:
+		# Stop subdividing and spawn the active tile here
+		required[Vector3(cx, cy, lod)] = true
+
 func _spawn_tile(cx: float, cy: float, size: float, lod: int):
 	var mi = MeshInstance3D.new()
 	var mesh = PlaneMesh.new()
@@ -108,26 +123,18 @@ func _spawn_tile(cx: float, cy: float, size: float, lod: int):
 	mi.set_meta("cy", cy)
 	mi.set_meta("size", size)
 	
-	mi.position = Vector3((cx - center_e) / meters_per_unit, lod * 0.5, -(cy - center_n) / meters_per_unit)
+	mi.position = Vector3((cx - center_e) / meters_per_unit, 0.0, -(cy - center_n) / meters_per_unit)
 	
 	var aabb_size = size / meters_per_unit
 	mi.custom_aabb = AABB(Vector3(-aabb_size/2.0, -1000.0/meters_per_unit, -aabb_size/2.0), Vector3(aabb_size, 10000.0/meters_per_unit, aabb_size))
 	
 	var mat = ShaderMaterial.new()
 	mat.shader = terrain_shader
-	mat.render_priority = lod
 	mat.set_shader_parameter("uv_scale_albedo", Vector3.ONE)
 	mat.set_shader_parameter("uv_scale_height", Vector3.ONE)
 	mat.set_shader_parameter("height_scale", max_elevation_meters / meters_per_unit)
+	mat.set_shader_parameter("skirt_depth", 50.0 / meters_per_unit) 
 	mi.material_override = mat
-	
-	if lod == lod_levels - 1:
-		mi.visibility_range_begin = 0.0
-	else:
-		mi.visibility_range_begin = max(0.0, ((base_size / pow(2.0, lod + 1)) * 0.9) / meters_per_unit)
-		
-	mi.visibility_range_end = (((base_size / pow(2.0, lod)) * 1.5) / meters_per_unit) if lod > 0 else 0.0
-	mi.visibility_range_fade_mode = GeometryInstance3D.VISIBILITY_RANGE_FADE_SELF
 	
 	add_child(mi)
 	active_tiles[Vector3(cx, cy, lod)] = mi
@@ -135,14 +142,18 @@ func _spawn_tile(cx: float, cy: float, size: float, lod: int):
 	_apply_material(mi, lod)
 	
 	var half = size / 2.0
+	var tile_key = Vector3(cx, cy, lod)
 	
-	var url_albedo = wms_server_url + "?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=ch.swisstopo.swissimage&STYLES=&CRS=EPSG:2056&BBOX=%f,%f,%f,%f&WIDTH=512&HEIGHT=512&FORMAT=image/jpeg" % [cx - half, cy - half, cx + half, cy + half]
-	request_queue.append({"url": url_albedo, "mi": mi, "type": "albedo"})
-	
-	var url_height = wms_elevation_url + "?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=switzerland:swissalti3d&STYLES=&CRS=EPSG:2056&BBOX=%f,%f,%f,%f&WIDTH=128&HEIGHT=128&FORMAT=image/png&TRANSPARENT=TRUE" % [cx - half, cy - half, cx + half, cy + half]
-	request_queue.append({"url": url_height, "mi": mi, "type": "height"})
-	
-	total_batch_requests += 2
+	# Only fetch if it isn't already cached
+	if not texture_cache.has(tile_key) or not texture_cache[tile_key].has("albedo"):
+		var url_albedo = wms_server_url + "?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=ch.swisstopo.swissimage&STYLES=&CRS=EPSG:2056&BBOX=%f,%f,%f,%f&WIDTH=512&HEIGHT=512&FORMAT=image/jpeg" % [cx - half, cy - half, cx + half, cy + half]
+		request_queue.append({"url": url_albedo, "mi": mi, "type": "albedo"})
+		total_batch_requests += 1
+		
+	if not texture_cache.has(tile_key) or not texture_cache[tile_key].has("height"):
+		var url_height = wms_elevation_url + "?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=switzerland:swissalti3d-combined&STYLES=&CRS=EPSG:2056&BBOX=%f,%f,%f,%f&WIDTH=128&HEIGHT=128&FORMAT=image/png&TRANSPARENT=TRUE" % [cx - half, cy - half, cx + half, cy + half]
+		request_queue.append({"url": url_height, "mi": mi, "type": "height"})
+		total_batch_requests += 1
 
 func _get_active_request_count() -> int:
 	var count = 0
@@ -187,11 +198,19 @@ func _on_downloaded(result: int, code: int, headers: PackedStringArray, body: Pa
 			
 		if decode_err == OK:
 			var tex = ImageTexture.create_from_image(img)
-			if req_type == "albedo":
-				mi.set_meta("tex_albedo", tex)
-			elif req_type == "height":
-				mi.set_meta("tex_height", tex)
+			
+			var cx = mi.get_meta("cx")
+			var cy = mi.get_meta("cy")
+			var lod = mi.get_meta("lod")
+			var key = Vector3(cx, cy, lod)
+			
+			if not texture_cache.has(key):
+				texture_cache[key] = {}
+			texture_cache[key][req_type] = tex
+			
 			_update_materials()
+		else:
+			push_error(body.get_string_from_utf8())
 			
 	_update_progress()
 
@@ -225,9 +244,11 @@ func _apply_material(mi: MeshInstance3D, lod: int):
 	var cx = mi.get_meta("cx")
 	var cy = mi.get_meta("cy")
 	var size = mi.get_meta("size")
+	var tile_key = Vector3(cx, cy, lod)
 
-	if mi.has_meta("tex_albedo"):
-		mat.set_shader_parameter("albedo_tex", mi.get_meta("tex_albedo"))
+	# ALBEDO FALLBACK
+	if texture_cache.has(tile_key) and texture_cache[tile_key].has("albedo"):
+		mat.set_shader_parameter("albedo_tex", texture_cache[tile_key]["albedo"])
 		mat.set_shader_parameter("uv_scale_albedo", Vector3.ONE)
 		mat.set_shader_parameter("uv_offset_albedo", Vector3.ZERO)
 	else:
@@ -239,8 +260,8 @@ func _apply_material(mi: MeshInstance3D, lod: int):
 			var p_cy = (floor(cy / p_size) * p_size) + (p_size / 2.0)
 			var p_key = Vector3(p_cx, p_cy, p_lod)
 			
-			if active_tiles.has(p_key) and is_instance_valid(active_tiles[p_key]) and active_tiles[p_key].has_meta("tex_albedo"):
-				mat.set_shader_parameter("albedo_tex", active_tiles[p_key].get_meta("tex_albedo"))
+			if texture_cache.has(p_key) and texture_cache[p_key].has("albedo"):
+				mat.set_shader_parameter("albedo_tex", texture_cache[p_key]["albedo"])
 				mat.set_shader_parameter("uv_scale_albedo", Vector3(size / p_size, size / p_size, 1.0))
 				var u_offset = ((cx - size / 2.0) - (p_cx - p_size / 2.0)) / p_size
 				var v_offset = ((p_cy + p_size / 2.0) - (cy + size / 2.0)) / p_size
@@ -248,8 +269,9 @@ func _apply_material(mi: MeshInstance3D, lod: int):
 				found = true
 			p_lod -= 1
 
-	if mi.has_meta("tex_height"):
-		mat.set_shader_parameter("height_tex", mi.get_meta("tex_height"))
+	# HEIGHT FALLBACK
+	if texture_cache.has(tile_key) and texture_cache[tile_key].has("height"):
+		mat.set_shader_parameter("height_tex", texture_cache[tile_key]["height"])
 		mat.set_shader_parameter("uv_scale_height", Vector3.ONE)
 		mat.set_shader_parameter("uv_offset_height", Vector3.ZERO)
 	else:
@@ -261,8 +283,8 @@ func _apply_material(mi: MeshInstance3D, lod: int):
 			var p_cy = (floor(cy / p_size) * p_size) + (p_size / 2.0)
 			var p_key = Vector3(p_cx, p_cy, p_lod)
 			
-			if active_tiles.has(p_key) and is_instance_valid(active_tiles[p_key]) and active_tiles[p_key].has_meta("tex_height"):
-				mat.set_shader_parameter("height_tex", active_tiles[p_key].get_meta("tex_height"))
+			if texture_cache.has(p_key) and texture_cache[p_key].has("height"):
+				mat.set_shader_parameter("height_tex", texture_cache[p_key]["height"])
 				mat.set_shader_parameter("uv_scale_height", Vector3(size / p_size, size / p_size, 1.0))
 				var u_offset = ((cx - size / 2.0) - (p_cx - p_size / 2.0)) / p_size
 				var v_offset = ((p_cy + p_size / 2.0) - (cy + size / 2.0)) / p_size
@@ -285,5 +307,6 @@ func _clear_meshes():
 			child.queue_free()
 			
 	request_queue.clear()
+	texture_cache.clear()
 	total_batch_requests = 0
 	completed_batch_requests = 0
