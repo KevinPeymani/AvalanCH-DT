@@ -6,5 +6,5 @@ paths:
   state_dir: "./data/state"
 
 runtime:
-  poll_interval: 60
+  poll_interval: 600
   debug_local_outbox: true

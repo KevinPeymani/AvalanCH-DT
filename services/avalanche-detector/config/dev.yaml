@@ -1,0 +1,26 @@
+rabbitmq:
+  input_queue: "images.downloaded"
+  output_queue: "images.detected"
+  prefetch_count: 1
+
+model:
+  weights_path: "../models/yolov5.pt"
+  repo_path: "../../third_party/yolov5"
+  device: "cuda:0"
+
+inference:
+  conf_threshold: 0.25
+  iou_threshold: 0.45
+  imgsz: 896
+  max_det: 50
+
+postprocess:
+  class_thresholds:
+    glide: 0.55
+    slab: 0.45
+    avalanche: 0.25
+
+  size_filters:
+    glide:
+      max_width_ratio: 0.85
+      max_height_ratio: 0.85
