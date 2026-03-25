@@ -1,0 +1,10 @@
+paths:
+  camera_dir: "./config/cameras"
+  download_dir: "./data/raw"
+  tiles_dir: "./data/tiles"
+  outbox_dir: "./data/outbox"
+  state_dir: "./data/state"
+
+runtime:
+  poll_interval: 60
+  debug_local_outbox: true

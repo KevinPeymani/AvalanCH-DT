@@ -1,0 +1,47 @@
+camera:
+  roundshot_page_id: 1258
+  name: "Schönegg Hotel"
+  slug: "/schonegg"
+  page_url: "https://zermatt.roundshot.com/schonegg"
+
+  location:
+    country: "Switzerland"
+    region: "Zermatt"
+    latitude: 46.021724
+    longitude: 7.752567
+    elevation_m: 1665
+    north_deg: 160
+    fov_deg: 50
+
+  provider:
+    brand: "roundshot"
+    product_line: "livecam"
+    generation: "1"
+    timezone: "Europe/Zurich"
+
+  capabilities:
+    archive: true
+    timelapse: true
+    video_archive: false
+    gps_coordinates: true
+    cam_inactive: false
+    nightvision: false
+
+  data_access:
+    base_url: "https://storage.roundshot.com"
+    preview_url: "https://storage.roundshot.com/5dd5768f8f3e19.24925088/2026-03-19/16-30-00/2026-03-19-16-30-00_centerprev.jpg"
+    storage_camera_id: "5dd5768f8f3e19.24925088"
+    requires_auth: false
+
+  temporal:
+    available_24h: false
+    schedule:
+      - start: "06:50"
+        end: "18:40"
+        step_minutes: 10
+        type: "day"
+  image:
+    resolution:
+      width: 3072
+      height: 2048
+    is_panorama: false

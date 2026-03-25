@@ -1,0 +1,48 @@
+camera:
+  roundshot_page_id: 1969
+  name: "Golf Club Matterhorn"
+  slug: "/golf-club-matterhorn"
+  page_url: "https://zermatt.roundshot.com/golf-club-matterhorn"
+
+  location:
+    country: "Switzerland"
+    region: "Zermatt"
+    latitude: 46.08748
+    longitude: 7.779044
+    elevation_m: 1426
+    north_deg: 290
+    fov_deg: 360
+
+  provider:
+    brand: "roundshot"
+    product_line: "livecam"
+    generation: "5"
+    timezone: "Europe/Zurich"
+
+  capabilities:
+    archive: true
+    timelapse: true
+    video_archive: false
+    gps_coordinates: true
+    cam_inactive: false
+    nightvision: false
+
+  data_access:
+    base_url: "https://storage.roundshot.com"
+    preview_url: "https://storage.roundshot.com/67e176d1402135.40832450/2026-03-19/15-30-00/2026-03-19-15-30-00_centerprev.jpg"
+    storage_camera_id: "67e176d1402135.40832450"
+    requires_auth: false
+
+  temporal:
+    available_24h: false
+    schedule:
+      - start: "00:00"
+        end: "23:59"
+        step_minutes: 10
+        type: "day"
+
+  image:
+    resolution:
+      width: 10081
+      height: 2048
+    is_panorama: true

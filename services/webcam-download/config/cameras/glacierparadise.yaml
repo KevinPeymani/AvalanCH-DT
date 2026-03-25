@@ -1,0 +1,51 @@
+camera:
+  roundshot_page_id: 1136
+  name: "Matterhorn glacier paradise"
+  slug: "/glacierparadise"
+  page_url: "https://zermatt.roundshot.com/glacierparadise"
+
+  location:
+    country: "Switzerland"
+    region: "Zermatt"
+    latitude: 45.938005
+    longitude: 7.730081
+    elevation_m: 3860
+    north_deg: 20
+    fov_deg: 360
+
+  provider:
+    brand: "roundshot"
+    product_line: "livecam"
+    generation: "4"
+    timezone: "Europe/Zurich"
+
+  capabilities:
+    archive: true
+    timelapse: true
+    video_archive: true
+    gps_coordinates: true
+    cam_inactive: false
+    nightvision: true
+
+  data_access:
+    base_url: "https://storage.roundshot.com"
+    preview_url: "https://storage.roundshot.com/5cda5bf21a7198.55013080/2026-03-19/06-10-00/2026-03-19-06-10-00_centerprev.jpg"
+    storage_camera_id: "5cda5bf21a7198.55013080"
+    requires_auth: false
+
+  temporal:
+    schedule:
+      - start: "05:40"
+        end: "18:30"
+        step_minutes: 10
+
+      - start: "19:00"
+        end: "23:59"
+        step_minutes: 20
+
+
+  image:
+    resolution:
+      width: 11313
+      height: 2048
+    is_panorama: true

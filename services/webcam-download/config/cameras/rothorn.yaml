@@ -1,0 +1,53 @@
+camera:
+  roundshot_page_id: 1253
+  name: "Rothorn"
+  slug: "/rothorn"
+  page_url: "https://zermatt.roundshot.com/rothorn"
+
+  location:
+    country: "Switzerland"
+    region: "Zermatt"
+    latitude: 46.021509
+    longitude: 7.797409
+    elevation_m: 3105
+    north_deg: 240
+    fov_deg: 360
+
+  provider:
+    brand: "roundshot"
+    product_line: "livecam"
+    generation: "4"
+    timezone: "Europe/Zurich"
+
+  capabilities:
+    archive: true
+    timelapse: true
+    video_archive: true
+    gps_coordinates: true
+    cam_inactive: false
+    nightvision: true
+
+  data_access:
+    base_url: "https://storage.roundshot.com"
+    preview_url: "https://storage.roundshot.com/5dd572ed217448.13831429/2026-03-19/15-50-00/2026-03-19-15-50-00_centerprev.jpg"
+    storage_camera_id: "5dd572ed217448.13831429"
+    requires_auth: false
+
+  temporal:
+    available_24h: true
+    schedule:
+      - start: "05:40"
+        end: "18:40"
+        step_minutes: 10
+        type: "day"
+
+      - start: "18:40"
+        end: "06:30"
+        step_minutes: 20
+        type: "night"
+
+  image:
+    resolution:
+      width: 13431
+      height: 2048
+    is_panorama: true
