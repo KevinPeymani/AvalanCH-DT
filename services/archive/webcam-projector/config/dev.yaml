@@ -1,0 +1,17 @@
+runtime:
+  debug: false
+  log_level: INFO
+  consume_timeout_seconds: 1.0
+
+projection:
+  swiss_epsg: 2056
+  earth_radius_m: 6371000.0
+
+  # Baseline sans DEM :
+  # la distance estimée diminue quand l'objet est plus bas dans l'image.
+  min_range_m: 350.0
+  max_range_m: 2800.0
+
+  confidence_floor: 0.20
+  default_detection_class: avalanche
+  default_tile_overlap_px: 160

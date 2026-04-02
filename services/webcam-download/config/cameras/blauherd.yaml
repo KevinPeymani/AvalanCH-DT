@@ -25,7 +25,7 @@ camera:
     gps_coordinates: true
     cam_inactive: false
     nightvision: true
-
+    
   data_access:
     base_url: "https://storage.roundshot.com"
     preview_url: "https://storage.roundshot.com/6985febf903e98.41120783/2026-03-19/15-50-00/2026-03-19-15-50-00_centerprev.jpg"
@@ -51,3 +51,4 @@ camera:
       width: 14309
       height: 2048
     is_panorama: true
+    focal_length_mm: 30.0

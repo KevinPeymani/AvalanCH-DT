@@ -13,6 +13,8 @@ camera:
     north_deg: 20
     fov_deg: 360
 
+
+
   provider:
     brand: "roundshot"
     product_line: "livecam"
@@ -26,7 +28,6 @@ camera:
     gps_coordinates: true
     cam_inactive: false
     nightvision: true
-
   data_access:
     base_url: "https://storage.roundshot.com"
     preview_url: "https://storage.roundshot.com/5cda5bf21a7198.55013080/2026-03-19/06-10-00/2026-03-19-06-10-00_centerprev.jpg"
@@ -49,3 +50,5 @@ camera:
       width: 11313
       height: 2048
     is_panorama: true
+    focal_length_mm: 30.0
+

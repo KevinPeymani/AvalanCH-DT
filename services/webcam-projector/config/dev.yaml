@@ -1,0 +1,26 @@
+runtime:
+  debug: false
+  log_level: INFO
+  consume_timeout_seconds: 1.0
+
+projection:
+  swiss_epsg: 2056
+  earth_radius_m: 6371000.0
+
+  # Modèle baseline actuel: azimut depuis x, portée estimée depuis y.
+  # Le DEM est chargé depuis le config et sert déjà à:
+  # - vérifier l'emprise
+  # - échantillonner l'altitude terrain au point projeté
+  # Une vraie intersection rayon/DEM pourra remplacer y->range plus tard.
+  min_range_m: 350.0
+  max_range_m: 2800.0
+
+  confidence_floor: 0.20
+  default_detection_class: avalanche
+  default_tile_overlap_px: 160
+
+  dem:
+    path: ./test/zermatt_alti.tif
+    expected_resolution_m: 5.0
+    nodata_fallback: null
+    enable_ground_sampling: true

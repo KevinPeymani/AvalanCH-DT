@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "webcam-projector"
+version = "0.1.0"
+description = "Project avalanche detections from webcam image-space into Swiss coordinates"
+requires-python = ">=3.11"
+
+[tool.setuptools]
+packages = ["app"]

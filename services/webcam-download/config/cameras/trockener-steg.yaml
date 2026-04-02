@@ -51,3 +51,4 @@ camera:
       width: 14479
       height: 2048
     is_panorama: true
+    focal_length_mm: 30.0
