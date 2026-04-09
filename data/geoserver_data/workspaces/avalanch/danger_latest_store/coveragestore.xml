@@ -1,0 +1,14 @@
+<coverageStore>
+  <id>CoverageStoreInfoImpl-5e4b7f95:19d7371f163:-7ffb</id>
+  <name>danger_latest_store</name>
+  <type>ArcGrid</type>
+  <enabled>true</enabled>
+  <workspace>
+    <id>WorkspaceInfoImpl-5e4b7f95:19d7371f163:-8000</id>
+  </workspace>
+  <__default>false</__default>
+  <dateCreated>2026-04-09 18:12:21.159 UTC</dateCreated>
+  <dateModified>2026-04-09 18:15:04.484 UTC</dateModified>
+  <disableOnConnFailure>false</disableOnConnFailure>
+  <url>file:/opt/geospatial_data/rasters/danger_latest.asc</url>
+</coverageStore>
