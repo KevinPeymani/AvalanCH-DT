@@ -18,6 +18,14 @@ layers:
     title: SwissAlti3D Hillshade
     sources: [swissalti3d_cache]
 
+  - name: avalanch.hs_latest
+    title: AvalanCH Snow Height Latest
+    sources: [avalanch_hs_cache]
+
+  - name: avalanch.danger_latest
+    title: AvalanCH Danger Latest
+    sources: [avalanch_danger_cache]
+
 caches:
   swissimage_cache:
     grids: [lv95_grid]
@@ -33,6 +41,20 @@ caches:
       type: file
       directory: /mapproxy/cache_data/swissalti3d
 
+  avalanch_hs_cache:
+    grids: [lv95_grid]
+    sources: [avalanch_hs_wms]
+    cache:
+      type: file
+      directory: /mapproxy/cache_data/avalanch_hs
+
+  avalanch_danger_cache:
+    grids: [lv95_grid]
+    sources: [avalanch_danger_wms]
+    cache:
+      type: file
+      directory: /mapproxy/cache_data/avalanch_danger
+
 sources:
   swissimage_wms:
     type: wms
@@ -47,6 +69,22 @@ sources:
     req:
       url: https://wms.geo.admin.ch/
       layers: ch.swisstopo.swissalti3d-reliefschattierung
+      transparent: true
+    supported_srs: ['EPSG:2056']
+
+  avalanch_hs_wms:
+    type: wms
+    req:
+      url: http://geoserver:8080/geoserver/avalanch/wms
+      layers: avalanch:hs_latest
+      transparent: true
+    supported_srs: ['EPSG:2056']
+
+  avalanch_danger_wms:
+    type: wms
+    req:
+      url: http://geoserver:8080/geoserver/avalanch/wms
+      layers: avalanch:danger_latest
       transparent: true
     supported_srs: ['EPSG:2056']
 
