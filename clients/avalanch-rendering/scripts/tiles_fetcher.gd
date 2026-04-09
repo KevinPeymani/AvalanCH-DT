@@ -24,19 +24,7 @@ extends Node3D
 @export var mesh_subdivisions: int = 32
 
 @export var wms_server_url: String = "http://localhost:8080/mapproxy/service"
-@export var wms_elevation_url: String = "http://localhost:8080/mapproxy/service"
-@export var wms_albedo_layer: String = "ch.swisstopo.swissimage"
-@export var wms_albedo_format: String = "image/jpeg"
-@export var wms_albedo_transparent: bool = false
-@export_enum("SwissImage", "AvalancheDanger") var albedo_preset: int = 0:
-	set(value):
-		albedo_preset = value
-		_apply_albedo_preset()
-		if is_inside_tree():
-			_clear_meshes()
-@export var toggle_albedo_key: Key = KEY_V
-@export var wms_elevation_layer: String = "ch.swisstopo.swissalti3d-reliefschattierung"
-@export var wms_elevation_format: String = "image/png"
+@export var wms_elevation_url: String = "http://localhost:8081/geoserver/switzerland/wms"
 @export var max_concurrent_requests: int = 8
 
 @export var terrain_shader: Shader = preload("res://shaders/terrain_swissalti3d.gdshader")
@@ -49,33 +37,6 @@ var time_since_update: float = 0.0
 var request_queue: Array = []
 var total_batch_requests: int = 0
 var completed_batch_requests: int = 0
-var fallback_albedo_tex: ImageTexture
-var fallback_height_tex: ImageTexture
-
-func _ready():
-	_init_fallback_textures()
-	_apply_albedo_preset()
-
-func _init_fallback_textures():
-	var albedo_img := Image.create(1, 1, false, Image.FORMAT_RGBA8)
-	# Transparent gray so shader uses nodata fallback color instead of black.
-	albedo_img.fill(Color(0.92, 0.92, 0.92, 0.0))
-	fallback_albedo_tex = ImageTexture.create_from_image(albedo_img)
-
-	var height_img := Image.create(1, 1, false, Image.FORMAT_RGBA8)
-	# Transparent black means zero elevation in the shader.
-	height_img.fill(Color(0.0, 0.0, 0.0, 0.0))
-	fallback_height_tex = ImageTexture.create_from_image(height_img)
-
-func _apply_albedo_preset():
-	if albedo_preset == 1:
-		wms_albedo_layer = "avalanch.danger_latest"
-		wms_albedo_format = "image/png"
-		wms_albedo_transparent = true
-	else:
-		wms_albedo_layer = "ch.swisstopo.swissimage"
-		wms_albedo_format = "image/jpeg"
-		wms_albedo_transparent = false
 
 func _process(delta: float):
 	time_since_update += delta
@@ -83,12 +44,6 @@ func _process(delta: float):
 		time_since_update = 0.0
 		_update_chunks()
 	_process_queue()
-
-func _unhandled_input(event: InputEvent):
-	if event is InputEventKey and event.pressed and not event.echo and event.keycode == toggle_albedo_key:
-		albedo_preset = 1 - albedo_preset
-		var preset_name = "AvalancheDanger" if albedo_preset == 1 else "SwissImage"
-		print("Albedo preset switched to: %s" % preset_name)
 
 func _get_camera() -> Camera3D:
 	if Engine.is_editor_hint():
@@ -177,11 +132,7 @@ func _spawn_tile(cx: float, cy: float, size: float, lod: int):
 	
 	var mat = ShaderMaterial.new()
 	mat.shader = terrain_shader
-	mat.set_shader_parameter("albedo_tex", fallback_albedo_tex)
-	mat.set_shader_parameter("height_tex", fallback_height_tex)
-	mat.set_shader_parameter("uv_offset_albedo", Vector3.ZERO)
 	mat.set_shader_parameter("uv_scale_albedo", Vector3.ONE)
-	mat.set_shader_parameter("uv_offset_height", Vector3.ZERO)
 	mat.set_shader_parameter("uv_scale_height", Vector3.ONE)
 	mat.set_shader_parameter("height_scale", max_elevation_meters / meters_per_unit)
 	mat.set_shader_parameter("skirt_depth", 50.0 / meters_per_unit if displace else 0.0)
@@ -197,13 +148,12 @@ func _spawn_tile(cx: float, cy: float, size: float, lod: int):
 	
 	# Only fetch if it isn't already cached
 	if not texture_cache.has(tile_key) or not texture_cache[tile_key].has("albedo"):
-		var transparent_albedo = "TRUE" if wms_albedo_transparent else "FALSE"
-		var url_albedo = wms_server_url + "?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=%s&STYLES=&CRS=EPSG:2056&BBOX=%f,%f,%f,%f&WIDTH=512&HEIGHT=512&FORMAT=%s&TRANSPARENT=%s" % [wms_albedo_layer, cx - half, cy - half, cx + half, cy + half, wms_albedo_format, transparent_albedo]
+		var url_albedo = wms_server_url + "?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=ch.swisstopo.swissimage&STYLES=&CRS=EPSG:2056&BBOX=%f,%f,%f,%f&WIDTH=512&HEIGHT=512&FORMAT=image/jpeg" % [cx - half, cy - half, cx + half, cy + half]
 		request_queue.append({"url": url_albedo, "mi": mi, "type": "albedo"})
 		total_batch_requests += 1
 		
 	if displace and (not texture_cache.has(tile_key) or not texture_cache[tile_key].has("height")):
-		var url_height = wms_elevation_url + "?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=%s&STYLES=&CRS=EPSG:2056&BBOX=%f,%f,%f,%f&WIDTH=128&HEIGHT=128&FORMAT=%s&TRANSPARENT=TRUE" % [wms_elevation_layer, cx - half, cy - half, cx + half, cy + half, wms_elevation_format]
+		var url_height = wms_elevation_url + "?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=switzerland:swissalti3d-combined&STYLES=&CRS=EPSG:2056&BBOX=%f,%f,%f,%f&WIDTH=128&HEIGHT=128&FORMAT=image/png&TRANSPARENT=TRUE" % [cx - half, cy - half, cx + half, cy + half]
 		request_queue.append({"url": url_height, "mi": mi, "type": "height"})
 		total_batch_requests += 1
 
@@ -244,10 +194,7 @@ func _on_downloaded(result: int, code: int, headers: PackedStringArray, body: Pa
 		var decode_err = FAILED
 		
 		if req_type == "albedo":
-			if wms_albedo_format == "image/png":
-				decode_err = img.load_png_from_buffer(body)
-			else:
-				decode_err = img.load_jpg_from_buffer(body)
+			decode_err = img.load_jpg_from_buffer(body)
 		elif req_type == "height":
 			decode_err = img.load_png_from_buffer(body)
 			
@@ -325,11 +272,6 @@ func _apply_material(mi: MeshInstance3D, lod: int):
 				found = true
 			p_lod -= 1
 
-		if not found:
-			mat.set_shader_parameter("albedo_tex", fallback_albedo_tex)
-			mat.set_shader_parameter("uv_scale_albedo", Vector3.ONE)
-			mat.set_shader_parameter("uv_offset_albedo", Vector3.ZERO)
-
 	# HEIGHT FALLBACK
 	if texture_cache.has(tile_key) and texture_cache[tile_key].has("height"):
 		mat.set_shader_parameter("height_tex", texture_cache[tile_key]["height"])
@@ -352,11 +294,6 @@ func _apply_material(mi: MeshInstance3D, lod: int):
 				mat.set_shader_parameter("uv_offset_height", Vector3(u_offset, v_offset, 0.0))
 				found = true
 			p_lod -= 1
-
-		if not found:
-			mat.set_shader_parameter("height_tex", fallback_height_tex)
-			mat.set_shader_parameter("uv_scale_height", Vector3.ONE)
-			mat.set_shader_parameter("uv_offset_height", Vector3.ZERO)
 
 func _clear_meshes():
 	var keys_to_remove = []

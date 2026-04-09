@@ -2,6 +2,11 @@
 
 [ext_resource type="Script" uid="uid://c2u3aqi8gvqyi" path="res://scripts/gui.gd" id="1_jbthi"]
 [ext_resource type="Theme" uid="uid://bhajvkyhrac1h" path="res://ui/main_style.tres" id="2_5j4t3"]
+[ext_resource type="Texture2D" uid="uid://do8wofwc6ah7g" path="res://ui/icons/jump_start.svg" id="3_5xe2w"]
+[ext_resource type="Texture2D" uid="uid://hhik2nus8em2" path="res://ui/icons/step_back.svg" id="4_a2jdl"]
+[ext_resource type="Texture2D" uid="uid://citdt31ks6l57" path="res://ui/icons/play.svg" id="5_3ss8j"]
+[ext_resource type="Texture2D" uid="uid://cfqp8jo5ns2oy" path="res://ui/icons/step_forward.svg" id="6_j8pwa"]
+[ext_resource type="Texture2D" uid="uid://dyb8sytc6t83h" path="res://ui/icons/jump_end.svg" id="7_8fmww"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5j4t3"]
 content_margin_left = 0.0
@@ -42,35 +47,118 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 theme = ExtResource("2_5j4t3")
 
-[node name="Button" type="Button" parent="MarginContainer/Panel" unique_id=2101065302]
-layout_mode = 0
-offset_left = 42.0
-offset_top = 68.0
-offset_right = 193.0
-offset_bottom = 109.0
-pivot_offset_ratio = Vector2(0.5, 0.5)
-text = "Click the button"
+[node name="MainLayout" type="VBoxContainer" parent="MarginContainer/Panel" unique_id=288862798]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TopSpacer" type="Control" parent="MarginContainer/Panel/MainLayout" unique_id=608881714]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Vboxcontainer" type="VBoxContainer" parent="MarginContainer/Panel/MainLayout" unique_id=1560100827]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/Panel/MainLayout/Vboxcontainer" unique_id=1532952559]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Transport row" type="HBoxContainer" parent="MarginContainer/Panel/MainLayout/Vboxcontainer/VBoxContainer2" unique_id=1107046224]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="Jump start button" type="Button" parent="MarginContainer/Panel/MainLayout/Vboxcontainer/VBoxContainer2/Transport row" unique_id=1564218717]
+layout_mode = 2
+custom_minimum_size = Vector2(36, 36)
+focus_mode = 0
+icon = ExtResource("3_5xe2w")
 flat = true
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/Panel" unique_id=1532952559]
-layout_mode = 0
-offset_top = 573.0
-offset_right = 1120.0
-offset_bottom = 616.0
+[node name="Step back button" type="Button" parent="MarginContainer/Panel/MainLayout/Vboxcontainer/VBoxContainer2/Transport row" unique_id=2082115558]
+layout_mode = 2
+custom_minimum_size = Vector2(36, 36)
+focus_mode = 0
+icon = ExtResource("4_a2jdl")
+flat = true
 
-[node name="Frame count text" type="Label" parent="MarginContainer/Panel/VBoxContainer2" unique_id=1915182989]
+[node name="Play pause button" type="Button" parent="MarginContainer/Panel/MainLayout/Vboxcontainer/VBoxContainer2/Transport row" unique_id=378880373]
 unique_name_in_owner = true
 layout_mode = 2
-text = "10"
+custom_minimum_size = Vector2(36, 36)
+size_flags_vertical = 0
+focus_mode = 0
+toggle_mode = true
+icon = ExtResource("5_3ss8j")
+flat = true
 
-[node name="Frame slider" type="HSlider" parent="MarginContainer/Panel/VBoxContainer2" unique_id=1562412893]
+[node name="Step forward button" type="Button" parent="MarginContainer/Panel/MainLayout/Vboxcontainer/VBoxContainer2/Transport row" unique_id=2103865307]
+layout_mode = 2
+custom_minimum_size = Vector2(36, 36)
+focus_mode = 0
+icon = ExtResource("6_j8pwa")
+flat = true
+
+[node name="Jump end button" type="Button" parent="MarginContainer/Panel/MainLayout/Vboxcontainer/VBoxContainer2/Transport row" unique_id=1540853912]
+layout_mode = 2
+custom_minimum_size = Vector2(36, 36)
+focus_mode = 0
+icon = ExtResource("7_8fmww")
+flat = true
+
+[node name="Frame slider" type="HSlider" parent="MarginContainer/Panel/MainLayout/Vboxcontainer/VBoxContainer2" unique_id=1562412893]
 unique_name_in_owner = true
 layout_mode = 2
-max_value = 40.0
-value = 3.0
+max_value = 39.0
 rounded = true
 tick_count = 40
 ticks_on_borders = true
 ticks_position = 3
 
-[connection signal="value_changed" from="MarginContainer/Panel/VBoxContainer2/Frame slider" to="." method="_on_frame_slider_value_changed"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/Panel/MainLayout/Vboxcontainer/VBoxContainer2" unique_id=1579470919]
+layout_mode = 2
+alignment = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Panel/MainLayout/Vboxcontainer/VBoxContainer2/HBoxContainer2" unique_id=1617932194]
+layout_mode = 2
+alignment = 1
+
+[node name="Playback status text" type="Label" parent="MarginContainer/Panel/MainLayout/Vboxcontainer/VBoxContainer2/HBoxContainer2/HBoxContainer" unique_id=1611328827]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "Paused"
+
+[node name="Time text" type="Label" parent="MarginContainer/Panel/MainLayout/Vboxcontainer/VBoxContainer2/HBoxContainer2/HBoxContainer" unique_id=892677314]
+unique_name_in_owner = true
+layout_mode = 2
+text = "t=0.0s / 39.0s"
+
+[node name="Frame count text" type="Label" parent="MarginContainer/Panel/MainLayout/Vboxcontainer/VBoxContainer2/HBoxContainer2/HBoxContainer" unique_id=1915182989]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Frame 0 / 39"
+
+[node name="Speed selector" type="OptionButton" parent="MarginContainer/Panel/MainLayout/Vboxcontainer/VBoxContainer2/HBoxContainer2" unique_id=865365144]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+custom_minimum_size = Vector2(120, 36)
+size_flags_horizontal = 0
+focus_mode = 0
+flat = true
+
+[connection signal="pressed" from="MarginContainer/Panel/MainLayout/Vboxcontainer/VBoxContainer2/Transport row/Jump start button" to="." method="_on_jump_start_button_pressed"]
+[connection signal="pressed" from="MarginContainer/Panel/MainLayout/Vboxcontainer/VBoxContainer2/Transport row/Step back button" to="." method="_on_step_back_button_pressed"]
+[connection signal="toggled" from="MarginContainer/Panel/MainLayout/Vboxcontainer/VBoxContainer2/Transport row/Play pause button" to="." method="_on_play_pause_button_toggled"]
+[connection signal="pressed" from="MarginContainer/Panel/MainLayout/Vboxcontainer/VBoxContainer2/Transport row/Step forward button" to="." method="_on_step_forward_button_pressed"]
+[connection signal="pressed" from="MarginContainer/Panel/MainLayout/Vboxcontainer/VBoxContainer2/Transport row/Jump end button" to="." method="_on_jump_end_button_pressed"]
+[connection signal="value_changed" from="MarginContainer/Panel/MainLayout/Vboxcontainer/VBoxContainer2/Frame slider" to="." method="_on_frame_slider_value_changed"]
+[connection signal="item_selected" from="MarginContainer/Panel/MainLayout/Vboxcontainer/VBoxContainer2/HBoxContainer2/Speed selector" to="." method="_on_speed_selector_item_selected"]

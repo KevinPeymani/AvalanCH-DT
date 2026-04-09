@@ -13,7 +13,6 @@ uniform float height_scale = 100.0;
 uniform float skirt_depth = 20.0;
 uniform bool use_debug = false;
 uniform vec3 debug_color = vec3(1.0);
-uniform vec3 albedo_nodata_color = vec3(0.92);
 
 void vertex() {
 	vec2 inset_uv = UV * (127.0 / 128.0) + (0.5 / 128.0);
@@ -37,7 +36,6 @@ void fragment() {
 		ALBEDO = debug_color;
 	} else {
 		vec2 albedo_uv = UV * uv_scale_albedo.xy + uv_offset_albedo.xy;
-		vec4 albedo_sample = texture(albedo_tex, albedo_uv);
-		ALBEDO = albedo_sample.a > 0.01 ? albedo_sample.rgb : albedo_nodata_color;
+		ALBEDO = texture(albedo_tex, albedo_uv).rgb;
 	}
 }
