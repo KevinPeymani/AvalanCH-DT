@@ -8,7 +8,11 @@
 script = ExtResource("1_1g8qg")
 center_e = 2622839.0
 center_n = 1094640.0
-lod_levels = 10
+lod_levels = 4
+albedo_preset = 1
+wms_albedo_layer = "avalanch.danger_latest"
+wms_albedo_format = "image/png"
+wms_albedo_transparent = true
 max_concurrent_requests = 32
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=225080739]

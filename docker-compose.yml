@@ -1,16 +1,16 @@
 services:
-#   rabbitmq:
-#     image: rabbitmq:3-management-alpine
-#     container_name: swiss_broker
-#     restart: always
-#     ports:
-#       - "5672:5672"
-#       - "15672:15672"
-#     environment:
-#       RABBITMQ_DEFAULT_USER: admin
-#       RABBITMQ_DEFAULT_PASS: simulation_secure
-#     networks:
-#       - swiss-net
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: swiss_broker
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: simulation_secure
+    networks:
+      - swiss-net
 # 
 #   nginx:
 #     image: nginx:alpine
@@ -142,26 +142,10 @@ services:
       - GEOSERVER_UID=${CURRENT_UID}
       - GEOSERVER_GID=${CURRENT_GID}
     volumes:
-      - /home/remy/heavydata/digitaltwin/zermatt_zone2:/opt/geospatial_data
+      - ${GEOSERVER_DATA_DIR:-./infra/geoserver_data}:/opt/geospatial_data
       - ./data/geoserver_data:/opt/geoserver/data_dir
-    user: root
-    entrypoint:
-      - /bin/bash
-      - -c
-      - |
-        EXISTING_USER=$$(getent passwd 1000 | cut -d: -f1)
-        if [ ! -z "$$EXISTING_USER" ] && [ "$$EXISTING_USER" != "geoserver" ]; then
-            echo "Moving existing user$$EXISTING_USER from 1000 to 1001"
-            usermod -u 1001 $$EXISTING_USER
-        fi
-
-        EXISTING_GROUP=$$(getent group 1000 | cut -d: -f1)
-        if [ ! -z "$$EXISTING_GROUP" ] && [ "$$EXISTING_GROUP" != "geoserver" ]; then
-            echo "Moving existing group $$EXISTING_GROUP from 1000 to 1001"
-            groupmod -g 1001$$EXISTING_GROUP
-        fi
-
-        exec /scripts/entrypoint.sh
+    networks:
+      - swiss-net
 
 networks:
   swiss-net:
