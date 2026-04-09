@@ -1,17 +1,17 @@
 services:
-#   rabbitmq:
-#     image: rabbitmq:3-management-alpine
-#     container_name: swiss_broker
-#     restart: always
-#     ports:
-#       - "5672:5672"
-#       - "15672:15672"
-#     environment:
-#       RABBITMQ_DEFAULT_USER: admin
-#       RABBITMQ_DEFAULT_PASS: simulation_secure
-#     networks:
-#       - swiss-net
-# 
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: swiss_broker
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: simulation_secure
+    networks:
+      - swiss-net
+
 #   nginx:
 #     image: nginx:alpine
 #     container_name: swiss_gateway
@@ -49,38 +49,38 @@ services:
 #     networks:
 #       - swiss-net
 # 
-#   worker-sim:
-#     build: ./services/compute-worker
-#     image: swiss_worker_img
-#     restart: unless-stopped
-#     environment:
-#      - BROKER_URL=amqp://admin:simulation_secure@swiss_broker:5672/
-#      - WORKER_TYPE=simulation
-#      - SIM_QUEUE=simulation_queue
-#      - INGEST_QUEUE=ingestion_queue
-#     depends_on:
-#      - rabbitmq
-#     networks:
-#       - swiss-net
-#     volumes:
-#       - ./services/compute-worker/data:/data
-#       - ./services/compute-worker/examples:/examples
-# 
-#   worker-ingest:
-#     image: swiss_worker_img
-#     restart: unless-stopped
-#     networks:
-#       - swiss-net
-#     environment:
-#       - BROKER_URL=amqp://admin:simulation_secure@swiss_broker:5672/
-#       - WORKER_TYPE=ingestion
-#       - SIM_QUEUE=simulation_queue
-#       - INGEST_QUEUE=ingestion_queue
-#     depends_on:
-#       - rabbitmq
-#     volumes:
-#       - ./services/compute-worker/data:/data
-#       - ./services/compute-worker/examples:/examples
+  worker-sim:
+    build: ./services/compute-worker
+    image: swiss_worker_img
+    restart: unless-stopped
+    environment:
+     - BROKER_URL=amqp://admin:simulation_secure@swiss_broker:5672/
+     - WORKER_TYPE=simulation
+     - SIM_QUEUE=simulation_queue
+     - INGEST_QUEUE=ingestion_queue
+    depends_on:
+     - rabbitmq
+    networks:
+      - swiss-net
+    volumes:
+      - ./services/compute-worker/data:/data
+      - ./services/compute-worker/examples:/examples
+
+  worker-ingest:
+    image: swiss_worker_img
+    restart: unless-stopped
+    networks:
+      - swiss-net
+    environment:
+      - BROKER_URL=amqp://admin:simulation_secure@swiss_broker:5672/
+      - WORKER_TYPE=ingestion
+      - SIM_QUEUE=simulation_queue
+      - INGEST_QUEUE=ingestion_queue
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./services/compute-worker/data:/data
+      - ./services/compute-worker/examples:/examples
 # 
 #   worker-grid:
 #     build: ./services/grid-service

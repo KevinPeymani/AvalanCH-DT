@@ -204,6 +204,7 @@ async def process_message(payload: Dict[str, Any], channel: aio_pika.Channel) ->
 
 
 async def main() -> None:
+    print("Starting...")
     queue_name = queue_name_for_worker()
 
     conn = await aio_pika.connect_robust(RABBITMQ_URL, heartbeat=600)
