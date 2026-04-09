@@ -7,8 +7,8 @@ longitude        = 7.752433
 altitude         = 1640.0
 nodata           = -999
 tz               = 1
-ProfileDate      = 2026-04-08T12:00:00
-HS_Last          = 1.989000
+ProfileDate      = 2026-04-08T13:00:00
+HS_Last          = 1.972500
 SlopeAngle       = 0.00
 SlopeAzi         = 0.00
 nSoilLayerData   = 0
@@ -23,4 +23,4 @@ ErosionLevel     = 0
 TimeCountDeltaHS = 0.000000
 fields           = timestamp Layer_Thick  T  Vol_Frac_I  Vol_Frac_W  Vol_Frac_V  Vol_Frac_S Rho_S Conduc_S HeatCapac_S  rg  rb  dd  sp  mk mass_hoar ne CDot metamo
 [DATA]
-2026-04-08T12:00:00     1.989000   272.966500     0.350000     0.000000     0.650000     0.000000       0.0     0.000          0.0    0.300000   0.200000   0.000000   1.000000     12      0.000000    1    -2000.000000        0.000000
+2026-04-08T13:00:00     1.972500   272.964000     0.350000     0.000000     0.650000     0.000000       0.0     0.000          0.0    0.300000   0.200000   0.000000   1.000000     12      0.000000    1    -2000.000000        0.000000
