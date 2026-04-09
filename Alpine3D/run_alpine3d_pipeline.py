@@ -8,6 +8,7 @@ import shutil
 import subprocess
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import requests
 
@@ -44,6 +45,39 @@ OUTPUT_PATH_KEYS = {
 	"GRID2DPATH": str(OUTPUT_DIR),
 	"METEOPATH": str(OUTPUT_DIR),
 }
+STEFAN_BOLTZMANN = 5.670374419e-8
+
+
+def derive_ilwr_from_components(ta_c, rh_pct, rswr_wm2):
+	ta = np.asarray(ta_c, dtype=float)
+	rh = np.clip(np.asarray(rh_pct, dtype=float), 1.0, 100.0)
+	rswr = np.clip(np.asarray(rswr_wm2, dtype=float), 0.0, 1200.0)
+
+	tk = ta + 273.15
+	es_kpa = 0.611 * np.exp((17.27 * ta) / (ta + 237.3))
+	ea_kpa = (rh / 100.0) * es_kpa
+
+	eps_clear = 1.24 * np.power(np.maximum(ea_kpa, 1e-6) / np.maximum(tk, 1.0), 1.0 / 7.0)
+	eps_clear = np.clip(eps_clear, 0.62, 0.98)
+
+	daylight_fraction = np.clip(rswr / 800.0, 0.0, 1.0)
+	cloudiness = 1.0 - daylight_fraction
+	eps_effective = np.clip(eps_clear + 0.25 * cloudiness, 0.65, 1.0)
+
+	ilwr = eps_effective * STEFAN_BOLTZMANN * np.power(tk, 4)
+	ilwr = np.clip(ilwr, 180.0, 420.0)
+
+	if ilwr.size == 1:
+		return float(ilwr.item())
+	return ilwr
+
+
+def derive_ilwr_series(hourly_df: pd.DataFrame) -> pd.Series:
+	ta = hourly_df.get("TA_30MIN_MEAN", pd.Series(-1.0, index=hourly_df.index))
+	rh = hourly_df.get("RH_30MIN_MEAN", pd.Series(85.0, index=hourly_df.index))
+	rswr = hourly_df.get("RSWR_30MIN_MEAN", pd.Series(150.0, index=hourly_df.index))
+	values = derive_ilwr_from_components(ta.to_numpy(), rh.to_numpy(), rswr.to_numpy())
+	return pd.Series(values, index=hourly_df.index, dtype=float)
 
 
 def fetch_station_measurements_hourly(station_code: str, period_in_days: int) -> pd.DataFrame:
@@ -142,7 +176,8 @@ def write_alpine3d_smet(station_code: str, hourly_df: pd.DataFrame, metadata: di
 	forcing["VW"] = hourly_df.get("VW_30MIN_MEAN", pd.Series(2.0, index=hourly_df.index))
 	forcing["DW"] = hourly_df.get("DW_30MIN_MEAN", pd.Series(180.0, index=hourly_df.index))
 	forcing["ISWR"] = hourly_df.get("RSWR_30MIN_MEAN", pd.Series(150.0, index=hourly_df.index))
-	forcing["ILWR"] = hourly_df.get("ILWR_30MIN_MEAN", pd.Series(300.0, index=hourly_df.index))
+	derived_ilwr = derive_ilwr_series(hourly_df)
+	forcing["ILWR"] = hourly_df.get("ILWR_30MIN_MEAN", derived_ilwr).fillna(derived_ilwr)
 	forcing["HS"] = hs_series
 	forcing["TSG"] = hourly_df.get("TS0_30MIN_MEAN", pd.Series(-0.5, index=hourly_df.index)) + 273.15
 	forcing["PSUM"] = hourly_df.get("PSUM", derived_psum).fillna(derived_psum)
