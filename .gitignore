@@ -31,5 +31,16 @@ prediction/cfgfiles/
 # Tif files downloaded from swisstopo
 Alpine3D/prep/swissalti3d_tifs/*.tif
 
+# Alpine3D runtime artifacts (generated locally)
+Alpine3D/output/
+Alpine3D/io.runtime.ini
+Alpine3D/input/*.smet
+Alpine3D/input/*.poi
+Alpine3D/input/*.snoold
+Alpine3D/input/DAV3.sno
+
+# Local runtime cache mounted by compose
+.alpine3d-runtime-cache/
+
 
 
