@@ -142,7 +142,8 @@ services:
       - GEOSERVER_UID=${CURRENT_UID}
       - GEOSERVER_GID=${CURRENT_GID}
     volumes:
-      - ./data/zones/zermatt_zone2:/opt/geospatial_data
+      - ./data/zones/zermatt_zone2:/opt/geospatial_data/zones
+      - ./data/geoserver_external:/opt/geospatial_data/rasters
       - ./data/geoserver_data:/opt/geoserver/data_dir
     user: root
     entrypoint:
