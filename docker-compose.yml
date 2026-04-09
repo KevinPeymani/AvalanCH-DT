@@ -139,10 +139,10 @@ services:
       - GEOSERVER_ADMIN_USER=admin
       - GEOSERVER_ADMIN_PASSWORD=geoserver
       - GEOSERVER_FILESYSTEM_SANDBOX=/opt/geospatial_data
-      - GEOSERVER_UID=${CURRENT_UID}
-      - GEOSERVER_GID=${CURRENT_GID}
+      - GEOSERVER_UID=${GEOSERVER_UID:-1001}
+      - GEOSERVER_GID=${GEOSERVER_GID:-1001}
     volumes:
-      - ${GEOSERVER_DATA_DIR:-./infra/geoserver_data}:/opt/geospatial_data
+      - ${GEOSERVER_RASTER_MOUNT_DIR:-./data/geoserver_external}:/opt/geospatial_data
       - ./data/geoserver_data:/opt/geoserver/data_dir
     networks:
       - swiss-net
