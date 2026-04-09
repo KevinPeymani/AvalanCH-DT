@@ -15771,3 +15771,18 @@ DEBUG 2026-04-09 19:27:30,814 [main][Log4J2Logger.java:215] : Extension lookup '
 DEBUG 2026-04-09 19:27:30,816 [main][Log4J2Logger.java:215] : Extension lookup 'ExtensionProvider', but provided ApplicationContext is unset.
 DEBUG 2026-04-09 19:27:30,816 [main][Log4J2Logger.java:215] : Extension lookup 'ExtensionFilter', but provided ApplicationContext is unset.
 DEBUG 2026-04-09 19:27:30,827 [main][Log4J2Logger.java:215] : CONFIGURING GEOSERVER LOGGING -------------------------
+CONFIG 2026-04-09 20:17:51,576 [main][Log4J2Logger.java:210] : Logging policy: Log4J2
+CONFIG 2026-04-09 20:17:51,635 [main][Log4J2Logger.java:184] : Factory implementations for category GridCoverageFactory:
+  org.geotools.coverage.grid.GridCoverageFactory
+CONFIG 2026-04-09 20:17:51,745 [main][Log4J2Logger.java:184] : Factory implementations for category FilterFactory:
+  org.geotools.filter.FilterFactoryImpl
+CONFIG 2026-04-09 20:17:51,755 [main][Log4J2Logger.java:184] : Factory implementations for category StyleFactory:
+  org.geotools.styling.StyleFactoryImpl
+CONFIG 2026-04-09 20:17:51,759 [main][Log4J2Logger.java:184] : Factory implementations for category FeatureFactory:
+  org.geotools.feature.LenientFeatureFactoryImpl
+  org.geotools.feature.ValidatingFeatureFactoryImpl
+DEBUG 2026-04-09 20:17:51,966 [main][Log4J2Logger.java:215] : Extension lookup 'XStreamPersisterInitializer', prior to bean geoserverExtensions initialisation.
+DEBUG 2026-04-09 20:17:51,967 [main][Log4J2Logger.java:215] : Extension lookup 'ExtensionFilter', prior to bean geoserverExtensions initialisation.
+DEBUG 2026-04-09 20:17:51,968 [main][Log4J2Logger.java:215] : Extension lookup 'ExtensionProvider', but provided ApplicationContext is unset.
+DEBUG 2026-04-09 20:17:51,968 [main][Log4J2Logger.java:215] : Extension lookup 'ExtensionFilter', but provided ApplicationContext is unset.
+DEBUG 2026-04-09 20:17:51,981 [main][Log4J2Logger.java:215] : CONFIGURING GEOSERVER LOGGING -------------------------

@@ -16,13 +16,10 @@
                 </sld:ContrastEnhancement>
               </sld:GrayChannel>
             </sld:ChannelSelection>
-            <sld:ColorMap type="values">
-              <sld:ColorMapEntry color="#50b14b" opacity="1.0" quantity="1" label="1 Low"/>
-              <sld:ColorMapEntry color="#ffe500" opacity="1.0" quantity="2" label="2 Moderate"/>
-              <sld:ColorMapEntry color="#f8821a" opacity="1.0" quantity="3" label="3 Considerable"/>
-              <sld:ColorMapEntry color="#e5052a" opacity="1.0" quantity="4" label="4 High"/>
-              <sld:ColorMapEntry color="#7b0014" opacity="1.0" quantity="5" label="5 Very High"/>
+            <sld:ColorMap>
               <sld:ColorMapEntry color="#000000" opacity="0.0" quantity="-999" label="NoData"/>
+              <sld:ColorMapEntry color="#ffffff" opacity="1.0" quantity="0" label="0"/>
+              <sld:ColorMapEntry color="#000000" opacity="1.0" quantity="5" label="5"/>
             </sld:ColorMap>
             <sld:ContrastEnhancement/>
           </sld:RasterSymbolizer>

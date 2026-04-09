@@ -18,12 +18,8 @@
             </sld:ChannelSelection>
             <sld:ColorMap>
               <sld:ColorMapEntry color="#000000" opacity="0.0" quantity="-999" label="NoData"/>
-              <sld:ColorMapEntry color="#ffffff" opacity="0.0" quantity="0.0" label="0 m"/>
-              <sld:ColorMapEntry color="#ddeeff" opacity="0.85" quantity="0.5" label="0.5 m"/>
-              <sld:ColorMapEntry color="#88bbee" opacity="0.9" quantity="2.0" label="2 m"/>
-              <sld:ColorMapEntry color="#2277cc" opacity="0.95" quantity="4.0" label="4 m"/>
-              <sld:ColorMapEntry color="#003a8c" opacity="1.0" quantity="6.0" label="6 m"/>
-              <sld:ColorMapEntry color="#00144d" opacity="1.0" quantity="8.0" label="8 m"/>
+              <sld:ColorMapEntry color="#ffffff" opacity="1.0" quantity="0.0" label="0 m"/>
+              <sld:ColorMapEntry color="#000000" opacity="1.0" quantity="8.0" label="8 m"/>
             </sld:ColorMap>
             <sld:ContrastEnhancement/>
           </sld:RasterSymbolizer>

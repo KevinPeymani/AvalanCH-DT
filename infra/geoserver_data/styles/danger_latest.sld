@@ -17,19 +17,11 @@
                 <SourceChannelName>1</SourceChannelName>
               </GrayChannel>
             </ChannelSelection>
-            <ColorMap type="values">
-              <!-- 1 = Low: green -->
-              <ColorMapEntry color="#50b14b" quantity="1" label="1 Low" opacity="1.0"/>
-              <!-- 2 = Moderate: yellow -->
-              <ColorMapEntry color="#ffe500" quantity="2" label="2 Moderate" opacity="1.0"/>
-              <!-- 3 = Considerable: orange -->
-              <ColorMapEntry color="#f8821a" quantity="3" label="3 Considerable" opacity="1.0"/>
-              <!-- 4 = High: red -->
-              <ColorMapEntry color="#e5052a" quantity="4" label="4 High" opacity="1.0"/>
-              <!-- 5 = Very High: dark red -->
-              <ColorMapEntry color="#7b0014" quantity="5" label="5 Very High" opacity="1.0"/>
-              <!-- NoData: transparent -->
+            <ColorMap type="ramp">
+              <!-- NoData transparent, then continuous linear grayscale from 0..5 -->
               <ColorMapEntry color="#000000" quantity="-999" label="NoData" opacity="0.0"/>
+              <ColorMapEntry color="#ffffff" quantity="0" label="0" opacity="1.0"/>
+              <ColorMapEntry color="#000000" quantity="5" label="5" opacity="1.0"/>
             </ColorMap>
           </RasterSymbolizer>
         </Rule>
