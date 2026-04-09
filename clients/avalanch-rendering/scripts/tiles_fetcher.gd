@@ -12,6 +12,8 @@ extends Node3D
 		visualize_lod = value
 		_update_materials()
 
+@export var displace: bool = false
+
 @export var center_e: float = 2623000.0
 @export var center_n: float = 1098000.0
 @export var base_size: float = 65536.0
@@ -133,7 +135,7 @@ func _spawn_tile(cx: float, cy: float, size: float, lod: int):
 	mat.set_shader_parameter("uv_scale_albedo", Vector3.ONE)
 	mat.set_shader_parameter("uv_scale_height", Vector3.ONE)
 	mat.set_shader_parameter("height_scale", max_elevation_meters / meters_per_unit)
-	mat.set_shader_parameter("skirt_depth", 50.0 / meters_per_unit) 
+	mat.set_shader_parameter("skirt_depth", 50.0 / meters_per_unit if displace else 0.0)
 	mi.material_override = mat
 	
 	add_child(mi)
@@ -150,7 +152,7 @@ func _spawn_tile(cx: float, cy: float, size: float, lod: int):
 		request_queue.append({"url": url_albedo, "mi": mi, "type": "albedo"})
 		total_batch_requests += 1
 		
-	if not texture_cache.has(tile_key) or not texture_cache[tile_key].has("height"):
+	if displace and (not texture_cache.has(tile_key) or not texture_cache[tile_key].has("height")):
 		var url_height = wms_elevation_url + "?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=switzerland:swissalti3d-combined&STYLES=&CRS=EPSG:2056&BBOX=%f,%f,%f,%f&WIDTH=128&HEIGHT=128&FORMAT=image/png&TRANSPARENT=TRUE" % [cx - half, cy - half, cx + half, cy + half]
 		request_queue.append({"url": url_height, "mi": mi, "type": "height"})
 		total_batch_requests += 1
@@ -197,6 +199,7 @@ func _on_downloaded(result: int, code: int, headers: PackedStringArray, body: Pa
 			decode_err = img.load_png_from_buffer(body)
 			
 		if decode_err == OK:
+			img.fix_alpha_edges()
 			var tex = ImageTexture.create_from_image(img)
 			
 			var cx = mi.get_meta("cx")

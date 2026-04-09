@@ -8,7 +8,7 @@
 script = ExtResource("1_1g8qg")
 center_e = 2622839.0
 center_n = 1094640.0
-lod_levels = 4
+lod_levels = 10
 max_concurrent_requests = 32
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=225080739]

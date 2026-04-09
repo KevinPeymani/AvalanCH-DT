@@ -120,8 +120,29 @@ services:
       - GEOSERVER_ADMIN_USER=admin
       - GEOSERVER_ADMIN_PASSWORD=geoserver
       - GEOSERVER_FILESYSTEM_SANDBOX=/opt/geospatial_data
+      - GEOSERVER_UID=${CURRENT_UID}
+      - GEOSERVER_GID=${CURRENT_GID}
     volumes:
       - /home/remy/heavydata/digitaltwin/zermatt_zone2:/opt/geospatial_data
+      - ./data/geoserver_data:/opt/geoserver/data_dir
+    user: root
+    entrypoint:
+      - /bin/bash
+      - -c
+      - |
+        EXISTING_USER=$$(getent passwd 1000 | cut -d: -f1)
+        if [ ! -z "$$EXISTING_USER" ] && [ "$$EXISTING_USER" != "geoserver" ]; then
+            echo "Moving existing user$$EXISTING_USER from 1000 to 1001"
+            usermod -u 1001 $$EXISTING_USER
+        fi
+
+        EXISTING_GROUP=$$(getent group 1000 | cut -d: -f1)
+        if [ ! -z "$$EXISTING_GROUP" ] && [ "$$EXISTING_GROUP" != "geoserver" ]; then
+            echo "Moving existing group $$EXISTING_GROUP from 1000 to 1001"
+            groupmod -g 1001$$EXISTING_GROUP
+        fi
+
+        exec /scripts/entrypoint.sh
 
 networks:
   swiss-net:
