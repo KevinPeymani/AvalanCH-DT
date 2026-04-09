@@ -11,7 +11,6 @@ services:
       RABBITMQ_DEFAULT_PASS: simulation_secure
     networks:
       - swiss-net
-
 #   nginx:
 #     image: nginx:alpine
 #     container_name: swiss_gateway
@@ -98,6 +97,25 @@ services:
 #       # Optional: custom Snowpack runtime in container
 #       # - /path/to/snowpack:/opt/snowpack:ro
 
+  worker-alpine3d:
+    build: ./services/alpine3d-worker
+    image: swiss_alpine3d_worker_img
+    restart: unless-stopped
+    networks:
+      - swiss-net
+    environment:
+      - BROKER_URL=amqp://admin:simulation_secure@swiss_broker:5672/
+      - ALPINE_QUEUE=alpine3d_queue
+      - WORKSPACE_DIR=/workspace
+      - PYTHON_BIN=python
+      - ALPINE3D_BIN=/opt/alpine3d/bin/alpine3d
+      - RUNTIME_VENV_DIR=/runtime-cache/alpine3d-venv
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./:/workspace
+      - ${ALPINE3D_RUNTIME_CACHE:-./.alpine3d-runtime-cache}:/runtime-cache
+
   mapproxy:
     image: ghcr.io/mapproxy/mapproxy/mapproxy:6.0.1-alpine-nginx
     container_name: swiss_mapproxy
@@ -123,7 +141,8 @@ services:
       - GEOSERVER_UID=${CURRENT_UID}
       - GEOSERVER_GID=${CURRENT_GID}
     volumes:
-      - ./data/zones/zermatt_zone2:/opt/geospatial_data
+      - ./data/zones/zermatt_zone2:/opt/geospatial_data/zones
+      - ./data/geoserver_external/rasters:/opt/geospatial_data/rasters
       - ./data/geoserver_data:/opt/geoserver/data_dir
     user: root
     entrypoint:
@@ -131,18 +150,20 @@ services:
       - -c
       - |
         EXISTING_USER=$$(getent passwd 1000 | cut -d: -f1)
-        if [ ! -z "$$EXISTING_USER" ] && [ "$$EXISTING_USER" != "geoserver" ]; then
-            echo "Moving existing user$$EXISTING_USER from 1000 to 1001"
-            usermod -u 1001 $$EXISTING_USER
+        if [ -n "$$EXISTING_USER" ] && [ "$$EXISTING_USER" != "geoserver" ]; then
+          echo "Moving existing user $$EXISTING_USER from 1000 to 1001"
+          usermod -u 1001 "$$EXISTING_USER"
         fi
 
         EXISTING_GROUP=$$(getent group 1000 | cut -d: -f1)
-        if [ ! -z "$$EXISTING_GROUP" ] && [ "$$EXISTING_GROUP" != "geoserver" ]; then
-            echo "Moving existing group $$EXISTING_GROUP from 1000 to 1001"
-            groupmod -g 1001$$EXISTING_GROUP
+        if [ -n "$$EXISTING_GROUP" ] && [ "$$EXISTING_GROUP" != "geoserver" ]; then
+          echo "Moving existing group $$EXISTING_GROUP from 1000 to 1001"
+          groupmod -g 1001 "$$EXISTING_GROUP"
         fi
 
         exec /scripts/entrypoint.sh
+    networks:
+      - swiss-net
 
 networks:
   swiss-net:

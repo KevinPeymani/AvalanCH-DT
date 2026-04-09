@@ -1,0 +1,70 @@
+<coverage>
+  <id>CoverageInfoImpl-5e4b7f95:19d7371f163:-7ffa</id>
+  <name>danger_latest</name>
+  <nativeName>danger_latest</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl-5e4b7f95:19d7371f163:-7fff</id>
+  </namespace>
+  <title>danger_latest</title>
+  <nativeCRS class="projected">PROJCS[&quot;CH1903+ / LV95&quot;, 
+  GEOGCS[&quot;CH1903+&quot;, 
+    DATUM[&quot;CH1903+&quot;, 
+      SPHEROID[&quot;Bessel 1841&quot;, 6377397.155, 299.1528128, AUTHORITY[&quot;EPSG&quot;,&quot;7004&quot;]], 
+      TOWGS84[674.374, 15.056, 405.346, 0.0, 0.0, 0.0, 0.0], 
+      AUTHORITY[&quot;EPSG&quot;,&quot;6150&quot;]], 
+    PRIMEM[&quot;Greenwich&quot;, 0.0, AUTHORITY[&quot;EPSG&quot;,&quot;8901&quot;]], 
+    UNIT[&quot;degree&quot;, 0.017453292519943295], 
+    AXIS[&quot;Geodetic longitude&quot;, EAST], 
+    AXIS[&quot;Geodetic latitude&quot;, NORTH], 
+    AUTHORITY[&quot;EPSG&quot;,&quot;4150&quot;]], 
+  PROJECTION[&quot;Oblique_Mercator&quot;, AUTHORITY[&quot;EPSG&quot;,&quot;9815&quot;]], 
+  PARAMETER[&quot;longitude_of_center&quot;, 7.439583333333333], 
+  PARAMETER[&quot;latitude_of_center&quot;, 46.952405555555565], 
+  PARAMETER[&quot;azimuth&quot;, 90.0], 
+  PARAMETER[&quot;scale_factor&quot;, 1.0], 
+  PARAMETER[&quot;false_easting&quot;, 2600000.0], 
+  PARAMETER[&quot;false_northing&quot;, 1200000.0], 
+  PARAMETER[&quot;rectified_grid_angle&quot;, 90.0], 
+  UNIT[&quot;m&quot;, 1.0], 
+  AXIS[&quot;Easting&quot;, EAST], 
+  AXIS[&quot;Northing&quot;, NORTH], 
+  AUTHORITY[&quot;EPSG&quot;,&quot;2056&quot;]]</nativeCRS>
+  <srs>EPSG:2056</srs>
+  <nativeBoundingBox>
+    <minx>2609999.099</minx>
+    <maxx>2636999.099</maxx>
+    <miny>1084999.939</miny>
+    <maxy>1101999.939</maxy>
+    <crs class="projected">EPSG:2056</crs>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>7.568468918194113</minx>
+    <maxx>7.91782270866793</maxx>
+    <miny>45.917384475526035</miny>
+    <maxy>46.07126320232281</maxy>
+    <crs>EPSG:4326</crs>
+  </latLonBoundingBox>
+  <projectionPolicy>REPROJECT_TO_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <advertised>true</advertised>
+  <store class="coverageStore">
+    <id>CoverageStoreInfoImpl-5e4b7f95:19d7371f163:-7ffb</id>
+  </store>
+  <serviceConfiguration>false</serviceConfiguration>
+  <simpleConversionEnabled>false</simpleConversionEnabled>
+  <grid dimension="2">
+    <range>
+      <low>0 0</low>
+      <high>540 340</high>
+    </range>
+    <transform>
+      <scaleX>50.0</scaleX>
+      <scaleY>-50.0</scaleY>
+      <shearX>0.0</shearX>
+      <shearY>0.0</shearY>
+      <translateX>2610024.099</translateX>
+      <translateY>1101974.939</translateY>
+    </transform>
+    <crs>EPSG:2056</crs>
+  </grid>
+</coverage>

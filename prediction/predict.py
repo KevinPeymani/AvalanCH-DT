@@ -9,6 +9,40 @@ from run_pipeline import setup_snowpack_files, run_snowpack
 from parse_profile import extract_all_features
 
 URL_MEASUREMENT = "https://measurement-api.slf.ch/public/api/imis/station/{station_code}/measurements"
+STEFAN_BOLTZMANN = 5.670374419e-8
+
+
+def derive_ilwr_from_components(ta_c, rh_pct, rswr_wm2):
+    ta = np.asarray(ta_c, dtype=float)
+    rh = np.clip(np.asarray(rh_pct, dtype=float), 1.0, 100.0)
+    rswr = np.clip(np.asarray(rswr_wm2, dtype=float), 0.0, 1200.0)
+
+    tk = ta + 273.15
+    es_kpa = 0.611 * np.exp((17.27 * ta) / (ta + 237.3))
+    ea_kpa = (rh / 100.0) * es_kpa
+
+    eps_clear = 1.24 * np.power(np.maximum(ea_kpa, 1e-6) / np.maximum(tk, 1.0), 1.0 / 7.0)
+    eps_clear = np.clip(eps_clear, 0.62, 0.98)
+
+    # Low shortwave generally indicates stronger cloud cover and higher longwave emissivity.
+    daylight_fraction = np.clip(rswr / 800.0, 0.0, 1.0)
+    cloudiness = 1.0 - daylight_fraction
+    eps_effective = np.clip(eps_clear + 0.25 * cloudiness, 0.65, 1.0)
+
+    ilwr = eps_effective * STEFAN_BOLTZMANN * np.power(tk, 4)
+    ilwr = np.clip(ilwr, 180.0, 420.0)
+
+    if ilwr.size == 1:
+        return float(ilwr.item())
+    return ilwr
+
+
+def derive_ilwr_series(hourly_df):
+    ta = hourly_df.get("TA_30MIN_MEAN", pd.Series(-1.0, index=hourly_df.index))
+    rh = hourly_df.get("RH_30MIN_MEAN", pd.Series(85.0, index=hourly_df.index))
+    rswr = hourly_df.get("RSWR_30MIN_MEAN", pd.Series(150.0, index=hourly_df.index))
+    values = derive_ilwr_from_components(ta.to_numpy(), rh.to_numpy(), rswr.to_numpy())
+    return pd.Series(values, index=hourly_df.index, dtype=float)
 
 
 def fetch_station_measurements_hourly(station_code="DAV3", period_in_days=7):
@@ -54,6 +88,16 @@ def build_live_features_from_hourly(hourly_df):
     hn72 = hs_diff.tail(72).sum() if len(hs_diff) >= 1 else 0.0
     hn168 = hs_diff.tail(168).sum() if len(hs_diff) >= 1 else 0.0
 
+    ilwr_measured = latest.get("ILWR_30MIN_MEAN", np.nan)
+    if pd.isna(ilwr_measured):
+        ilwr_value = derive_ilwr_from_components(
+            latest.get("TA_30MIN_MEAN", -1.0),
+            latest.get("RH_30MIN_MEAN", 85.0),
+            latest.get("RSWR_30MIN_MEAN", 150.0),
+        )
+    else:
+        ilwr_value = float(ilwr_measured)
+
     live_imis = {
         "TA": float(latest.get("TA_30MIN_MEAN", -1.0)),
         "RH": float(latest.get("RH_30MIN_MEAN", 85.0)),
@@ -65,6 +109,7 @@ def build_live_features_from_hourly(hourly_df):
         "HN24": float(hn24),
         "HN72_24": float(max(hn72 - hn24, 0.0)),
         "HN24_7d": float(hn168),
+        "ILWR": float(ilwr_value),
     }
 
     return live_imis
@@ -79,6 +124,8 @@ def build_snowpack_forcing_from_hourly(hourly_df):
     forcing["ISWR"] = hourly_df.get("RSWR_30MIN_MEAN", pd.Series(150.0, index=hourly_df.index))
     forcing["HS_meas"] = hourly_df.get("HS", pd.Series(250.0, index=hourly_df.index))
     forcing["TSG"] = hourly_df.get("TS0_30MIN_MEAN", pd.Series(-0.5, index=hourly_df.index))
+    derived_ilwr = derive_ilwr_series(hourly_df)
+    forcing["ILWR"] = hourly_df.get("ILWR_30MIN_MEAN", derived_ilwr).fillna(derived_ilwr)
     return forcing.ffill().bfill()
 
 def predict_danger(station_code="DAV3"):
@@ -102,6 +149,7 @@ def predict_danger(station_code="DAV3"):
             "HN24": 0.0,
             "HN72_24": 0.0,
             "HN24_7d": 0.0,
+            "ILWR": 300.0,
         }
 
     # 2. RUN MODEL
@@ -140,4 +188,4 @@ def predict_danger(station_code="DAV3"):
     print("="*50)
 
 if __name__ == "__main__":
-    predict_danger("GOR2")
+    predict_danger("ZER2")

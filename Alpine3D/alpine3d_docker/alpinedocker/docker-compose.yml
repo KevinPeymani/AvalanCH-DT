@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  alpine3d:
+    build: .
+    container_name: alpine3d
+    volumes:
+      - .:/work
+    working_dir: /work
+    environment:
+      - PARALLEL=OPENMP
+      - NCORES=4
+      - NPROC=8
+    tty: true
