@@ -109,7 +109,7 @@ fields           = timestamp Layer_Thick  T  Vol_Frac_I  Vol_Frac_W  Vol_Frac_V 
     
     # 2. WEATHER DATA (.smet)
     if hourly_weather_df is not None and not hourly_weather_df.empty:
-        hourly_required = ["TA", "RH", "VW", "DW", "ISWR", "HS_meas", "TSG"]
+        hourly_required = ["TA", "RH", "VW", "DW", "ISWR", "ILWR", "HS_meas", "TSG"]
         for column in hourly_required:
             if column not in forcing_df.columns:
                 forcing_df[column] = live_weather_data.get(column, 0.0)
@@ -122,10 +122,11 @@ fields           = timestamp Layer_Thick  T  Vol_Frac_I  Vol_Frac_W  Vol_Frac_V 
             vw_ms = float(row["VW"])
             dw_deg = float(row["DW"])
             iswr = float(row["ISWR"])
+            ilwr = float(row["ILWR"])
             hs_m = float(row["HS_meas"]) / 100.0
             tsg_k = float(row["TSG"]) + 273.15
             smet_rows.append(
-                f"{timestamp.strftime('%Y-%m-%dT%H:%M:%S')} {ta_k:.2f} {rh_frac:.2f} {vw_ms:.2f} {dw_deg:.1f} {iswr:.1f} {hs_m:.2f} {tsg_k:.2f} 0.00"
+                f"{timestamp.strftime('%Y-%m-%dT%H:%M:%S')} {ta_k:.2f} {rh_frac:.2f} {vw_ms:.2f} {dw_deg:.1f} {iswr:.1f} {ilwr:.1f} {hs_m:.2f} {tsg_k:.2f} 0.00"
             )
     else:
         ta_k = live_weather_data.get('TA', -4.5) + 273.15
@@ -133,11 +134,12 @@ fields           = timestamp Layer_Thick  T  Vol_Frac_I  Vol_Frac_W  Vol_Frac_V 
         vw_ms = live_weather_data.get('VW', 5.0)
         dw_deg = live_weather_data.get('DW', 270)
         iswr = live_weather_data.get('ISWR', 150)
+        ilwr = live_weather_data.get('ILWR', 0.0)
         hs_m = live_weather_data.get('HS_meas', 120) / 100.0
         tsg_k = live_weather_data.get('TSG', -0.5) + 273.15
         smet_rows = [
-            f"{start_time} {ta_k:.2f} {rh_frac:.2f} {vw_ms:.2f} {dw_deg:.1f} {iswr:.1f} {hs_m:.2f} {tsg_k:.2f} 0.00",
-            f"{end_time} {ta_k:.2f} {rh_frac:.2f} {vw_ms:.2f} {dw_deg:.1f} {iswr:.1f} {hs_m:.2f} {tsg_k:.2f} 0.00",
+            f"{start_time} {ta_k:.2f} {rh_frac:.2f} {vw_ms:.2f} {dw_deg:.1f} {iswr:.1f} {ilwr:.1f} {hs_m:.2f} {tsg_k:.2f} 0.00",
+            f"{end_time} {ta_k:.2f} {rh_frac:.2f} {vw_ms:.2f} {dw_deg:.1f} {iswr:.1f} {ilwr:.1f} {hs_m:.2f} {tsg_k:.2f} 0.00",
         ]
 
     smet_content = f"""SMET 1.1 ASCII
@@ -150,7 +152,7 @@ longitude        = {float(station_meta.get('lon', 9.8))}
 altitude         = {float(station_meta.get('alt', 2500.0))}
 nodata           = -999
 tz               = 1
-fields           = timestamp TA RH VW DW ISWR HS TSG PSUM
+fields           = timestamp TA RH VW DW ISWR ILWR HS TSG PSUM
 [DATA]
 {chr(10).join(smet_rows)}
 """

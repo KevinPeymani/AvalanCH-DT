@@ -98,6 +98,25 @@ services:
 #       # Optional: custom Snowpack runtime in container
 #       # - /path/to/snowpack:/opt/snowpack:ro
 
+  worker-alpine3d:
+    build: ./services/alpine3d-worker
+    image: swiss_alpine3d_worker_img
+    restart: unless-stopped
+    networks:
+      - swiss-net
+    environment:
+      - BROKER_URL=amqp://admin:simulation_secure@swiss_broker:5672/
+      - ALPINE_QUEUE=alpine3d_queue
+      - WORKSPACE_DIR=/workspace
+      - PYTHON_BIN=python
+      - ALPINE3D_BIN=/opt/alpine3d/bin/alpine3d
+      - RUNTIME_VENV_DIR=/runtime-cache/alpine3d-venv
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./:/workspace
+      - ${ALPINE3D_RUNTIME_CACHE:-./.alpine3d-runtime-cache}:/runtime-cache
+
   mapproxy:
     image: ghcr.io/mapproxy/mapproxy/mapproxy:6.0.1-alpine-nginx
     container_name: swiss_mapproxy

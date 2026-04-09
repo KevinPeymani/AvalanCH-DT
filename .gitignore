@@ -4,6 +4,7 @@
 # Python caches
 **/__pycache__/
 **/*.pyc
+**/build/
 
 # Grid service local artifacts
 services/grid-service/build/
@@ -26,3 +27,9 @@ prediction/data_rf2_tidy.csv
 prediction/input/
 prediction/output/
 prediction/cfgfiles/
+
+# Tif files downloaded from swisstopo
+Alpine3D/prep/swissalti3d_tifs/*.tif
+
+
+

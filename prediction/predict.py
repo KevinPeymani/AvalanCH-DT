@@ -65,6 +65,7 @@ def build_live_features_from_hourly(hourly_df):
         "HN24": float(hn24),
         "HN72_24": float(max(hn72 - hn24, 0.0)),
         "HN24_7d": float(hn168),
+        "ILWR": float(latest.get("RSWR_30MIN_MEAN", 0.0)),
     }
 
     return live_imis
@@ -79,6 +80,7 @@ def build_snowpack_forcing_from_hourly(hourly_df):
     forcing["ISWR"] = hourly_df.get("RSWR_30MIN_MEAN", pd.Series(150.0, index=hourly_df.index))
     forcing["HS_meas"] = hourly_df.get("HS", pd.Series(250.0, index=hourly_df.index))
     forcing["TSG"] = hourly_df.get("TS0_30MIN_MEAN", pd.Series(-0.5, index=hourly_df.index))
+    forcing["ILWR"] = hourly_df.get("RSWR_30MIN_MEAN", pd.Series(0.0, index=hourly_df.index))
     return forcing.ffill().bfill()
 
 def predict_danger(station_code="DAV3"):
@@ -102,6 +104,7 @@ def predict_danger(station_code="DAV3"):
             "HN24": 0.0,
             "HN72_24": 0.0,
             "HN24_7d": 0.0,
+            "ILWR": 0.0,
         }
 
     # 2. RUN MODEL
@@ -140,4 +143,4 @@ def predict_danger(station_code="DAV3"):
     print("="*50)
 
 if __name__ == "__main__":
-    predict_danger("GOR2")
+    predict_danger("ZER2")
