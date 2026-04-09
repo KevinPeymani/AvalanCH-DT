@@ -123,7 +123,7 @@ services:
       - GEOSERVER_UID=${CURRENT_UID}
       - GEOSERVER_GID=${CURRENT_GID}
     volumes:
-      - /home/remy/heavydata/digitaltwin/zermatt_zone2:/opt/geospatial_data
+      - ./data/zones/zermatt_zone2:/opt/geospatial_data
       - ./data/geoserver_data:/opt/geoserver/data_dir
     user: root
     entrypoint:
