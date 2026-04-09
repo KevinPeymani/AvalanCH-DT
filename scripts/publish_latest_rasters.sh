@@ -32,7 +32,7 @@ done
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SRC_HS_DIR="$ROOT_DIR/Alpine3D/output"
 SRC_DANGER_DIR="$ROOT_DIR/Alpine3D/output/grid_predictions"
-DEST_DIR="$ROOT_DIR/infra/geoserver_data/rasters"
+DEST_DIR="${GEOSERVER_RASTER_SOURCE_DIR:-$ROOT_DIR/data/geoserver_external/rasters}"
 
 convert_ascii_grid_to_lv95() {
   local src="$1"

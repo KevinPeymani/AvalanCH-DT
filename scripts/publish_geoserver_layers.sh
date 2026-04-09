@@ -10,13 +10,16 @@ GEOSERVER_WORKSPACE="${GEOSERVER_WORKSPACE:-avalanch}"
 CURL_CONNECT_TIMEOUT="${CURL_CONNECT_TIMEOUT:-5}"
 CURL_MAX_TIME="${CURL_MAX_TIME:-30}"
 
-# Must match docker-compose mount: ${GEOSERVER_DATA_DIR:-./infra/geoserver_data}:/opt/geospatial_data
+# Must match docker-compose mount: ${GEOSERVER_RASTER_MOUNT_DIR:-./data/geoserver_external}:/opt/geospatial_data
 GEOSERVER_RASTER_BASE="${GEOSERVER_RASTER_BASE:-/opt/geospatial_data/rasters}"
+RASTER_SOURCE_DIR="${GEOSERVER_RASTER_SOURCE_DIR:-$ROOT_DIR/data/geoserver_external/rasters}"
 
 HS_STORE="${HS_STORE:-hs_latest_store}"
 HS_LAYER="${HS_LAYER:-hs_latest}"
 DANGER_STORE="${DANGER_STORE:-danger_latest_store}"
 DANGER_LAYER="${DANGER_LAYER:-danger_latest}"
+HS_STYLE="${HS_STYLE:-hs_latest}"
+DANGER_STYLE="${DANGER_STYLE:-danger_latest}"
 
 json_headers=( -H "Content-Type: application/json" -H "Accept: application/json" )
 auth=( -u "${GEOSERVER_USER}:${GEOSERVER_PASSWORD}" )
@@ -42,6 +45,60 @@ expect_ok() {
     cat /tmp/geoserver_rest.out >&2 || true
     exit 1
   fi
+}
+
+upload_style() {
+  local style_name="$1"
+  local sld_path="$2"
+
+  if [[ ! -f "$sld_path" ]]; then
+    echo "Missing style file: $sld_path" >&2
+    exit 1
+  fi
+
+  local style_url="${GEOSERVER_URL}/rest/styles/${style_name}"
+  local code
+
+  code="$(curl -sS "${curl_common[@]}" -o /tmp/geoserver_rest.out -w "%{http_code}" "${auth[@]}" -H "Accept: application/json" "${style_url}.json")"
+
+  if [[ "$code" == "404" ]]; then
+    code="$(curl -sS "${curl_common[@]}" -o /tmp/geoserver_rest.out -w "%{http_code}" "${auth[@]}" -H "Content-Type: application/vnd.ogc.sld+xml" -X POST "${GEOSERVER_URL}/rest/styles?name=${style_name}" --data-binary "@${sld_path}")"
+    expect_ok "$code" "create style ${style_name}"
+    echo "Style created: ${style_name}"
+    return
+  fi
+
+  if [[ "$code" != "200" ]]; then
+    echo "Unexpected HTTP $code while checking style ${style_name}" >&2
+    cat /tmp/geoserver_rest.out >&2 || true
+    exit 1
+  fi
+
+  code="$(curl -sS "${curl_common[@]}" -o /tmp/geoserver_rest.out -w "%{http_code}" "${auth[@]}" -H "Content-Type: application/vnd.ogc.sld+xml" -X PUT "${style_url}" --data-binary "@${sld_path}")"
+  expect_ok "$code" "update style ${style_name}"
+  echo "Style updated: ${style_name}"
+}
+
+set_layer_default_style() {
+  local layer_name="$1"
+  local style_name="$2"
+
+  local payload
+  payload="$(cat <<JSON
+{
+  "layer": {
+    "defaultStyle": {
+      "name": "${style_name}"
+    }
+  }
+}
+JSON
+)"
+
+  local code
+  code="$(curl_status PUT "${GEOSERVER_URL}/rest/layers/${GEOSERVER_WORKSPACE}:${layer_name}.json" "$payload")"
+  expect_ok "$code" "set default style ${style_name} on layer ${layer_name}"
+  echo "Default style set: ${layer_name} -> ${style_name}"
 }
 
 ensure_workspace() {
@@ -167,8 +224,10 @@ healthcheck() {
 }
 
 main() {
-  local hs_path="$ROOT_DIR/infra/geoserver_data/rasters/hs_latest.asc"
-  local danger_path="$ROOT_DIR/infra/geoserver_data/rasters/danger_latest.asc"
+  local hs_path="$RASTER_SOURCE_DIR/hs_latest.asc"
+  local danger_path="$RASTER_SOURCE_DIR/danger_latest.asc"
+  local hs_sld="$ROOT_DIR/infra/geoserver_data/styles/${HS_STYLE}.sld"
+  local danger_sld="$ROOT_DIR/infra/geoserver_data/styles/${DANGER_STYLE}.sld"
 
   if [[ ! -f "$hs_path" ]]; then
     echo "Missing raster: $hs_path" >&2
@@ -182,13 +241,17 @@ main() {
   fi
 
   healthcheck
+  upload_style "$HS_STYLE" "$hs_sld"
+  upload_style "$DANGER_STYLE" "$danger_sld"
   ensure_workspace
 
   ensure_coveragestore "$HS_STORE" "hs_latest.asc"
   ensure_coverage "$HS_STORE" "$HS_LAYER"
+  set_layer_default_style "$HS_LAYER" "$HS_STYLE"
 
   ensure_coveragestore "$DANGER_STORE" "danger_latest.asc"
   ensure_coverage "$DANGER_STORE" "$DANGER_LAYER"
+  set_layer_default_style "$DANGER_LAYER" "$DANGER_STYLE"
 
   curl -sS "${curl_common[@]}" "${auth[@]}" -X POST "${GEOSERVER_URL}/rest/reload" >/dev/null || true
 
