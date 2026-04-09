@@ -1,0 +1,1329 @@
+<VRTDataset rasterXSize="7500" rasterYSize="5500">
+  <SRS dataAxisToSRSAxisMapping="1,2">PROJCS["CH1903+ / LV95",GEOGCS["CH1903+",DATUM["CH1903+",SPHEROID["Bessel 1841",6377397.155,299.1528128,AUTHORITY["EPSG","7004"]],AUTHORITY["EPSG","6150"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4150"]],PROJECTION["Hotine_Oblique_Mercator_Azimuth_Center"],PARAMETER["latitude_of_center",46.9524055555556],PARAMETER["longitude_of_center",7.43958333333333],PARAMETER["azimuth",90],PARAMETER["rectified_grid_angle",90],PARAMETER["scale_factor",1],PARAMETER["false_easting",2600000],PARAMETER["false_northing",1200000],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["Easting",EAST],AXIS["Northing",NORTH],AUTHORITY["EPSG","2056"]]</SRS>
+  <GeoTransform>  2.6190000000000000e+06,  2.0000000000000000e+00,  0.0000000000000000e+00,  1.1010000000000000e+06,  0.0000000000000000e+00, -2.0000000000000000e+00</GeoTransform>
+  <VRTRasterBand dataType="Float32" band="1">
+    <NoDataValue>0</NoDataValue>
+    <ColorInterp>Gray</ColorInterp>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2619-1090_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="0" yOff="5000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2619-1091_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="0" yOff="4500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2619-1092_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="0" yOff="4000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2619-1093_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="0" yOff="3500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2619-1094_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="0" yOff="3000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2619-1095_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="0" yOff="2500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2619-1096_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="0" yOff="2000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2619-1097_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="0" yOff="1500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2619-1098_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="0" yOff="1000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2619-1099_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="0" yOff="500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2619-1100_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2620-1090_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="500" yOff="5000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2620-1091_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="500" yOff="4500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2620-1092_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="500" yOff="4000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2620-1093_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="500" yOff="3500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2620-1094_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="500" yOff="3000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2620-1095_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="500" yOff="2500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2620-1096_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="500" yOff="2000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2620-1097_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="500" yOff="1500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2620-1098_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="500" yOff="1000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2620-1099_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="500" yOff="500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2620-1100_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="500" yOff="0" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2621-1090_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="1000" yOff="5000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2621-1091_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="1000" yOff="4500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2621-1092_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="1000" yOff="4000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2621-1093_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="1000" yOff="3500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2621-1094_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="1000" yOff="3000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2621-1095_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="1000" yOff="2500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2621-1096_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="1000" yOff="2000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2621-1097_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="1000" yOff="1500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2621-1098_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="1000" yOff="1000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2621-1099_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="1000" yOff="500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2621-1100_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="1000" yOff="0" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2622-1090_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="1500" yOff="5000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2622-1091_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="1500" yOff="4500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2622-1092_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="1500" yOff="4000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2622-1093_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="1500" yOff="3500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2622-1094_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="1500" yOff="3000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2622-1095_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="1500" yOff="2500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2622-1096_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="1500" yOff="2000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2622-1097_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="1500" yOff="1500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2622-1098_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="1500" yOff="1000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2622-1099_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="1500" yOff="500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2622-1100_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="1500" yOff="0" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2623-1090_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="2000" yOff="5000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2623-1091_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="2000" yOff="4500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2623-1092_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="2000" yOff="4000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2623-1093_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="2000" yOff="3500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2623-1094_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="2000" yOff="3000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2623-1095_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="2000" yOff="2500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2623-1096_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="2000" yOff="2000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2623-1097_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="2000" yOff="1500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2623-1098_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="2000" yOff="1000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2623-1099_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="2000" yOff="500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2623-1100_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="2000" yOff="0" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2624-1090_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="2500" yOff="5000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2624-1091_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="2500" yOff="4500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2624-1092_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="2500" yOff="4000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2624-1093_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="2500" yOff="3500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2624-1094_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="2500" yOff="3000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2624-1095_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="2500" yOff="2500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2624-1096_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="2500" yOff="2000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2624-1097_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="2500" yOff="1500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2624-1098_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="2500" yOff="1000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2624-1099_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="2500" yOff="500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2624-1100_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="2500" yOff="0" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2625-1090_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="3000" yOff="5000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2625-1091_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="3000" yOff="4500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2625-1092_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="3000" yOff="4000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2625-1093_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="3000" yOff="3500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2625-1094_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="3000" yOff="3000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2625-1095_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="3000" yOff="2500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2625-1096_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="3000" yOff="2000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2625-1097_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="3000" yOff="1500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2625-1098_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="3000" yOff="1000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2625-1099_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="3000" yOff="500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2625-1100_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="3000" yOff="0" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2626-1090_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="3500" yOff="5000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2626-1091_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="3500" yOff="4500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2626-1092_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="3500" yOff="4000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2626-1093_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="3500" yOff="3500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2626-1094_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="3500" yOff="3000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2626-1095_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="3500" yOff="2500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2626-1096_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="3500" yOff="2000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2626-1097_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="3500" yOff="1500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2626-1098_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="3500" yOff="1000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2626-1099_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="3500" yOff="500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2626-1100_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="3500" yOff="0" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2627-1090_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="4000" yOff="5000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2627-1091_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="4000" yOff="4500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2627-1092_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="4000" yOff="4000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2627-1093_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="4000" yOff="3500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2627-1094_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="4000" yOff="3000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2627-1095_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="4000" yOff="2500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2627-1096_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="4000" yOff="2000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2627-1097_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="4000" yOff="1500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2627-1098_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="4000" yOff="1000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2627-1099_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="4000" yOff="500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2627-1100_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="4000" yOff="0" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2628-1090_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="4500" yOff="5000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2628-1091_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="4500" yOff="4500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2628-1092_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="4500" yOff="4000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2628-1093_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="4500" yOff="3500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2628-1094_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="4500" yOff="3000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2628-1095_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="4500" yOff="2500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2628-1096_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="4500" yOff="2000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2628-1097_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="4500" yOff="1500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2628-1098_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="4500" yOff="1000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2628-1099_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="4500" yOff="500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2628-1100_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="4500" yOff="0" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2629-1090_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="5000" yOff="5000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2629-1091_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="5000" yOff="4500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2629-1092_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="5000" yOff="4000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2629-1093_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="5000" yOff="3500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2629-1094_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="5000" yOff="3000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2629-1095_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="5000" yOff="2500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2629-1096_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="5000" yOff="2000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2629-1097_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="5000" yOff="1500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2629-1098_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="5000" yOff="1000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2629-1099_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="5000" yOff="500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2629-1100_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="5000" yOff="0" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2630-1090_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="5500" yOff="5000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2630-1091_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="5500" yOff="4500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2630-1092_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="5500" yOff="4000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2630-1093_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="5500" yOff="3500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2630-1094_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="5500" yOff="3000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2630-1095_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="5500" yOff="2500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2630-1096_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="5500" yOff="2000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2630-1097_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="5500" yOff="1500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2630-1098_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="5500" yOff="1000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2630-1099_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="5500" yOff="500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2630-1100_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="5500" yOff="0" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2631-1090_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="6000" yOff="5000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2631-1091_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="6000" yOff="4500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2631-1092_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="6000" yOff="4000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2631-1093_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="6000" yOff="3500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2631-1094_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="6000" yOff="3000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2631-1095_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="6000" yOff="2500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2631-1096_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="6000" yOff="2000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2631-1097_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="6000" yOff="1500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2631-1098_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="6000" yOff="1000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2631-1099_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="6000" yOff="500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2631-1100_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="6000" yOff="0" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2632-1090_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="6500" yOff="5000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2632-1091_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="6500" yOff="4500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2632-1092_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="6500" yOff="4000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2632-1093_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="6500" yOff="3500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2632-1094_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="6500" yOff="3000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2632-1095_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="6500" yOff="2500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2632-1096_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="6500" yOff="2000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2632-1097_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="6500" yOff="1500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2632-1098_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="6500" yOff="1000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2632-1099_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="6500" yOff="500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2632-1100_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="6500" yOff="0" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2633-1090_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="7000" yOff="5000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2633-1091_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="7000" yOff="4500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2633-1092_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="7000" yOff="4000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2633-1093_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="7000" yOff="3500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2633-1094_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="7000" yOff="3000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2633-1095_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="7000" yOff="2500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2633-1096_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="7000" yOff="2000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2633-1097_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="7000" yOff="1500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2633-1098_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="7000" yOff="1000" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2633-1099_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="7000" yOff="500" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+    <ComplexSource>
+      <SourceFilename relativeToVRT="1">swissalti3d_2024_2633-1100_2_2056_5728.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="500" RasterYSize="500" DataType="Float32" BlockXSize="128" BlockYSize="128" />
+      <SrcRect xOff="0" yOff="0" xSize="500" ySize="500" />
+      <DstRect xOff="7000" yOff="0" xSize="500" ySize="500" />
+      <NODATA>0</NODATA>
+    </ComplexSource>
+  </VRTRasterBand>
+  <OverviewList resampling="nearest">2</OverviewList>
+</VRTDataset>
