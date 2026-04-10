@@ -44,12 +44,8 @@ COPY app/ /app/app
 VOLUME ["/data"]
 
 # Non-root user
-RUN useradd -m -u 10001 appuser \
-    && mkdir -p /data/avaframe/jobs \
-    && mkdir -p /data/avaframe/digest \
-    && chown -R appuser:appuser /app /data
-
-USER appuser
+RUN mkdir -p /data/avaframe/jobs \
+    && mkdir -p /data/avaframe/digest 
 
 # This container is a worker, not an HTTP API
 CMD ["python", "-m", "app.worker"]
