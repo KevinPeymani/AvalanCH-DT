@@ -132,7 +132,7 @@ def run(
             overrides["INPUT"] = {}
         overrides["INPUT"]["thFromIni"] = release_thickness_m
 
-    overrides["GENERAL"]["resType"] = "FT|timeInfo"
+    overrides["GENERAL"]["resType"] = "FT|FV|timeInfo"
 
     # quality preset
     preset = QUALITY_PRESETS.get(quality)

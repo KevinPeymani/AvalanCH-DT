@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import asyncio
 import json
 import os
@@ -7,6 +9,7 @@ from typing import Any, Dict
 import aio_pika
 
 from . import storage
+from .digest_service import run_digest
 from .ingest_service import run_ingestion
 from .simulation_service import run_simulation
 
@@ -15,6 +18,7 @@ WORKER_TYPE = os.getenv("WORKER_TYPE", "simulation").strip().lower()
 
 INGEST_QUEUE = os.getenv("INGEST_QUEUE", "ingestion_queue")
 SIM_QUEUE = os.getenv("SIM_QUEUE", "simulation_queue")
+DIGEST_QUEUE = os.getenv("DIGEST_QUEUE", "digestion_queue")
 
 RECONNECT_DELAY_SECONDS = int(os.getenv("RECONNECT_DELAY_SECONDS", "5"))
 PREFETCH_COUNT = int(os.getenv("PREFETCH_COUNT", "1"))
@@ -25,7 +29,20 @@ def queue_name_for_worker() -> str:
         return INGEST_QUEUE
     if WORKER_TYPE == "simulation":
         return SIM_QUEUE
+    if WORKER_TYPE == "digestion":
+        return DIGEST_QUEUE
     raise ValueError(f"Unsupported WORKER_TYPE='{WORKER_TYPE}'")
+
+
+async def publish_to_queue(channel: aio_pika.Channel, queue_name: str, payload: Dict[str, Any]) -> None:
+    await channel.declare_queue(queue_name, durable=True)
+    await channel.default_exchange.publish(
+        aio_pika.Message(
+            body=json.dumps(storage.to_jsonable(payload)).encode("utf-8"),
+            delivery_mode=aio_pika.DeliveryMode.PERSISTENT,
+        ),
+        routing_key=queue_name,
+    )
 
 
 async def process_message(payload: Dict[str, Any], channel: aio_pika.Channel) -> Dict[str, Any]:
@@ -36,9 +53,14 @@ async def process_message(payload: Dict[str, Any], channel: aio_pika.Channel) ->
         return await run_ingestion(payload, channel, SIM_QUEUE)
 
     if WORKER_TYPE == "simulation":
-        # run_simulation est synchrone et potentiellement long/bloquant
-        # on l'exécute dans un thread pour ne pas bloquer complètement la boucle asyncio
-        return await asyncio.to_thread(run_simulation, payload)
+        sim_result = await asyncio.to_thread(run_simulation, payload)
+        digest_payload = dict(payload)
+        digest_payload["simulation_result"] = sim_result
+        await publish_to_queue(channel, DIGEST_QUEUE, digest_payload)
+        return sim_result
+
+    if WORKER_TYPE == "digestion":
+        return await run_digest(payload, channel)
 
     raise ValueError(f"Unsupported WORKER_TYPE='{WORKER_TYPE}'")
 
@@ -56,8 +78,8 @@ async def handle_message(message: aio_pika.IncomingMessage, channel: aio_pika.Ch
         await message.ack()
         print(f"[worker:{WORKER_TYPE}] job '{job_id}' done")
 
-    except Exception as e:
-        print(f"[worker:{WORKER_TYPE}] job failed: {e}")
+    except Exception as exc:
+        print(f"[worker:{WORKER_TYPE}] job failed: {exc}")
         print(traceback.format_exc())
 
         if job_id:
@@ -67,7 +89,7 @@ async def handle_message(message: aio_pika.IncomingMessage, channel: aio_pika.Ch
                     status="failed",
                     finished_at=storage.now_iso(),
                     error={
-                        "message": f"{type(e).__name__}: {e}",
+                        "message": f"{type(exc).__name__}: {exc}",
                         "traceback": traceback.format_exc(),
                         "worker_type": WORKER_TYPE,
                     },
@@ -76,8 +98,6 @@ async def handle_message(message: aio_pika.IncomingMessage, channel: aio_pika.Ch
                 print(f"[worker:{WORKER_TYPE}] failed to update job status: {storage_error}")
                 print(traceback.format_exc())
 
-        # On rejette le message sans requeue pour éviter une boucle infinie
-        # si le payload est invalide ou si le job casse toujours.
         try:
             await message.reject(requeue=False)
         except Exception as ack_error:
@@ -109,12 +129,10 @@ async def consume_forever() -> None:
             print(f"[worker:{WORKER_TYPE}] cancellation received, shutting down")
             raise
 
-        except Exception as e:
-            print(f"[worker:{WORKER_TYPE}] consumer loop crashed: {e}")
+        except Exception as exc:
+            print(f"[worker:{WORKER_TYPE}] consumer loop crashed: {exc}")
             print(traceback.format_exc())
-            print(
-                f"[worker:{WORKER_TYPE}] reconnecting in {RECONNECT_DELAY_SECONDS}s..."
-            )
+            print(f"[worker:{WORKER_TYPE}] reconnecting in {RECONNECT_DELAY_SECONDS}s...")
             await asyncio.sleep(RECONNECT_DELAY_SECONDS)
 
         finally:

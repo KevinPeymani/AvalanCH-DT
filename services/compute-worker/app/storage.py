@@ -1,7 +1,9 @@
-import os
+from __future__ import annotations
+
 import json
-from pathlib import Path
+import os
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any, Dict, List
 
 JOBS_DIR = Path(os.getenv("JOBS_DIR", "/data/jobs"))
@@ -36,6 +38,9 @@ def _jsonable(value: Any) -> Any:
     if isinstance(value, (list, tuple)):
         return [_jsonable(v) for v in value]
     return value
+
+def to_jsonable(value: Any) -> Any:
+    return _jsonable(value)
 
 
 def write_json(path: Path, data: Dict[str, Any]) -> None:
@@ -73,7 +78,7 @@ def init_job(job_id: str, request_payload: Dict[str, Any]) -> Dict[str, Any]:
     return meta
 
 
-def update_job(job_id: str, **patch) -> Dict[str, Any]:
+def update_job(job_id: str, **patch: Any) -> Dict[str, Any]:
     path = job_meta_path(job_id)
     meta = read_json(path) if path.exists() else {"job_id": job_id}
     meta.update(patch)
