@@ -70,9 +70,8 @@ func _on_button(mb: InputEventMouseButton) -> void:
 
 func _on_motion(mm: InputEventMouseMotion) -> void:
 	if _orbit_active:
-		# Screen-Y is downward, so negate for pitch so drag-up raises camera.
-		_yaw   += mm.relative.x * orbit_sensitivity
-		_pitch -= mm.relative.y * orbit_sensitivity
+		_yaw   -= mm.relative.x * orbit_sensitivity
+		_pitch += mm.relative.y * orbit_sensitivity
 		_pitch  = clamp(_pitch, min_pitch, max_pitch)
 		_update_camera()
 	elif _pan_active:
@@ -87,16 +86,10 @@ func _zoom(dir: int) -> void:
 
 
 func _pan(delta: Vector2) -> void:
-	# Speed proportional to distance → same number of pixels moves the same
-	# fraction of the visible terrain regardless of zoom level.
 	var speed    := _distance * pan_sensitivity
-	# Camera-right projected onto the horizontal plane.
 	var right_h  := Vector3(transform.basis.x.x, 0.0, transform.basis.x.z).normalized()
-	# Horizontal direction from camera toward target ("into the scene").
 	var toward_h := Vector3(-sin(_yaw), 0.0, -cos(_yaw))
-	# Grab-world feel: dragging right pulls the terrain right (target moves left).
 	_target -= right_h  * delta.x * speed
-	# Dragging down pulls the terrain toward the viewer (target moves forward).
 	_target += toward_h * delta.y * speed
 	_update_camera()
 
