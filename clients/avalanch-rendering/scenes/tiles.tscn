@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dhplbcnhkbhvi"]
+[gd_scene load_steps=11 format=3 uid="uid://dhplbcnhkbhvi"]
 
 [ext_resource type="Script" uid="uid://die1rhqr44lrj" path="res://scripts/tiles_fetcher.gd" id="1_1g8qg"]
 [ext_resource type="Material" uid="uid://b6rhf172b17kc" path="res://shaders/avalanche_sdf_shader_material.tres" id="2_i3m0d"]
@@ -9,6 +9,26 @@
 
 [sub_resource type="BoxMesh" id="BoxMesh_exfrf"]
 flip_faces = true
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky1"]
+sky_top_color = Color(0.12, 0.28, 0.68, 1)
+sky_horizon_color = Color(0.55, 0.76, 0.96, 1)
+sky_curve = 0.1
+ground_bottom_color = Color(0.22, 0.2, 0.18, 1)
+ground_horizon_color = Color(0.58, 0.55, 0.48, 1)
+sun_angle_max = 25.0
+
+[sub_resource type="Sky" id="Sky_sky1"]
+sky_material = SubResource("ProceduralSkyMaterial_sky1")
+
+[sub_resource type="Environment" id="Environment_env1"]
+background_mode = 2
+sky = SubResource("Sky_sky1")
+ambient_light_source = 2
+ambient_light_color = Color(0.7, 0.72, 0.8, 1)
+ambient_light_energy = 0.6
+tonemap_mode = 1
+tonemap_exposure = 1.1
 
 [node name="Tiles" type="Node3D"]
 
@@ -35,6 +55,14 @@ frames_count = 40
 frame = 33
 hflow_base_path = "res://data/avalanche2/avalanche2_exr/frameFT_"
 heightmap = ExtResource("4_i3m0d")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_env1")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866, 0.354, 0.354, 0, 0.707, -0.707, -0.5, 0.612, 0.612, 0, 0, 0)
+light_color = Color(1, 0.96, 0.88, 1)
+light_energy = 1.5
 
 [node name="DangerTooltip" type="CanvasLayer" parent="."]
 script = ExtResource("5_dangertooltip")
