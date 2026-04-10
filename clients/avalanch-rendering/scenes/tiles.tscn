@@ -17,12 +17,14 @@ center_e = 2622839.0
 center_n = 1094640.0
 lod_levels = 10
 max_concurrent_requests = 32
+use_snow_overlay = true
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=225080739]
 transform = Transform3D(0.8176693, -0.2542096, 0.5165215, 0, 0.8972243, 0.4415751, -0.57568824, -0.3610624, 0.73363274, 712.8225, 2473.3489, 4203.78)
 
 [node name="snow" type="MeshInstance3D" parent="." unique_id=1891957542]
 transform = Transform3D(1000, 0, 0, 0, 1000, 0, 0, 0, 1000, -0.00023627281, 0.5, -0.004518032)
+visible = false
 mesh = SubResource("BoxMesh_exfrf")
 surface_material_override/0 = ExtResource("2_i3m0d")
 script = ExtResource("3_p5lnq")

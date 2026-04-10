@@ -27,18 +27,70 @@ extends Node3D
 @export var wms_elevation_url: String = "http://localhost:8081/geoserver/switzerland/wms"
 @export var max_concurrent_requests: int = 8
 
+@export var use_snow_overlay: bool = false
+@export var use_danger_overlay: bool = false
+@export var snow_layer_name: String = "avalanch.hs_latest"
+@export var danger_layer_name: String = "avalanch.danger_latest"
+@export var overlay_request_size: int = 256
+@export var snow_min_m: float = 0.0
+@export var snow_max_m: float = 8.0
+@export var danger_min: float = 0.0
+@export var danger_max: float = 5.0
+@export var snow_opacity: float = 0.82
+@export var danger_opacity: float = 0.55
+@export var snow_use_bands: bool = true
+@export var snow_band_count: float = 7.0
+
+@export var enable_overlay_hotkeys: bool = true
+@export var key_toggle_snow_bands: int = KEY_B
+@export var key_more_snow_bands: int = KEY_BRACKETRIGHT
+@export var key_less_snow_bands: int = KEY_BRACKETLEFT
+@export var key_more_snow_opacity: int = KEY_PAGEUP
+@export var key_less_snow_opacity: int = KEY_PAGEDOWN
+
 @export var terrain_shader: Shader = preload("res://shaders/terrain_swissalti3d.gdshader")
 
 # active_tiles: tiles that are currently visible (key = Vector3(cx, cy, lod))
 var active_tiles: Dictionary = {}
 
-# texture_cache: {Vector3(cx,cy,lod): {"albedo": tex, "height": tex}}
+# texture_cache: {Vector3(cx,cy,lod): {"albedo": tex, "height": tex, "snow": tex, "danger": tex}}
 var texture_cache: Dictionary = {}
 
 var lod_colors: Array[Color] = [Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.CYAN, Color.MAGENTA]
 var time_since_update: float = 0.0
 var request_queue: Array = []
 var _pending_requests: int = 0
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not enable_overlay_hotkeys or Engine.is_editor_hint():
+		return
+	if not (event is InputEventKey):
+		return
+
+	var key_event := event as InputEventKey
+	if not key_event.pressed or key_event.echo:
+		return
+
+	if key_event.keycode == key_toggle_snow_bands:
+		snow_use_bands = not snow_use_bands
+		_update_materials()
+		print("[SnowOverlay] bands=", snow_use_bands, " count=", snow_band_count, " opacity=", snow_opacity)
+	elif key_event.keycode == key_more_snow_bands:
+		snow_band_count = min(16.0, snow_band_count + 1.0)
+		_update_materials()
+		print("[SnowOverlay] bands=", snow_use_bands, " count=", snow_band_count, " opacity=", snow_opacity)
+	elif key_event.keycode == key_less_snow_bands:
+		snow_band_count = max(2.0, snow_band_count - 1.0)
+		_update_materials()
+		print("[SnowOverlay] bands=", snow_use_bands, " count=", snow_band_count, " opacity=", snow_opacity)
+	elif key_event.keycode == key_more_snow_opacity:
+		snow_opacity = min(1.0, snow_opacity + 0.05)
+		_update_materials()
+		print("[SnowOverlay] bands=", snow_use_bands, " count=", snow_band_count, " opacity=", snow_opacity)
+	elif key_event.keycode == key_less_snow_opacity:
+		snow_opacity = max(0.0, snow_opacity - 0.05)
+		_update_materials()
+		print("[SnowOverlay] bands=", snow_use_bands, " count=", snow_band_count, " opacity=", snow_opacity)
 
 func _process(delta: float):
 	time_since_update += delta
@@ -204,6 +256,20 @@ func _spawn_tile(cx: float, cy: float, size: float, lod: int):
 	mat.set_shader_parameter("uv_scale_albedo",  Vector3.ONE)
 	mat.set_shader_parameter("uv_scale_height",  Vector3.ONE)
 	mat.set_shader_parameter("height_scale",     max_elevation_meters / meters_per_unit)
+	mat.set_shader_parameter("use_snow_overlay", use_snow_overlay)
+	mat.set_shader_parameter("use_danger_overlay", use_danger_overlay)
+	mat.set_shader_parameter("uv_scale_snow", Vector3.ONE)
+	mat.set_shader_parameter("uv_offset_snow", Vector3.ZERO)
+	mat.set_shader_parameter("uv_scale_danger", Vector3.ONE)
+	mat.set_shader_parameter("uv_offset_danger", Vector3.ZERO)
+	mat.set_shader_parameter("snow_min_m", snow_min_m)
+	mat.set_shader_parameter("snow_max_m", snow_max_m)
+	mat.set_shader_parameter("danger_min", danger_min)
+	mat.set_shader_parameter("danger_max", danger_max)
+	mat.set_shader_parameter("snow_opacity", snow_opacity)
+	mat.set_shader_parameter("danger_opacity", danger_opacity)
+	mat.set_shader_parameter("snow_use_bands", snow_use_bands)
+	mat.set_shader_parameter("snow_band_count", snow_band_count)
 
 	var skirt = 0.0
 	if displace:
@@ -244,6 +310,22 @@ func _spawn_tile(cx: float, cy: float, size: float, lod: int):
 			+ "&BBOX=%f,%f,%f,%f&WIDTH=128&HEIGHT=128&FORMAT=image/png&TRANSPARENT=TRUE"
 			) % [cx - half, cy - half, cx + half, cy + half]
 		request_queue.append({"url": url_height, "mi": mi, "type": "height"})
+
+	if use_snow_overlay and (not texture_cache.has(tile_key) or not texture_cache[tile_key].has("snow")):
+		var url_snow = (wms_server_url
+			+ "?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap"
+			+ "&LAYERS=%s&STYLES=&CRS=EPSG:2056"
+			+ "&BBOX=%f,%f,%f,%f&WIDTH=%d&HEIGHT=%d&FORMAT=image/png&TRANSPARENT=TRUE"
+			) % [snow_layer_name, cx - half, cy - half, cx + half, cy + half, overlay_request_size, overlay_request_size]
+		request_queue.append({"url": url_snow, "mi": mi, "type": "snow"})
+
+	if use_danger_overlay and (not texture_cache.has(tile_key) or not texture_cache[tile_key].has("danger")):
+		var url_danger = (wms_server_url
+			+ "?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap"
+			+ "&LAYERS=%s&STYLES=&CRS=EPSG:2056"
+			+ "&BBOX=%f,%f,%f,%f&WIDTH=%d&HEIGHT=%d&FORMAT=image/png&TRANSPARENT=TRUE"
+			) % [danger_layer_name, cx - half, cy - half, cx + half, cy + half, overlay_request_size, overlay_request_size]
+		request_queue.append({"url": url_danger, "mi": mi, "type": "danger"})
 
 # ---------------------------------------------------------------------------
 # Edge-stitching: for every active tile, determine which of its 4 edges
@@ -354,6 +436,10 @@ func _on_downloaded(result: int, code: int, _headers: PackedStringArray,
 			decode_err = img.load_jpg_from_buffer(body)
 		elif req_type == "height":
 			decode_err = img.load_png_from_buffer(body)
+		elif req_type == "snow":
+			decode_err = img.load_png_from_buffer(body)
+		elif req_type == "danger":
+			decode_err = img.load_png_from_buffer(body)
 
 		if decode_err == OK:
 			img.fix_alpha_edges()
@@ -382,6 +468,16 @@ func _update_materials():
 func _apply_material(mi: MeshInstance3D, lod: int):
 	var mat = mi.material_override as ShaderMaterial
 	if not mat: return
+	mat.set_shader_parameter("use_snow_overlay", use_snow_overlay)
+	mat.set_shader_parameter("use_danger_overlay", use_danger_overlay)
+	mat.set_shader_parameter("snow_min_m", snow_min_m)
+	mat.set_shader_parameter("snow_max_m", snow_max_m)
+	mat.set_shader_parameter("danger_min", danger_min)
+	mat.set_shader_parameter("danger_max", danger_max)
+	mat.set_shader_parameter("snow_opacity", snow_opacity)
+	mat.set_shader_parameter("danger_opacity", danger_opacity)
+	mat.set_shader_parameter("snow_use_bands", snow_use_bands)
+	mat.set_shader_parameter("snow_band_count", snow_band_count)
 
 	var cx       = mi.get_meta("cx")
 	var cy       = mi.get_meta("cy")
@@ -445,6 +541,52 @@ func _apply_material(mi: MeshInstance3D, lod: int):
 				mat.set_shader_parameter("uv_offset_height", Vector3(u_off, v_off, 0.0))
 				found = true
 			p_lod -= 1
+
+	# --- SNOW (color overlay only, no impact on displacement) ---
+	if use_snow_overlay:
+		if texture_cache.has(tile_key) and texture_cache[tile_key].has("snow"):
+			mat.set_shader_parameter("snow_tex",       texture_cache[tile_key]["snow"])
+			mat.set_shader_parameter("uv_scale_snow",  Vector3.ONE)
+			mat.set_shader_parameter("uv_offset_snow", Vector3.ZERO)
+		else:
+			var snow_found := false
+			var p_lod_snow := lod - 1
+			while p_lod_snow >= 0 and not snow_found:
+				var p_size_snow = base_size / pow(2.0, p_lod_snow)
+				var p_cx_snow = (floor(cx / p_size_snow) * p_size_snow) + (p_size_snow / 2.0)
+				var p_cy_snow = (floor(cy / p_size_snow) * p_size_snow) + (p_size_snow / 2.0)
+				var p_key_snow = Vector3(p_cx_snow, p_cy_snow, p_lod_snow)
+				if texture_cache.has(p_key_snow) and texture_cache[p_key_snow].has("snow"):
+					mat.set_shader_parameter("snow_tex", texture_cache[p_key_snow]["snow"])
+					mat.set_shader_parameter("uv_scale_snow", Vector3(size / p_size_snow, size / p_size_snow, 1.0))
+					var u_off_snow = ((cx - size / 2.0) - (p_cx_snow - p_size_snow / 2.0)) / p_size_snow
+					var v_off_snow = ((p_cy_snow + p_size_snow / 2.0) - (cy + size / 2.0)) / p_size_snow
+					mat.set_shader_parameter("uv_offset_snow", Vector3(u_off_snow, v_off_snow, 0.0))
+					snow_found = true
+				p_lod_snow -= 1
+
+	# --- DANGER (color overlay only, no impact on displacement) ---
+	if use_danger_overlay:
+		if texture_cache.has(tile_key) and texture_cache[tile_key].has("danger"):
+			mat.set_shader_parameter("danger_tex",       texture_cache[tile_key]["danger"])
+			mat.set_shader_parameter("uv_scale_danger",  Vector3.ONE)
+			mat.set_shader_parameter("uv_offset_danger", Vector3.ZERO)
+		else:
+			var danger_found := false
+			var p_lod_danger := lod - 1
+			while p_lod_danger >= 0 and not danger_found:
+				var p_size_danger = base_size / pow(2.0, p_lod_danger)
+				var p_cx_danger = (floor(cx / p_size_danger) * p_size_danger) + (p_size_danger / 2.0)
+				var p_cy_danger = (floor(cy / p_size_danger) * p_size_danger) + (p_size_danger / 2.0)
+				var p_key_danger = Vector3(p_cx_danger, p_cy_danger, p_lod_danger)
+				if texture_cache.has(p_key_danger) and texture_cache[p_key_danger].has("danger"):
+					mat.set_shader_parameter("danger_tex", texture_cache[p_key_danger]["danger"])
+					mat.set_shader_parameter("uv_scale_danger", Vector3(size / p_size_danger, size / p_size_danger, 1.0))
+					var u_off_danger = ((cx - size / 2.0) - (p_cx_danger - p_size_danger / 2.0)) / p_size_danger
+					var v_off_danger = ((p_cy_danger + p_size_danger / 2.0) - (cy + size / 2.0)) / p_size_danger
+					mat.set_shader_parameter("uv_offset_danger", Vector3(u_off_danger, v_off_danger, 0.0))
+					danger_found = true
+				p_lod_danger -= 1
 
 func _clear_meshes():
 	for key in active_tiles.keys():
