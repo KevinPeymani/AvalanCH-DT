@@ -454,16 +454,16 @@ def main() -> None:
 	if args.dry_run:
 		return
 
-	try:
-		run_alpine3d(first_time, last_time, args.image, args.np, args.binary)
-	except subprocess.CalledProcessError as exc:
-		combined_output = f"{exc.output or ''}\n{exc.stderr or ''}"
-		if "Date object is undefined" not in combined_output:
-			raise
-		print("POI-enabled run hit the known Alpine3D special-point SMET writer bug. Retrying without POI outputs.")
-		cleanup_partial_special_point_outputs()
-		write_runtime_io_ini(args.station, None)
-		run_alpine3d(first_time, last_time, args.image, args.np, args.binary)
+	# try:
+	# 	run_alpine3d(first_time, last_time, args.image, args.np, args.binary)
+	# except subprocess.CalledProcessError as exc:
+	# 	combined_output = f"{exc.output or ''}\n{exc.stderr or ''}"
+	# 	if "Date object is undefined" not in combined_output:
+	# 		raise
+	# 	print("POI-enabled run hit the known Alpine3D special-point SMET writer bug. Retrying without POI outputs.")
+	cleanup_partial_special_point_outputs()
+	write_runtime_io_ini(args.station, None)
+	run_alpine3d(first_time, last_time, args.image, args.np, args.binary)
 
 
 if __name__ == "__main__":

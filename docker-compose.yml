@@ -9,6 +9,9 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: admin
       RABBITMQ_DEFAULT_PASS: simulation_secure
+      # Alpine3D jobs can run longer than RabbitMQ's default 30 min consumer ack timeout.
+      # Increase it to 6h to avoid PRECONDITION_FAILED on basic_ack after long processing.
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: "-rabbit consumer_timeout 21600000"
     networks:
       - swiss-net
 #   nginx:

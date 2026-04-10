@@ -46,9 +46,10 @@ def derive_ilwr_series(hourly_df):
 
 
 def fetch_station_measurements_hourly(station_code="DAV3", period_in_days=7):
+    request_days = 1 if period_in_days <= 1 else 3 if period_in_days <= 3 else 7
     response = requests.get(
         URL_MEASUREMENT.format(station_code=station_code),
-        params={"period_in_days": period_in_days},
+        params={"period_in_days": request_days},
         timeout=30,
     )
     response.raise_for_status()
@@ -71,6 +72,10 @@ def fetch_station_measurements_hourly(station_code="DAV3", period_in_days=7):
 
     numeric_cols = [c for c in df.columns if c != "station_code"]
     hourly = df[numeric_cols].resample("1h").mean().ffill()
+
+    if period_in_days > 0:
+        cutoff = hourly.index.max() - pd.Timedelta(days=period_in_days)
+        hourly = hourly[hourly.index >= cutoff]
 
     if hourly.empty:
         raise ValueError(f"Hourly aggregation returned no data for station {station_code}")
