@@ -1,0 +1,17 @@
+<layer>
+  <name>swissalti3d-combined</name>
+  <id>LayerInfoImpl--6c217403:19d7400a8be:-7ffe</id>
+  <type>RASTER</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--6c217403:19d7400a8be:-7ffd</id>
+  </defaultStyle>
+  <resource class="coverage">
+    <id>CoverageInfoImpl--6c217403:19d7400a8be:-7fff</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-04-09 20:48:55.800 UTC</dateCreated>
+  <dateModified>2026-04-09 20:49:43.372 UTC</dateModified>
+</layer>

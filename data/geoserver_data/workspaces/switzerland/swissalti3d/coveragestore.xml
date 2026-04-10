@@ -1,0 +1,14 @@
+<coverageStore>
+  <id>CoverageStoreInfoImpl--6c217403:19d7400a8be:-8000</id>
+  <name>swissalti3d</name>
+  <type>VRT</type>
+  <enabled>true</enabled>
+  <workspace>
+    <id>WorkspaceInfoImpl--50cf9be0:19d732ff9f4:-7ff5</id>
+  </workspace>
+  <__default>false</__default>
+  <dateCreated>2026-04-09 20:48:13.500 UTC</dateCreated>
+  <dateModified>2026-04-09 20:48:23.260 UTC</dateModified>
+  <disableOnConnFailure>false</disableOnConnFailure>
+  <url>file:///opt/geospatial_data/zones/swissalti3d-combined.vrt</url>
+</coverageStore>

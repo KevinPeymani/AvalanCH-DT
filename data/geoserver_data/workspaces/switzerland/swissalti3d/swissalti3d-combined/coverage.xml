@@ -1,0 +1,142 @@
+<coverage>
+  <id>CoverageInfoImpl--6c217403:19d7400a8be:-7fff</id>
+  <name>swissalti3d-combined</name>
+  <nativeName>swissalti3d-combined</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl--50cf9be0:19d732ff9f4:-7ff4</id>
+  </namespace>
+  <title>swissalti3d-combined</title>
+  <description>Generated from VRT</description>
+  <keywords>
+    <string>swissalti3d-combined</string>
+    <string>WCS</string>
+    <string>VRT</string>
+  </keywords>
+  <nativeCRS class="projected">PROJCS[&quot;CH1903+ / LV95&quot;, 
+  GEOGCS[&quot;CH1903+&quot;, 
+    DATUM[&quot;CH1903+&quot;, 
+      SPHEROID[&quot;Bessel 1841&quot;, 6377397.155, 299.1528128, AUTHORITY[&quot;EPSG&quot;,&quot;7004&quot;]], 
+      TOWGS84[674.374, 15.056, 405.346, 0.0, 0.0, 0.0, 0.0], 
+      AUTHORITY[&quot;EPSG&quot;,&quot;6150&quot;]], 
+    PRIMEM[&quot;Greenwich&quot;, 0.0, AUTHORITY[&quot;EPSG&quot;,&quot;8901&quot;]], 
+    UNIT[&quot;degree&quot;, 0.017453292519943295], 
+    AXIS[&quot;Geodetic longitude&quot;, EAST], 
+    AXIS[&quot;Geodetic latitude&quot;, NORTH], 
+    AUTHORITY[&quot;EPSG&quot;,&quot;4150&quot;]], 
+  PROJECTION[&quot;Oblique_Mercator&quot;, AUTHORITY[&quot;EPSG&quot;,&quot;9815&quot;]], 
+  PARAMETER[&quot;longitude_of_center&quot;, 7.439583333333333], 
+  PARAMETER[&quot;latitude_of_center&quot;, 46.952405555555565], 
+  PARAMETER[&quot;azimuth&quot;, 90.0], 
+  PARAMETER[&quot;scale_factor&quot;, 1.0], 
+  PARAMETER[&quot;false_easting&quot;, 2600000.0], 
+  PARAMETER[&quot;false_northing&quot;, 1200000.0], 
+  PARAMETER[&quot;rectified_grid_angle&quot;, 90.0], 
+  UNIT[&quot;m&quot;, 1.0], 
+  AXIS[&quot;Easting&quot;, EAST], 
+  AXIS[&quot;Northing&quot;, NORTH], 
+  AUTHORITY[&quot;EPSG&quot;,&quot;2056&quot;]]</nativeCRS>
+  <srs>EPSG:2056</srs>
+  <nativeBoundingBox>
+    <minx>2619000.0</minx>
+    <maxx>2634000.0</maxx>
+    <miny>1090000.0</miny>
+    <maxy>1101000.0</maxy>
+    <crs class="projected">EPSG:2056</crs>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>7.683717586236234</minx>
+    <maxx>7.877983179073293</maxx>
+    <miny>45.960725318539474</miny>
+    <maxy>46.06026148907923</maxy>
+    <crs>EPSG:4326</crs>
+  </latLonBoundingBox>
+  <projectionPolicy>REPROJECT_TO_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <metadata>
+    <entry key="DirectDownload.Key">
+      <directDownloadSettings>
+        <directDownloadEnabled>false</directDownloadEnabled>
+        <maxDownloadSize>0</maxDownloadSize>
+      </directDownloadSettings>
+    </entry>
+    <entry key="cachingEnabled">false</entry>
+    <entry key="dirName">swissalti3d_swissalti3d-combined</entry>
+  </metadata>
+  <store class="coverageStore">
+    <id>CoverageStoreInfoImpl--6c217403:19d7400a8be:-8000</id>
+  </store>
+  <serviceConfiguration>false</serviceConfiguration>
+  <simpleConversionEnabled>false</simpleConversionEnabled>
+  <internationalTitle/>
+  <internationalAbstract/>
+  <nativeFormat>VRT</nativeFormat>
+  <grid dimension="2">
+    <range>
+      <low>0 0</low>
+      <high>7500 5500</high>
+    </range>
+    <transform>
+      <scaleX>2.0</scaleX>
+      <scaleY>-2.0</scaleY>
+      <shearX>0.0</shearX>
+      <shearY>0.0</shearY>
+      <translateX>2619001.0</translateX>
+      <translateY>1100999.0</translateY>
+    </transform>
+    <crs>EPSG:2056</crs>
+  </grid>
+  <supportedFormats>
+    <string>GIF</string>
+    <string>PNG</string>
+    <string>JPEG</string>
+    <string>TIFF</string>
+    <string>GEOTIFF</string>
+  </supportedFormats>
+  <interpolationMethods>
+    <string>nearest neighbor</string>
+    <string>bilinear</string>
+    <string>bicubic</string>
+  </interpolationMethods>
+  <defaultInterpolationMethod>nearest neighbor</defaultInterpolationMethod>
+  <dimensions>
+    <coverageDimension>
+      <name>GRAY_INDEX</name>
+      <description>GridSampleDimension[-Infinity,Infinity]</description>
+      <range>
+        <min>0.0</min>
+        <max>4000.0</max>
+      </range>
+      <nullValues>
+        <double>0.0</double>
+      </nullValues>
+      <dimensionType>
+        <name>REAL_32BITS</name>
+      </dimensionType>
+    </coverageDimension>
+  </dimensions>
+  <requestSRS>
+    <string>EPSG:2056</string>
+  </requestSRS>
+  <responseSRS>
+    <string>EPSG:2056</string>
+  </responseSRS>
+  <parameters>
+    <entry>
+      <string>SUGGESTED_TILE_SIZE</string>
+      <string>512,512</string>
+    </entry>
+    <entry>
+      <string>Bands</string>
+      <null/>
+    </entry>
+    <entry>
+      <string>FootprintBehavior</string>
+      <string>None</string>
+    </entry>
+    <entry>
+      <string>USE_IMAGEN_IMAGEREAD</string>
+      <boolean>true</boolean>
+    </entry>
+  </parameters>
+  <nativeCoverageName>swissalti3d-combined</nativeCoverageName>
+</coverage>
