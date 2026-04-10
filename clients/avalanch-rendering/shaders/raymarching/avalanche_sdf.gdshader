@@ -175,7 +175,7 @@ void fragment() {
 
     vec2 hit = intersect_aabb(local_ro, local_rd, vec3(-0.50), vec3(0.50));
     float t_min = max(hit.x, 0.0);
-    float t_max = min(hit.y, max_local_dist / rescl);
+    float t_max = min(hit.y, max_local_dist);
     max_world_dist = min(max_world_dist, hit.y / rescl);
     float t = t_min;
 
@@ -218,7 +218,8 @@ void fragment() {
         vec3 world_solid_hit = (MODEL_MATRIX * vec4(solid_hit_pos_local, 1.0)).xyz;
         volume_hit_world_dist = length(world_solid_hit - world_camera);
 
-        t_max = min(t_max, volume_hit_world_dist);
+        t_max = min(t_max, t);
+        // t_max = min(t_max, volume_hit_world_dist);
         
         float shadow = calculate_light(solid_hit_pos_local + local_n * shadow_normal_bias, local_sun_dir, snow_shadow_step, dither);
         vec3 ambient = get_sky(sun_dir, local_n);
