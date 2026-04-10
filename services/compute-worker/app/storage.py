@@ -1,7 +1,9 @@
-import os
+from __future__ import annotations
+
 import json
-from pathlib import Path
+import os
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any, Dict, List
 
 JOBS_DIR = Path(os.getenv("JOBS_DIR", "/data/jobs"))
@@ -28,10 +30,26 @@ def ensure_job_dirs(job_id: str) -> None:
     avalanche_dir(job_id).mkdir(parents=True, exist_ok=True)
 
 
+def _jsonable(value: Any) -> Any:
+    if isinstance(value, Path):
+        return str(value)
+    if isinstance(value, dict):
+        return {str(k): _jsonable(v) for k, v in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_jsonable(v) for v in value]
+    return value
+
+def to_jsonable(value: Any) -> Any:
+    return _jsonable(value)
+
+
 def write_json(path: Path, data: Dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp = path.with_suffix(path.suffix + ".tmp")
-    tmp.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+    tmp.write_text(
+        json.dumps(_jsonable(data), indent=2, ensure_ascii=False),
+        encoding="utf-8",
+    )
     tmp.replace(path)
 
 
@@ -40,9 +58,6 @@ def read_json(path: Path) -> Dict[str, Any]:
 
 
 def init_job(job_id: str, request_payload: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    Create initial job.json (queued).
-    """
     ensure_job_dirs(job_id)
     meta = {
         "job_id": job_id,
@@ -63,7 +78,7 @@ def init_job(job_id: str, request_payload: Dict[str, Any]) -> Dict[str, Any]:
     return meta
 
 
-def update_job(job_id: str, **patch) -> Dict[str, Any]:
+def update_job(job_id: str, **patch: Any) -> Dict[str, Any]:
     path = job_meta_path(job_id)
     meta = read_json(path) if path.exists() else {"job_id": job_id}
     meta.update(patch)
@@ -79,10 +94,6 @@ def get_job(job_id: str) -> Dict[str, Any]:
 
 
 def list_artifacts(job_id: str) -> List[str]:
-    """
-    List files under avalanche_dir/Outputs.
-    Returns paths relative to avalanche_dir (e.g. Outputs/com1DFA/peakFiles/...)
-    """
     base = avalanche_dir(job_id)
     out_root = base / "Outputs"
     if not out_root.exists():
@@ -95,9 +106,6 @@ def list_artifacts(job_id: str) -> List[str]:
 
 
 def resolve_artifact_path(job_id: str, relpath: str) -> Path:
-    """
-    Securely resolve a relative artifact path under avalanche_dir(job_id).
-    """
     base = avalanche_dir(job_id).resolve()
     target = (base / relpath).resolve()
     if not str(target).startswith(str(base)):

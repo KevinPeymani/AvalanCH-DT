@@ -1,11 +1,7 @@
 from enum import Enum
 from typing import Optional, Dict, Any
-from pydantic import BaseModel, Field, HttpUrl
+from pydantic import BaseModel, Field, model_validator
 
-
-# -----------------------
-# Enums métier
-# -----------------------
 
 class AvalancheType(str, Enum):
     dry = "dry"
@@ -20,33 +16,33 @@ class SimulationQuality(str, Enum):
     high = "high"
 
 
-# -----------------------
-# Inputs
-# -----------------------
-
 class AvalancheInputs(BaseModel):
-    """
-    Physical inputs required to run the simulation.
-    """
-    dem_uri: str  # local path, s3, http, etc.
-    rel_uri: str  # release area file
+    dem_uri: str
+    rel_uri: str
 
 
-# -----------------------
-# Simulation profile
-# -----------------------
+class CoordInput(BaseModel):
+    dem_uri: str
+    x: float
+    y: float
+    crs: str = "EPSG:2056"
+    crop_radius_m: float = Field(1000.0, gt=0)
+    target_resolution_m: float = Field(5.0, gt=0)
+    release_radius_m: float = Field(25.0, gt=0)
+    release_thickness_m: float = Field(0.8, gt=0)
+
+    @model_validator(mode="after")
+    def validate_geometry(self):
+        if self.crs.upper() != "EPSG:2056":
+            raise ValueError("coord.crs must be EPSG:2056")
+        if self.release_radius_m >= self.crop_radius_m:
+            raise ValueError("release_radius_m must be smaller than crop_radius_m")
+        return self
 
 class AvalancheSimulationConfig(BaseModel):
-    """
-    High-level simulation parameters exposed by the API.
-    These map internally to AvaFrame INI overrides.
-    """
-
     avalanche_type: AvalancheType
-
     quality: SimulationQuality = SimulationQuality.default
 
-    # Physical properties
     snow_density_kg_m3: float = Field(
         250.0,
         gt=0,
@@ -59,62 +55,35 @@ class AvalancheSimulationConfig(BaseModel):
         description="Entrained snow density (rhoEnt)"
     )
 
-    # Release behaviour
     release_thickness_m: Optional[float] = Field(
         None,
         gt=0,
         description="Uniform release thickness if not provided by REL file"
     )
 
-    # Auto init always true by design but still configurable if needed
     auto_init: bool = True
-
-    # Advanced generic parameters (mapped later)
     extra_params: Dict[str, Any] = Field(default_factory=dict)
 
 
-# -----------------------
-# INI Overrides
-# -----------------------
-
 class IniOverrides(BaseModel):
-    """
-    Direct INI overrides.
-    Structure:
-    {
-        "GENERAL": {"rho": 230},
-        "PHYSICS": {"mu": 0.25}
-    }
-    """
     sections: Dict[str, Dict[str, Any]] = Field(default_factory=dict)
 
 
 class AvalancheConfigOverrides(BaseModel):
-    """
-    Allows overriding specific AvaFrame configuration files.
-    Example:
-    {
-        "com1DFA": {
-            "GENERAL": {"rho": 230}
-        }
-    }
-    """
     modules: Dict[str, Dict[str, Dict[str, Any]]] = Field(default_factory=dict)
 
 
-# -----------------------
-# Final request model
-# -----------------------
-
 class AvalancheJobRequest(BaseModel):
-    """
-    Request model for avalanche simulation.
-    """
-
-    inputs: AvalancheInputs
-
+    inputs: Optional[AvalancheInputs] = None
+    coord: Optional[CoordInput] = None
     simulation: AvalancheSimulationConfig
-
     config_overrides: Optional[AvalancheConfigOverrides] = None
-
     metadata: Dict[str, Any] = Field(default_factory=dict)
+
+    @model_validator(mode="after")
+    def validate_entry_mode(self):
+        if self.inputs is None and self.coord is None:
+            raise ValueError("One of 'inputs' or 'coord' is required")
+        if self.inputs is not None and self.coord is not None:
+            raise ValueError("Use either 'inputs' or 'coord', not both")
+        return self
