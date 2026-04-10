@@ -19,5 +19,7 @@ matplotlib
 # Useful
 python-dotenv
 
+rasterio
+
 
 avaframe @ git+https://github.com/avaframe/AvaFrame.git@2.0b2
