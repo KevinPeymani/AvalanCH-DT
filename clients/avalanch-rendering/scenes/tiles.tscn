@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dhplbcnhkbhvi"]
+[gd_scene load_steps=12 format=3 uid="uid://dhplbcnhkbhvi"]
 
 [ext_resource type="Script" uid="uid://die1rhqr44lrj" path="res://scripts/tiles_fetcher.gd" id="1_1g8qg"]
 [ext_resource type="Material" uid="uid://b6rhf172b17kc" path="res://shaders/avalanche_sdf_shader_material.tres" id="2_i3m0d"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cfiv1rsjcymxm" path="res://data/dems/dem.exr" id="4_i3m0d"]
 [ext_resource type="Script" uid="uid://cw6pa6w3xrpo2" path="res://scripts/danger_tooltip.gd" id="5_dangertooltip"]
 [ext_resource type="Script" uid="uid://d2o7lbvlmojbq" path="res://scripts/terrain_camera.gd" id="6_terraincamera"]
+[ext_resource type="Script" uid="uid://dvrvrcr7krh84" path="res://scripts/overlay_controls.gd" id="7_overlaycontrols"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_exfrf"]
 flip_faces = true
@@ -63,6 +64,9 @@ environment = SubResource("Environment_env1")
 transform = Transform3D(0.866, 0.354, 0.354, 0, 0.707, -0.707, -0.5, 0.612, 0.612, 0, 0, 0)
 light_color = Color(1, 0.96, 0.88, 1)
 light_energy = 1.5
+
+[node name="OverlayControls" type="CanvasLayer" parent="."]
+script = ExtResource("7_overlaycontrols")
 
 [node name="DangerTooltip" type="CanvasLayer" parent="."]
 script = ExtResource("5_dangertooltip")
