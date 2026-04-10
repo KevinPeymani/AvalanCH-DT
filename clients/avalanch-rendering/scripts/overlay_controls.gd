@@ -1,7 +1,12 @@
 extends CanvasLayer
 
 var _fetcher: Node = null
-var _btn: Button
+
+# Current selection: "none" | "snow" | "danger"
+var _active: String = "none"
+
+# Segmented-button references so we can update their pressed state.
+var _btns: Dictionary = {}  # label -> Button
 
 
 func _ready() -> void:
@@ -21,14 +26,22 @@ func _find_fetcher(node: Node) -> void:
 
 
 func _build_ui() -> void:
+	# Determine initial state from the fetcher.
+	if _fetcher:
+		if _fetcher.use_danger_overlay:
+			_active = "danger"
+		elif _fetcher.use_snow_overlay:
+			_active = "snow"
+
+	# ── Panel ──────────────────────────────────────────────────────────────
 	var panel := Panel.new()
-	panel.set_anchor_and_offset(SIDE_RIGHT, 1.0, -10.0)
-	panel.set_anchor_and_offset(SIDE_LEFT,  1.0, -175.0)
+	panel.set_anchor_and_offset(SIDE_RIGHT,  1.0, -10.0)
+	panel.set_anchor_and_offset(SIDE_LEFT,   1.0, -230.0)
 	panel.set_anchor_and_offset(SIDE_TOP,    0.0,  10.0)
-	panel.set_anchor_and_offset(SIDE_BOTTOM, 0.0,  54.0)
+	panel.set_anchor_and_offset(SIDE_BOTTOM, 0.0,  72.0)
 
 	var bg := StyleBoxFlat.new()
-	bg.bg_color           = Color(0.07, 0.08, 0.12, 0.88)
+	bg.bg_color              = Color(0.07, 0.08, 0.12, 0.88)
 	bg.corner_radius_top_left     = 6
 	bg.corner_radius_top_right    = 6
 	bg.corner_radius_bottom_right = 6
@@ -38,10 +51,10 @@ func _build_ui() -> void:
 	bg.border_width_right  = 1
 	bg.border_width_bottom = 1
 	bg.border_color        = Color(0.35, 0.35, 0.45, 0.80)
-	bg.content_margin_left   = 8.0
-	bg.content_margin_top    = 6.0
-	bg.content_margin_right  = 8.0
-	bg.content_margin_bottom = 6.0
+	bg.content_margin_left   = 10.0
+	bg.content_margin_top    = 8.0
+	bg.content_margin_right  = 10.0
+	bg.content_margin_bottom = 8.0
 	panel.add_theme_stylebox_override("panel", bg)
 	add_child(panel)
 
@@ -49,45 +62,90 @@ func _build_ui() -> void:
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	panel.add_child(margin)
 
-	_btn = Button.new()
-	_btn.text        = "⚠ Danger Layer"
-	_btn.toggle_mode = true
-	_btn.button_pressed = _fetcher.use_danger_overlay if _fetcher else true
-	_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_btn.size_flags_vertical   = Control.SIZE_SHRINK_CENTER
+	var vbox := VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 6)
+	margin.add_child(vbox)
 
-	# Normal style (layer off)
-	var s_normal := StyleBoxFlat.new()
-	s_normal.bg_color      = Color(0.15, 0.16, 0.20, 0.9)
-	s_normal.corner_radius_top_left     = 4
-	s_normal.corner_radius_top_right    = 4
-	s_normal.corner_radius_bottom_right = 4
-	s_normal.corner_radius_bottom_left  = 4
-	_btn.add_theme_stylebox_override("normal",  s_normal)
-	_btn.add_theme_stylebox_override("hover",   s_normal)
-	_btn.add_theme_stylebox_override("focus",   StyleBoxEmpty.new())
+	# ── Label ──────────────────────────────────────────────────────────────
+	var lbl := Label.new()
+	lbl.text = "Overlay"
+	lbl.add_theme_color_override("font_color", Color(0.55, 0.58, 0.65))
+	lbl.add_theme_font_size_override("font_size", 11)
+	vbox.add_child(lbl)
 
-	# Pressed style (layer on) — orange tint to match the danger colour scale
-	var s_pressed := StyleBoxFlat.new()
-	s_pressed.bg_color      = Color(0.75, 0.35, 0.05, 0.95)
-	s_pressed.corner_radius_top_left     = 4
-	s_pressed.corner_radius_top_right    = 4
-	s_pressed.corner_radius_bottom_right = 4
-	s_pressed.corner_radius_bottom_left  = 4
-	_btn.add_theme_stylebox_override("pressed",      s_pressed)
-	_btn.add_theme_stylebox_override("hover_pressed", s_pressed)
+	# ── Segmented button row ───────────────────────────────────────────────
+	var hbox := HBoxContainer.new()
+	hbox.add_theme_constant_override("separation", 0)
+	vbox.add_child(hbox)
 
-	_btn.add_theme_color_override("font_color",         Color(0.70, 0.72, 0.78))
-	_btn.add_theme_color_override("font_pressed_color",  Color(1.00, 1.00, 1.00))
-	_btn.add_theme_color_override("font_hover_color",    Color(0.90, 0.92, 0.98))
-	_btn.add_theme_font_size_override("font_size", 13)
+	# Each entry: [key, label, active_color, left_radius, right_radius]
+	var segments := [
+		["none",   "None",   Color(0.38, 0.40, 0.45, 0.95), true,  false],
+		["snow",   "Snow",   Color(0.15, 0.45, 0.80, 0.95), false, false],
+		["danger", "Danger", Color(0.75, 0.35, 0.05, 0.95), false, true ],
+	]
 
-	_btn.toggled.connect(_on_toggled)
-	margin.add_child(_btn)
+	for seg in segments:
+		var key:          String = seg[0]
+		var label:        String = seg[1]
+		var active_color: Color  = seg[2]
+		var round_left:   bool   = seg[3]
+		var round_right:  bool   = seg[4]
+
+		var btn := Button.new()
+		btn.text        = label
+		btn.toggle_mode = true
+		btn.button_pressed = (key == _active)
+		btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		btn.add_theme_font_size_override("font_size", 13)
+		btn.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+
+		var r := 4
+		# Normal / hover
+		var s_off := StyleBoxFlat.new()
+		s_off.bg_color = Color(0.15, 0.16, 0.20, 0.90)
+		s_off.corner_radius_top_left     = r if round_left  else 0
+		s_off.corner_radius_bottom_left  = r if round_left  else 0
+		s_off.corner_radius_top_right    = r if round_right else 0
+		s_off.corner_radius_bottom_right = r if round_right else 0
+		s_off.border_width_top    = 1
+		s_off.border_width_bottom = 1
+		s_off.border_width_left   = 1 if round_left  else 0
+		s_off.border_width_right  = 1 if round_right else 0
+		s_off.border_color        = Color(0.30, 0.30, 0.40, 0.70)
+		btn.add_theme_stylebox_override("normal", s_off)
+		btn.add_theme_stylebox_override("hover",  s_off)
+
+		# Pressed / active
+		var s_on := StyleBoxFlat.new()
+		s_on.bg_color = active_color
+		s_on.corner_radius_top_left     = r if round_left  else 0
+		s_on.corner_radius_bottom_left  = r if round_left  else 0
+		s_on.corner_radius_top_right    = r if round_right else 0
+		s_on.corner_radius_bottom_right = r if round_right else 0
+		btn.add_theme_stylebox_override("pressed",       s_on)
+		btn.add_theme_stylebox_override("hover_pressed", s_on)
+
+		btn.add_theme_color_override("font_color",         Color(0.65, 0.67, 0.72))
+		btn.add_theme_color_override("font_pressed_color", Color(1.00, 1.00, 1.00))
+		btn.add_theme_color_override("font_hover_color",   Color(0.90, 0.92, 0.98))
+
+		btn.pressed.connect(_on_segment_pressed.bind(key))
+		_btns[key] = btn
+		hbox.add_child(btn)
 
 
-func _on_toggled(enabled: bool) -> void:
+func _on_segment_pressed(key: String) -> void:
+	_active = key
+
+	# Keep all buttons in sync (ButtonGroup handles mutual exclusion only for
+	# radio buttons; since we manage state manually, update them explicitly).
+	for k in _btns:
+		_btns[k].button_pressed = (k == key)
+
 	if not _fetcher:
 		return
-	_fetcher.use_danger_overlay = enabled
+
+	_fetcher.use_snow_overlay   = (key == "snow")
+	_fetcher.use_danger_overlay = (key == "danger")
 	_fetcher._update_materials()
