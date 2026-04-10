@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://buuguau4wcftt"
-valid=false
+uid="uid://dmi4c1a5bxc07"
+path="res://.godot/imported/frameFT_0345.exr-7e210c268b8aae21934119d694903102.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://data/avalanche2/avalanche2_exr/frameFT_0345.exr"
+dest_files=["res://.godot/imported/frameFT_0345.exr-7e210c268b8aae21934119d694903102.ctex"]
 
 [params]
 

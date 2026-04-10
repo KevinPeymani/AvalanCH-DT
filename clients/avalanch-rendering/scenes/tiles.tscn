@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://die1rhqr44lrj" path="res://scripts/tiles_fetcher.gd" id="1_1g8qg"]
 [ext_resource type="Material" uid="uid://b6rhf172b17kc" path="res://shaders/avalanche_sdf_shader_material.tres" id="2_i3m0d"]
 [ext_resource type="Script" uid="uid://xyhe143pit86" path="res://scripts/avalanche_renderer.gd" id="3_p5lnq"]
-[ext_resource type="Texture2D" uid="uid://de6eo70nqon1c" path="res://data/avalanche1/ca_exp1_elev.exr" id="4_ddpu7"]
+[ext_resource type="Texture2D" uid="uid://cfiv1rsjcymxm" path="res://data/dems/dem.exr" id="4_i3m0d"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_exfrf"]
 flip_faces = true
@@ -22,11 +22,11 @@ max_concurrent_requests = 32
 transform = Transform3D(0.8176693, -0.2542096, 0.5165215, 0, 0.8972243, 0.4415751, -0.57568824, -0.3610624, 0.73363274, 712.8225, 2473.3489, 4203.78)
 
 [node name="snow" type="MeshInstance3D" parent="." unique_id=1891957542]
-transform = Transform3D(1000, 0, 0, 0, 1000, 0, 0, 0, 1000, -0.00023627281, 0.5, -0.004518032)
+transform = Transform3D(200, 0, 0, 0, 358.78754, 0, 0, 0, 164, 54.469, 204.04077, -554)
 mesh = SubResource("BoxMesh_exfrf")
 surface_material_override/0 = ExtResource("2_i3m0d")
 script = ExtResource("3_p5lnq")
-frames_count = 400
-frame = 11
+frames_count = 40
+frame = 33
 hflow_base_path = "res://data/avalanche2/avalanche2_exr/frameFT_"
-heightmap = ExtResource("4_ddpu7")
+heightmap = ExtResource("4_i3m0d")
