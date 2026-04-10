@@ -50,6 +50,10 @@ extends Node3D
 
 @export var terrain_shader: Shader = preload("res://shaders/terrain_swissalti3d.gdshader")
 
+## Emitted every mouse-move with danger information under the cursor.
+## info keys: has_data (bool), danger (float), danger_int (int), e (float), n (float), screen_pos (Vector2)
+signal danger_hovered(info: Dictionary)
+
 # active_tiles: tiles that are currently visible (key = Vector3(cx, cy, lod))
 var active_tiles: Dictionary = {}
 
@@ -61,8 +65,18 @@ var time_since_update: float = 0.0
 var request_queue: Array = []
 var _pending_requests: int = 0
 
+## Emitted on every mouse-move. Keys: has_data (bool), danger (float),
+## danger_int (int), e (float), n (float), screen_pos (Vector2).
+
 func _unhandled_input(event: InputEvent) -> void:
-	if not enable_overlay_hotkeys or Engine.is_editor_hint():
+	if Engine.is_editor_hint():
+		return
+
+	if event is InputEventMouseMotion:
+		_handle_mouse_hover((event as InputEventMouseMotion).position)
+		return
+
+	if not enable_overlay_hotkeys:
 		return
 	if not (event is InputEventKey):
 		return
@@ -453,6 +467,9 @@ func _on_downloaded(result: int, code: int, _headers: PackedStringArray,
 			if not texture_cache.has(key):
 				texture_cache[key] = {}
 			texture_cache[key][req_type] = tex
+			# Keep CPU-side Images for pixel sampling (danger hover and height refinement).
+			if req_type == "danger" or req_type == "height":
+				texture_cache[key][req_type + "_img"] = img
 
 			_update_materials()
 			# A newly loaded tile may change which neighbours need stitching.
@@ -587,6 +604,145 @@ func _apply_material(mi: MeshInstance3D, lod: int):
 					mat.set_shader_parameter("uv_offset_danger", Vector3(u_off_danger, v_off_danger, 0.0))
 					danger_found = true
 				p_lod_danger -= 1
+
+# ---------------------------------------------------------------------------
+# Danger hover — emits danger_hovered with pixel data under the cursor.
+# ---------------------------------------------------------------------------
+func _handle_mouse_hover(screen_pos: Vector2) -> void:
+	if not use_danger_overlay:
+		danger_hovered.emit({"has_data": false, "screen_pos": screen_pos})
+		return
+	var world_pos := _world_pos_at_screen(screen_pos)
+	if world_pos == Vector3.INF:
+		danger_hovered.emit({"has_data": false, "screen_pos": screen_pos})
+		return
+	var info := _get_danger_at_world_pos(world_pos)
+	info["screen_pos"] = screen_pos
+	danger_hovered.emit(info)
+
+
+# Cast a ray from the camera through screen_pos.
+# Pass 1: intersect Y=0 plane for a rough geographic position.
+# Pass 2: sample the cached height texture there to get the actual terrain
+#         elevation, then re-intersect at that height for a corrected result.
+func _world_pos_at_screen(screen_pos: Vector2) -> Vector3:
+	var cam := _get_camera()
+	if not cam:
+		return Vector3.INF
+	var ray_origin := cam.project_ray_origin(screen_pos)
+	var ray_dir    := cam.project_ray_normal(screen_pos)
+	if abs(ray_dir.y) < 0.0001:
+		return Vector3.INF
+
+	# Pass 1 — rough intersection with Y=0.
+	var t0 := -ray_origin.y / ray_dir.y
+	if t0 < 0.0:
+		return Vector3.INF
+	var rough := ray_origin + ray_dir * t0
+
+	# Pass 2 — sample terrain height at the rough position and re-intersect.
+	var terrain_y := _sample_terrain_height_godot(rough.x, rough.z)
+	var denom := -ray_dir.y
+	if abs(denom) < 0.0001:
+		return rough  # nearly horizontal ray, keep rough result
+	var t1 := (ray_origin.y - terrain_y) / denom
+	if t1 < 0.0:
+		return rough
+	return ray_origin + ray_dir * t1
+
+
+# Returns the terrain height in Godot units at the given world XZ by sampling
+# the cached height image for the finest available tile covering that point.
+# Falls back to 0.0 when no height data is available or displacement is off.
+func _sample_terrain_height_godot(world_x: float, world_z: float) -> float:
+	if not displace:
+		return 0.0
+	var e := center_e + world_x * meters_per_unit
+	var n := center_n - world_z * meters_per_unit
+
+	var best_lod := -1
+	var best_key := Vector3.ZERO
+	for key in texture_cache.keys():
+		if not texture_cache[key].has("height_img"):
+			continue
+		var cx:   float = key.x
+		var cy:   float = key.y
+		var lod:  int   = int(key.z)
+		var half: float = (base_size / pow(2.0, lod)) / 2.0
+		if e >= cx - half and e <= cx + half and n >= cy - half and n <= cy + half:
+			if lod > best_lod:
+				best_lod = lod
+				best_key = key
+
+	if best_lod == -1:
+		return 0.0
+
+	var cx:   float = best_key.x
+	var cy:   float = best_key.y
+	var size: float = base_size / pow(2.0, best_lod)
+	var half: float = size / 2.0
+	var u := (e - (cx - half)) / size
+	var v := ((cy + half) - n) / size
+
+	var img: Image = texture_cache[best_key]["height_img"]
+	var px := clampi(int(u * img.get_width()),  0, img.get_width()  - 1)
+	var py := clampi(int(v * img.get_height()), 0, img.get_height() - 1)
+	# R channel [0, 1] maps linearly to [0, height_scale] in the terrain shader.
+	return img.get_pixel(px, py).r * (max_elevation_meters / meters_per_unit)
+
+
+# Sample the danger level at a world-space position.
+# Returns {has_data: false} when outside loaded tiles or over a no-data pixel.
+# The SLD colormap: quantity=0 → white (r=1.0), quantity=5 → black (r=0.0),
+# transparent (alpha≈0) → NoData. So: danger = (1 − r) × 5.
+func _get_danger_at_world_pos(world_pos: Vector3) -> Dictionary:
+	var e := center_e + world_pos.x * meters_per_unit
+	var n := center_n - world_pos.z * meters_per_unit
+
+	# Find the finest-LOD tile covering (e, n) that has a cached danger image.
+	var best_lod := -1
+	var best_key := Vector3.ZERO
+	for key in texture_cache.keys():
+		if not texture_cache[key].has("danger_img"):
+			continue
+		var cx:   float = key.x
+		var cy:   float = key.y
+		var lod:  int   = int(key.z)
+		var half: float = (base_size / pow(2.0, lod)) / 2.0
+		if e >= cx - half and e <= cx + half and n >= cy - half and n <= cy + half:
+			if lod > best_lod:
+				best_lod = lod
+				best_key = key
+
+	if best_lod == -1:
+		return {"has_data": false}
+
+	var cx:   float = best_key.x
+	var cy:   float = best_key.y
+	var size: float = base_size / pow(2.0, best_lod)
+	var half: float = size / 2.0
+
+	# UV: U=0 west, U=1 east; V=0 north (max latitude), V=1 south.
+	var u := (e - (cx - half)) / size
+	var v := ((cy + half) - n) / size
+
+	var img: Image  = texture_cache[best_key]["danger_img"]
+	var px:  int    = clampi(int(u * img.get_width()),  0, img.get_width()  - 1)
+	var py:  int    = clampi(int(v * img.get_height()), 0, img.get_height() - 1)
+	var pixel: Color = img.get_pixel(px, py)
+
+	if pixel.a < 0.1:
+		return {"has_data": false}
+
+	var danger := (1.0 - pixel.r) * 5.0
+	return {
+		"has_data":   true,
+		"danger":     danger,
+		"danger_int": roundi(danger),
+		"e":          e,
+		"n":          n,
+	}
+
 
 func _clear_meshes():
 	for key in active_tiles.keys():

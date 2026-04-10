@@ -1,29 +1,33 @@
-[gd_scene format=3 uid="uid://dhplbcnhkbhvi"]
+[gd_scene load_steps=8 format=3 uid="uid://dhplbcnhkbhvi"]
 
 [ext_resource type="Script" uid="uid://die1rhqr44lrj" path="res://scripts/tiles_fetcher.gd" id="1_1g8qg"]
 [ext_resource type="Material" uid="uid://b6rhf172b17kc" path="res://shaders/avalanche_sdf_shader_material.tres" id="2_i3m0d"]
 [ext_resource type="Script" uid="uid://xyhe143pit86" path="res://scripts/avalanche_renderer.gd" id="3_p5lnq"]
 [ext_resource type="Texture2D" uid="uid://cfiv1rsjcymxm" path="res://data/dems/dem.exr" id="4_i3m0d"]
+[ext_resource type="Script" uid="uid://cw6pa6w3xrpo2" path="res://scripts/danger_tooltip.gd" id="5_dangertooltip"]
+[ext_resource type="Script" uid="uid://d2o7lbvlmojbq" path="res://scripts/terrain_camera.gd" id="6_terraincamera"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_exfrf"]
 flip_faces = true
 
-[node name="Tiles" type="Node3D" unique_id=1981972365]
+[node name="Tiles" type="Node3D"]
 
-[node name="Node3D" type="Node3D" parent="." unique_id=732231503]
+[node name="Node3D" type="Node3D" parent="."]
 script = ExtResource("1_1g8qg")
 displace = true
-center_e = 2622839.0
-center_n = 1094640.0
+center_e = 2.62284e+06
+center_n = 1.09464e+06
 lod_levels = 10
 max_concurrent_requests = 32
 use_snow_overlay = true
+use_danger_overlay = true
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=225080739]
-transform = Transform3D(0.8176693, -0.2542096, 0.5165215, 0, 0.8972243, 0.4415751, -0.57568824, -0.3610624, 0.73363274, 712.8225, 2473.3489, 4203.78)
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.817669, -0.25421, 0.516522, 0, 0.897224, 0.441575, -0.575688, -0.361062, 0.733633, 712.823, 2473.35, 4203.78)
+script = ExtResource("6_terraincamera")
 
-[node name="snow" type="MeshInstance3D" parent="." unique_id=1891957542]
-transform = Transform3D(200, 0, 0, 0, 358.78754, 0, 0, 0, 164, 54.469, 204.04077, -554)
+[node name="snow" type="MeshInstance3D" parent="."]
+transform = Transform3D(200, 0, 0, 0, 358.788, 0, 0, 0, 164, 55.3958, 201.595, -552.193)
 mesh = SubResource("BoxMesh_exfrf")
 surface_material_override/0 = ExtResource("2_i3m0d")
 script = ExtResource("3_p5lnq")
@@ -31,3 +35,6 @@ frames_count = 40
 frame = 33
 hflow_base_path = "res://data/avalanche2/avalanche2_exr/frameFT_"
 heightmap = ExtResource("4_i3m0d")
+
+[node name="DangerTooltip" type="CanvasLayer" parent="."]
+script = ExtResource("5_dangertooltip")
