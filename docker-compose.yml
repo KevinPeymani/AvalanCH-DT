@@ -82,6 +82,22 @@ services:
       - ./services/compute-worker/data:/data
       - ./services/compute-worker/examples:/examples
 
+  worker-digest:
+    image: swiss_worker_img
+    restart: unless-stopped
+    networks:
+      - swiss-net
+    environment:
+      - BROKER_URL=amqp://admin:simulation_secure@swiss_broker:5672/
+      - WORKER_TYPE=digestion
+      - SIM_QUEUE=simulation_queue
+      - DIGEST_QUEUE=digestion_queue
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./services/compute-worker/data:/data
+      - ./services/compute-worker/examples:/examples
+
   mapproxy:
     image: ghcr.io/mapproxy/mapproxy/mapproxy:6.0.1-alpine-nginx
     container_name: swiss_mapproxy
