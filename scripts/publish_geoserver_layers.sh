@@ -25,6 +25,43 @@ json_headers=( -H "Content-Type: application/json" -H "Accept: application/json"
 auth=( -u "${GEOSERVER_USER}:${GEOSERVER_PASSWORD}" )
 curl_common=( --connect-timeout "${CURL_CONNECT_TIMEOUT}" --max-time "${CURL_MAX_TIME}" )
 
+clear_mapproxy_cache() {
+  if ! command -v docker >/dev/null 2>&1; then
+    echo "Skipping MapProxy cache clear: docker not available." >&2
+    return 0
+  fi
+
+  if ! docker compose ps -q mapproxy >/dev/null 2>&1; then
+    echo "Skipping MapProxy cache clear: mapproxy service not available." >&2
+    return 0
+  fi
+
+  local mapproxy_id
+  mapproxy_id="$(docker compose ps -q mapproxy 2>/dev/null || true)"
+  if [[ -z "$mapproxy_id" ]]; then
+    echo "Skipping MapProxy cache clear: mapproxy container not running." >&2
+    return 0
+  fi
+
+  if ! docker compose exec -T mapproxy sh -lc '
+    rm -rf \
+      /mapproxy/cache_data/avalanch_danger \
+      /mapproxy/cache_data/avalanch_hs \
+      /mapproxy/config/cache_data/avalanch_danger \
+      /mapproxy/config/cache_data/avalanch_hs && \
+    mkdir -p \
+      /mapproxy/cache_data/avalanch_danger \
+      /mapproxy/cache_data/avalanch_hs \
+      /mapproxy/config/cache_data/avalanch_danger \
+      /mapproxy/config/cache_data/avalanch_hs
+  ' >/dev/null; then
+    echo "Warning: failed to clear MapProxy cache." >&2
+    return 0
+  fi
+
+  echo "MapProxy cache cleared: avalanch_danger, avalanch_hs"
+}
+
 curl_status() {
   local method="$1"
   local url="$2"
@@ -254,6 +291,7 @@ main() {
   set_layer_default_style "$DANGER_LAYER" "$DANGER_STYLE"
 
   curl -sS "${curl_common[@]}" "${auth[@]}" -X POST "${GEOSERVER_URL}/rest/reload" >/dev/null || true
+  clear_mapproxy_cache
 
   echo "GeoServer publish complete."
   echo "Workspace: ${GEOSERVER_WORKSPACE}"
