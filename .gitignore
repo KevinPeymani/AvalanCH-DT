@@ -43,4 +43,9 @@ Alpine3D/input/DAV3.sno
 .alpine3d-runtime-cache/
 
 
+**/node_modules/
+**/dist/
+**/npm-debug.log*
+
+
 

@@ -49,7 +49,7 @@ FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
-ENV RUNTIME_VENV_DIR=/runtime-cache/alpine3d-venv
+ENV RUNTIME_VENV_DIR=/app/alpine3d-venv
 ENV PATH="/opt/alpine3d/bin:${PATH}"
 ENV LD_LIBRARY_PATH="/opt/alpine3d/lib:${LD_LIBRARY_PATH}"
 
