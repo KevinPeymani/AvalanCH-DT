@@ -47,5 +47,11 @@ Alpine3D/input/DAV3.sno
 **/dist/
 **/npm-debug.log*
 
+# geoserver config 
+
+data/geoserver_data/gwc/*
+data/geoserver_data/logs/*
+data/geoserver_data/security/*
+
 
 
