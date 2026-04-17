@@ -112,12 +112,44 @@ services:
       - WORKSPACE_DIR=/workspace
       - PYTHON_BIN=python
       - ALPINE3D_BIN=/opt/alpine3d/bin/alpine3d
-      - RUNTIME_VENV_DIR=/runtime-cache/alpine3d-venv
+      - RUNTIME_VENV_DIR=${ALPINE3D_RUNTIME_CACHE:+/runtime-cache/alpine3d-venv}
     depends_on:
       - rabbitmq
     volumes:
       - ./:/workspace
-      - ${ALPINE3D_RUNTIME_CACHE:-./.alpine3d-runtime-cache}:/runtime-cache
+      - ${ALPINE3D_RUNTIME_CACHE:-alpine3d_runtime_cache}:/runtime-cache
+
+  alpine3d-scheduler:
+    build: ./services/alpine3d-scheduler
+    container_name: avalanch_alpine3d_scheduler
+    restart: unless-stopped
+    networks:
+      - swiss-net
+    environment:
+      - WORKSPACE_DIR=/workspace
+      - RUN_SCRIPT_REL=scripts/run_alpine3d_publish_geoserver.sh
+      - ALPINE3D_RUNTIME_CACHE=/runtime-cache
+      - STATUS_FILE=/workspace/Alpine3D/output/scheduler/alpine3d_publish_status.json
+      - TRIGGER_FILE=/workspace/Alpine3D/output/scheduler/manual_run.request
+      - LOG_DIR=/workspace/Alpine3D/output/scheduler/logs
+      - SCHEDULE_TIME_UTC=${ALPINE3D_SCHEDULE_TIME_UTC:-03:00}
+      - STATION=${ALPINE3D_SCHEDULE_STATION:-ZER2}
+      - DAYS=${ALPINE3D_SCHEDULE_DAYS:-7}
+      - PREDICT_DAYS=${ALPINE3D_SCHEDULE_PREDICT_DAYS:-7}
+      - NP=${ALPINE3D_SCHEDULE_NP:-}
+      - TIMEOUT_SEC=${ALPINE3D_SCHEDULE_TIMEOUT_SEC:-10800}
+      - NO_PNG=${ALPINE3D_SCHEDULE_NO_PNG:-false}
+      - SKIP_BUILD=${ALPINE3D_SCHEDULE_SKIP_BUILD:-true}
+      - CURRENT_UID=${CURRENT_UID:-1000}
+      - CURRENT_GID=${CURRENT_GID:-1000}
+    depends_on:
+      - rabbitmq
+      - worker-alpine3d
+      - geoserver
+    volumes:
+      - ./:/workspace
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${ALPINE3D_RUNTIME_CACHE:-alpine3d_runtime_cache}:/runtime-cache
 
   worker-digest:
     image: swiss_worker_img
@@ -184,9 +216,44 @@ services:
     networks:
       - swiss-net
 
+  web-dashboard:
+    build: ./clients/web-dashboard
+    container_name: avalanch_web_dashboard
+    restart: unless-stopped
+    ports:
+      - "8090:8090"
+    environment:
+      - PORT=8090
+      - WORKSPACE_ROOT=/workspace
+      - GEOSERVER_BASE_URL=${GEOSERVER_BASE_URL:-http://localhost:8081/geoserver}
+      - GEOSERVER_INTERNAL_BASE_URL=${GEOSERVER_INTERNAL_BASE_URL:-http://geoserver:8080/geoserver}
+      - GEOSERVER_WORKSPACE=${GEOSERVER_WORKSPACE:-avalanch}
+      - GEOSERVER_HS_LAYER=${GEOSERVER_HS_LAYER:-hs_latest}
+      - GEOSERVER_DANGER_LAYER=${GEOSERVER_DANGER_LAYER:-danger_latest}
+      - GEOSERVER_HS_STYLE=${GEOSERVER_HS_STYLE:-}
+      - GEOSERVER_DANGER_STYLE=${GEOSERVER_DANGER_STYLE:-}
+      - DEM_TILES_URL=${DEM_TILES_URL:-}
+      - DEM_ASC_FILE=${DEM_ASC_FILE:-/workspace/Alpine3D/prep/surface_grids/dem_50m.asc}
+      - MAP_BOUNDS=${MAP_BOUNDS:-7.45,45.85,8.15,46.2}
+      - ALPINE_OUTPUT_DIR=/workspace/Alpine3D/output
+      - DANGER_OUTPUT_DIR=/workspace/Alpine3D/output/grid_predictions
+      - SMET_FILE=/workspace/Alpine3D/input/ZER2.smet
+      - PROFILE_DIR=/workspace/prediction/output
+      - ALPINE3D_STATUS_FILE=/workspace/Alpine3D/output/scheduler/alpine3d_publish_status.json
+      - ALPINE3D_TRIGGER_FILE=/workspace/Alpine3D/output/scheduler/manual_run.request
+    volumes:
+      - ./:/workspace
+    depends_on:
+      - geoserver
+    networks:
+      - swiss-net
+
 networks:
   swiss-net:
     driver: bridge
 
 volumes:
   postgres_data:
+  # Used as a Docker-managed fallback when ALPINE3D_RUNTIME_CACHE is not set.
+  # Set ALPINE3D_RUNTIME_CACHE to a host path to use a persistent bind mount instead.
+  alpine3d_runtime_cache:

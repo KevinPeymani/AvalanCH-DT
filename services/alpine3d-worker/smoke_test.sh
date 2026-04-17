@@ -21,8 +21,10 @@ fi
 if [[ -n "${ALPINE3D_RUNTIME_CACHE:-}" ]]; then
   mkdir -p "$ALPINE3D_RUNTIME_CACHE"
   COMPOSE_PREFIX=(env "ALPINE3D_RUNTIME_CACHE=$ALPINE3D_RUNTIME_CACHE")
+  WORKER_PYTHON=/runtime-cache/alpine3d-venv/bin/python
 else
   COMPOSE_PREFIX=()
+  WORKER_PYTHON=/app/alpine3d-venv/bin/python
 fi
 
 compose() {
@@ -52,7 +54,7 @@ echo "[smoke] Purging queue $QUEUE_NAME"
 compose exec -T rabbitmq rabbitmqctl purge_queue "$QUEUE_NAME" >/dev/null
 
 echo "[smoke] Queueing job_id=$JOB_ID"
-compose exec -T worker-alpine3d /runtime-cache/alpine3d-venv/bin/python - <<PY
+compose exec -T worker-alpine3d "$WORKER_PYTHON" - <<PY
 import json
 import pika
 

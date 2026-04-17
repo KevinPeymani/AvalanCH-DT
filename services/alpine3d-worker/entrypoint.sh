@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-VENV_DIR="${RUNTIME_VENV_DIR:-/runtime-cache/alpine3d-venv}"
+VENV_DIR="${RUNTIME_VENV_DIR:-/app/alpine3d-venv}"
 REQ_FILE="/app/runtime-requirements.txt"
 STAMP_FILE="${VENV_DIR}/.requirements.sha256"
 CURRENT_HASH="$(sha256sum "$REQ_FILE" | awk '{print $1}')"

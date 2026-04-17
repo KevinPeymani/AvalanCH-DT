@@ -15,10 +15,10 @@ Options:
   --station CODE       IMIS station code. Default: ZER2
   --days N             Days of IMIS forcing for Alpine3D. Default: 7
   --predict-days N     Days of IMIS forcing for danger prediction. Default: same as --days
-  --np N               OMP thread count for Alpine3D. Default: 2
+  --np N               OMP thread count for Alpine3D. Default: detected CPU cores
   --no-png             Disable PNG export for danger grids.
   --skip-build         Skip docker compose build.
-  --timeout N          Seconds to wait for pipeline completion. Default: 3600
+  --timeout N          Seconds to wait for pipeline completion. Default: 10800
   -h, --help           Show this help.
 
 Environment overrides:
@@ -34,16 +34,19 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 STATION="ZER2"
 DAYS=7
 PREDICT_DAYS=""
-NP=8
+DEFAULT_NP="$(getconf _NPROCESSORS_ONLN 2>/dev/null || nproc 2>/dev/null || echo 1)"
+NP="$DEFAULT_NP"
 NO_PNG="false"
 SKIP_BUILD=0
-TIMEOUT_SEC=3600
+TIMEOUT_SEC=10800
 CACHE_DIR="${ALPINE3D_RUNTIME_CACHE:-}"
 GEOSERVER_URL="${GEOSERVER_URL:-http://localhost:8081/geoserver}"
 GEOSERVER_USER="${GEOSERVER_USER:-admin}"
 GEOSERVER_PASSWORD="${GEOSERVER_PASSWORD:-geoserver}"
 GEOSERVER_WORKSPACE="${GEOSERVER_WORKSPACE:-avalanch}"
 QUEUE_NAME="${ALPINE_QUEUE:-alpine3d_queue}"
+CURRENT_UID_VALUE="${CURRENT_UID:-$(id -u)}"
+CURRENT_GID_VALUE="${CURRENT_GID:-$(id -g)}"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -103,8 +106,8 @@ fi
 # Wrapper so every docker compose call gets ALPINE3D_RUNTIME_CACHE forwarded.
 compose() {
   ALPINE3D_RUNTIME_CACHE="$CACHE_DIR" \
-  CURRENT_UID="$(id -u)" \
-  CURRENT_GID="$(id -g)" \
+  CURRENT_UID="$CURRENT_UID_VALUE" \
+  CURRENT_GID="$CURRENT_GID_VALUE" \
   docker compose "$@"
 }
 

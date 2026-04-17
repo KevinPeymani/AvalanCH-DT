@@ -26,7 +26,7 @@ The service is intended to be portable across developer machines and servers.
 ## Notes
 
 - The worker image includes Alpine3D directly and does not depend on host Docker or a host `.venv`.
-- Python ML/runtime packages are bootstrapped on first start into a persistent cache mounted at `/runtime-cache`.
+- Python ML/runtime packages are bootstrapped on first start into a venv. By default this lives inside the container; set `ALPINE3D_RUNTIME_CACHE` to persist it on the host.
 - The worker acks only when both pipeline and prediction succeed.
 
 ## Prerequisites
@@ -35,11 +35,13 @@ The service is intended to be portable across developer machines and servers.
 2. Docker Compose plugin available (`docker compose`)
 3. Sufficient writable disk space for:
   - Alpine3D outputs in the repository workspace
-  - Python runtime cache (TensorFlow and ML dependencies)
+  - Python runtime cache (TensorFlow and ML dependencies, optional — only needed if `ALPINE3D_RUNTIME_CACHE` is set)
 
 ## Runtime cache path
 
-Set `ALPINE3D_RUNTIME_CACHE` to a persistent host directory. This avoids reinstalling Python dependencies every time the container restarts.
+By default the worker builds the Python venv **inside the container** at `/app/alpine3d-venv`. The venv is rebuilt on each container start, which is fine for occasional or CI use.
+
+To persist the venv across restarts and avoid slow reinstalls, set `ALPINE3D_RUNTIME_CACHE` to a host directory before starting the service. Docker will bind-mount that directory to `/runtime-cache` inside the container and the venv will be stored there.
 
 Choose any path suitable for your environment, for example:
 
@@ -49,7 +51,13 @@ Choose any path suitable for your environment, for example:
 
 ## Run with main compose
 
-Start the worker service:
+Start the worker service (no persistent cache — venv lives in-container):
+
+```bash
+docker compose up --build -d worker-alpine3d
+```
+
+Or with a persistent host cache:
 
 ```bash
 export ALPINE3D_RUNTIME_CACHE=/path/to/alpine3d-runtime-cache
@@ -72,7 +80,11 @@ Run this after deploying or updating the worker. It will:
 4. Wait until the worker logs `Job completed job_id=...`
 
 ```bash
+# With cache (faster subsequent starts):
 export ALPINE3D_RUNTIME_CACHE=/path/to/alpine3d-runtime-cache
+services/alpine3d-worker/smoke_test.sh
+
+# Without cache (ephemeral venv, no host directory needed):
 services/alpine3d-worker/smoke_test.sh
 ```
 
