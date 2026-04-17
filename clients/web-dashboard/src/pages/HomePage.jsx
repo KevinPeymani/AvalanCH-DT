@@ -16,9 +16,33 @@ export default function HomePage() {
   const [showHs, setShowHs] = useState(true);
   const [showTerrain, setShowTerrain] = useState(false);
   const [mapError, setMapError] = useState("");
+  const [runStatus, setRunStatus] = useState(null);
 
   useEffect(() => {
     fetchJson("/api/runtime-config").then(setConfig).catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+
+    const loadRunStatus = async () => {
+      try {
+        const status = await fetchJson("/api/alpine3d-run-status");
+        if (!active) return;
+        setRunStatus(status);
+      } catch {
+        if (!active) return;
+        setRunStatus(null);
+      }
+    };
+
+    loadRunStatus();
+    const id = setInterval(loadRunStatus, 60000);
+
+    return () => {
+      active = false;
+      clearInterval(id);
+    };
   }, []);
 
   const overlays = useMemo(() => {
@@ -228,20 +252,17 @@ export default function HomePage() {
 
   return (
     <section className="page today-page">
-      <div className="hero-card">
-        <h1>Today Avalanche & Snow Height Map</h1>
-        <div className="quick-nav">
-          <Link className="quick-nav-link" to="/snow-profile">
-            Snow Profile
-          </Link>
-          <Link className="quick-nav-link" to="/meteo">
-            Meteo 7d
-          </Link>
-          <Link className="quick-nav-link" to="/history">
-            History
-          </Link>
+      {runStatus?.state === "failed" ? (
+        <div className="panel scheduler-alert failed">
+          Last Alpine3D publish run failed at {runStatus.lastRun?.endedAt || runStatus.updatedAt || "unknown time"}. Check <Link to="/runs">Runs</Link> for logs and retry.
         </div>
-      </div>
+      ) : null}
+
+      {runStatus?.state === "running" ? (
+        <div className="panel scheduler-alert running">
+          Alpine3D publish is currently running. Live details are available on <Link to="/runs">Runs</Link>.
+        </div>
+      ) : null}
 
       {mapError ? <div className="panel error">{mapError}</div> : null}
 

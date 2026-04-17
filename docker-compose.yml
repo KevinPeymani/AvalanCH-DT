@@ -119,6 +119,38 @@ services:
       - ./:/workspace
       - ${ALPINE3D_RUNTIME_CACHE:-alpine3d_runtime_cache}:/runtime-cache
 
+  alpine3d-scheduler:
+    build: ./services/alpine3d-scheduler
+    container_name: avalanch_alpine3d_scheduler
+    restart: unless-stopped
+    networks:
+      - swiss-net
+    environment:
+      - WORKSPACE_DIR=/workspace
+      - RUN_SCRIPT_REL=scripts/run_alpine3d_publish_geoserver.sh
+      - ALPINE3D_RUNTIME_CACHE=/runtime-cache
+      - STATUS_FILE=/workspace/Alpine3D/output/scheduler/alpine3d_publish_status.json
+      - TRIGGER_FILE=/workspace/Alpine3D/output/scheduler/manual_run.request
+      - LOG_DIR=/workspace/Alpine3D/output/scheduler/logs
+      - SCHEDULE_TIME_UTC=${ALPINE3D_SCHEDULE_TIME_UTC:-03:00}
+      - STATION=${ALPINE3D_SCHEDULE_STATION:-ZER2}
+      - DAYS=${ALPINE3D_SCHEDULE_DAYS:-7}
+      - PREDICT_DAYS=${ALPINE3D_SCHEDULE_PREDICT_DAYS:-7}
+      - NP=${ALPINE3D_SCHEDULE_NP:-}
+      - TIMEOUT_SEC=${ALPINE3D_SCHEDULE_TIMEOUT_SEC:-10800}
+      - NO_PNG=${ALPINE3D_SCHEDULE_NO_PNG:-false}
+      - SKIP_BUILD=${ALPINE3D_SCHEDULE_SKIP_BUILD:-true}
+      - CURRENT_UID=${CURRENT_UID:-1000}
+      - CURRENT_GID=${CURRENT_GID:-1000}
+    depends_on:
+      - rabbitmq
+      - worker-alpine3d
+      - geoserver
+    volumes:
+      - ./:/workspace
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${ALPINE3D_RUNTIME_CACHE:-alpine3d_runtime_cache}:/runtime-cache
+
   worker-digest:
     image: swiss_worker_img
     restart: unless-stopped
@@ -207,8 +239,10 @@ services:
       - DANGER_OUTPUT_DIR=/workspace/Alpine3D/output/grid_predictions
       - SMET_FILE=/workspace/Alpine3D/input/ZER2.smet
       - PROFILE_DIR=/workspace/prediction/output
+      - ALPINE3D_STATUS_FILE=/workspace/Alpine3D/output/scheduler/alpine3d_publish_status.json
+      - ALPINE3D_TRIGGER_FILE=/workspace/Alpine3D/output/scheduler/manual_run.request
     volumes:
-      - ./:/workspace:ro
+      - ./:/workspace
     depends_on:
       - geoserver
     networks:

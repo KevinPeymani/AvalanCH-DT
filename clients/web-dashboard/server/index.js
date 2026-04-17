@@ -14,8 +14,19 @@ const port = Number(process.env.PORT || 8090);
 
 const alpineOutputDir = process.env.ALPINE_OUTPUT_DIR || path.join(projectRoot, "Alpine3D", "output");
 const dangerOutputDir = process.env.DANGER_OUTPUT_DIR || path.join(alpineOutputDir, "grid_predictions");
+const todayRastersDir =
+  process.env.GEOSERVER_EXTERNAL_RASTERS_DIR ||
+  path.join(projectRoot, "data", "geoserver_external", "rasters");
+const todayDangerOutputDir = process.env.TODAY_DANGER_OUTPUT_DIR || todayRastersDir;
+const todayHsOutputDir = process.env.TODAY_HS_OUTPUT_DIR || todayRastersDir;
 const smetFile = process.env.SMET_FILE || path.join(projectRoot, "Alpine3D", "input", "ZER2.smet");
 const profileDir = process.env.PROFILE_DIR || path.join(projectRoot, "prediction", "output");
+const alpineStatusFile =
+  process.env.ALPINE3D_STATUS_FILE ||
+  path.join(projectRoot, "Alpine3D", "output", "scheduler", "alpine3d_publish_status.json");
+const alpineTriggerFile =
+  process.env.ALPINE3D_TRIGGER_FILE ||
+  path.join(projectRoot, "Alpine3D", "output", "scheduler", "manual_run.request");
 
 const geoserverBaseUrl = process.env.GEOSERVER_BASE_URL || "http://localhost:8081/geoserver";
 const geoserverInternalBaseUrl =
@@ -261,9 +272,11 @@ function loadLatestOverlayGrid(kind) {
     return null;
   }
 
-  const dirPath = kind === "danger" ? dangerOutputDir : alpineOutputDir;
-  const suffix = kind === "danger" ? "_danger.asc" : "_HS.asc";
-  const latest = findLatestBySuffix(dirPath, suffix);
+  const dirPath = kind === "danger" ? todayDangerOutputDir : todayHsOutputDir;
+  const latest =
+    kind === "danger"
+      ? findLatestRasterFile(dirPath, ["danger_latest.asc"], ["_danger.asc"])
+      : findLatestRasterFile(dirPath, ["hs_latest.asc"], ["_HS.asc"]);
   if (!latest) {
     return null;
   }
@@ -367,6 +380,25 @@ function findLatestBySuffix(dirPath, suffix) {
     .sort((a, b) => b.mtimeMs - a.mtimeMs);
 
   return candidates[0] || null;
+}
+
+function findLatestRasterFile(dirPath, preferredNames = [], fallbackSuffixes = []) {
+  for (const fileName of preferredNames) {
+    const fullPath = path.join(dirPath, fileName);
+    if (fs.existsSync(fullPath)) {
+      const st = fs.statSync(fullPath);
+      return { name: fileName, fullPath, mtimeMs: st.mtimeMs };
+    }
+  }
+
+  for (const suffix of fallbackSuffixes) {
+    const latest = findLatestBySuffix(dirPath, suffix);
+    if (latest) {
+      return latest;
+    }
+  }
+
+  return null;
 }
 
 function colorDangerFromGray(gray) {
@@ -705,8 +737,8 @@ app.get("/api/overlay/:kind/latest.png", (req, res) => {
   const { kind } = req.params;
 
   if (kind === "mask") {
-    const latestDangerAsc = findLatestBySuffix(dangerOutputDir, "_danger.asc");
-    const latestHsAsc = findLatestBySuffix(alpineOutputDir, "_HS.asc");
+    const latestDangerAsc = findLatestRasterFile(todayDangerOutputDir, ["danger_latest.asc"], ["_danger.asc"]);
+    const latestHsAsc = findLatestRasterFile(todayHsOutputDir, ["hs_latest.asc"], ["_HS.asc"]);
     const source = latestDangerAsc || latestHsAsc;
 
     if (!source) {
@@ -732,7 +764,7 @@ app.get("/api/overlay/:kind/latest.png", (req, res) => {
   }
 
   if (kind === "danger") {
-    const latestAsc = findLatestBySuffix(dangerOutputDir, "_danger.asc");
+    const latestAsc = findLatestRasterFile(todayDangerOutputDir, ["danger_latest.asc"], ["_danger.asc"]);
     if (latestAsc) {
       const colored = colorizeAscBuffer(latestAsc.fullPath, colorDangerFromValue);
       if (!colored) {
@@ -746,7 +778,7 @@ app.get("/api/overlay/:kind/latest.png", (req, res) => {
       return;
     }
 
-    const latestPng = findLatestBySuffix(dangerOutputDir, "_danger.png");
+    const latestPng = findLatestRasterFile(todayDangerOutputDir, ["danger_latest.png"], ["_danger.png"]);
     if (!latestPng) {
       res.status(404).json({ error: "no danger raster found" });
       return;
@@ -761,7 +793,7 @@ app.get("/api/overlay/:kind/latest.png", (req, res) => {
   }
 
   if (kind === "hs") {
-    const latestHsPng = findLatestBySuffix(alpineOutputDir, "_HS.png");
+    const latestHsPng = findLatestRasterFile(todayHsOutputDir, ["hs_latest.png"], ["_HS.png"]);
     if (latestHsPng) {
       const raw = fs.readFileSync(latestHsPng.fullPath);
       const colored = colorizePngBuffer(raw, colorSnowFromGray);
@@ -771,7 +803,7 @@ app.get("/api/overlay/:kind/latest.png", (req, res) => {
       return;
     }
 
-    const latestHsAsc = findLatestBySuffix(alpineOutputDir, "_HS.asc");
+    const latestHsAsc = findLatestRasterFile(todayHsOutputDir, ["hs_latest.asc"], ["_HS.asc"]);
     if (!latestHsAsc) {
       res.status(404).json({ error: "no hs raster found" });
       return;
@@ -916,6 +948,64 @@ app.get("/api/profile/latest", (req, res) => {
     profileUrl,
     niVizUrl: `https://run.niviz.org/?file=${encodeURIComponent(profileUrl)}`
   });
+});
+
+app.get("/api/alpine3d-run-status", (_req, res) => {
+  if (!fs.existsSync(alpineStatusFile)) {
+    res.json({
+      available: false,
+      state: "unknown",
+      message: "No scheduler status file found yet.",
+      statusFile: alpineStatusFile
+    });
+    return;
+  }
+
+  try {
+    const raw = fs.readFileSync(alpineStatusFile, "utf8");
+    const parsed = JSON.parse(raw);
+    const st = fs.statSync(alpineStatusFile);
+    res.json({
+      available: true,
+      statusFile: alpineStatusFile,
+      statusFileUpdatedAt: new Date(st.mtimeMs).toISOString(),
+      ...parsed
+    });
+  } catch (error) {
+    res.status(500).json({
+      available: false,
+      state: "error",
+      message: "Failed to parse scheduler status file.",
+      detail: error instanceof Error ? error.message : "unknown error",
+      statusFile: alpineStatusFile
+    });
+  }
+});
+
+app.post("/api/alpine3d-run-status/trigger", (_req, res) => {
+  try {
+    const payload = {
+      requestedAt: new Date().toISOString(),
+      requestedBy: "web-dashboard"
+    };
+
+    fs.mkdirSync(path.dirname(alpineTriggerFile), { recursive: true });
+    fs.writeFileSync(alpineTriggerFile, `${JSON.stringify(payload)}\n`, "utf8");
+
+    res.status(202).json({
+      queued: true,
+      message: "Manual run request recorded.",
+      triggerFile: alpineTriggerFile,
+      request: payload
+    });
+  } catch (error) {
+    res.status(500).json({
+      queued: false,
+      message: "Failed to record manual run request.",
+      detail: error instanceof Error ? error.message : "unknown error",
+      triggerFile: alpineTriggerFile
+    });
+  }
 });
 
 app.use(express.static(distPath));

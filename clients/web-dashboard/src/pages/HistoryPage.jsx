@@ -37,12 +37,7 @@ export default function HistoryPage() {
 
   return (
     <section className="page">
-      <div className="hero-card">
-        <h1>Historical Evolution</h1>
-        <p>
-          Interactively inspect the evolution of snow height and avalanche danger from generated daily grids.
-        </p>
-      </div>
+
 
       {error ? <div className="panel error">{error}</div> : null}
 

@@ -5,7 +5,8 @@ const links = [
   { to: "/", label: "Today" },
   { to: "/snow-profile", label: "Snow Profile" },
   { to: "/meteo", label: "Meteo 7d" },
-  { to: "/history", label: "History" }
+  { to: "/history", label: "History" },
+  { to: "/runs", label: "Runs" }
 ];
 
 export default function TopNav() {

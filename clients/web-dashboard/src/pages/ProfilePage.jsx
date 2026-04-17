@@ -16,13 +16,7 @@ export default function ProfilePage() {
 
   return (
     <section className="page">
-      <div className="hero-card">
-        <h1>Today Snow Profile (niViz)</h1>
-        <p>
-          This page opens your newest Snowpack <code>.pro</code> file directly in niViz using
-          <code> run.niviz.org </code>.
-        </p>
-      </div>
+    
 
       {error ? <div className="panel error">{error}</div> : null}
 

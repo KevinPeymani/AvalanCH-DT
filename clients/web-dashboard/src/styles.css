@@ -323,6 +323,92 @@ a {
   display: inline-block;
 }
 
+.run-status-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.9rem;
+}
+
+.run-status-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.button.run-now {
+  border: 0;
+  cursor: pointer;
+}
+
+.button.run-now:disabled {
+  opacity: 0.72;
+  cursor: not-allowed;
+}
+
+.panel-info {
+  border-color: #bfdbfe;
+  background: #eff6ff;
+  color: #1e3a8a;
+}
+
+.scheduler-alert.failed {
+  border-color: #fecaca;
+  background: #fff1f2;
+  color: #9f1239;
+}
+
+.scheduler-alert.running {
+  border-color: #bfdbfe;
+  background: #eff6ff;
+  color: #1e3a8a;
+}
+
+.run-status-header h2 {
+  margin: 0;
+}
+
+.status-pill {
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: 0.8rem;
+}
+
+.status-pill.ok {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-pill.running {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.status-pill.failed {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.status-pill.unknown {
+  background: #e2e8f0;
+  color: #334155;
+}
+
+.log-tail {
+  margin: 0;
+  max-height: 50vh;
+  overflow: auto;
+  border-radius: 10px;
+  padding: 0.75rem;
+  background: #0f172a;
+  color: #e2e8f0;
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
 @media (max-width: 800px) {
   .page-shell {
     width: min(100vw - 1rem, 100%);

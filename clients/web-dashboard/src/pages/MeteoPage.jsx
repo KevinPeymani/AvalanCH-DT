@@ -41,11 +41,7 @@ export default function MeteoPage() {
 
   return (
     <section className="page">
-      <div className="hero-card">
-        <h1>Meteo Statistics (Last 7 Days)</h1>
-        <p>Derived from your station SMET file and updated whenever new forcing data is written.</p>
-      </div>
-
+    
       {error ? <div className="panel error">{error}</div> : null}
 
       <div className="stats-grid">
