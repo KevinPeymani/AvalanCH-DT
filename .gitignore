@@ -17,9 +17,7 @@ prediction/grid_service/
 prediction/grid_runs/
 
 # Local prediction artifacts (large / machine-specific)
-prediction/*.h5
-prediction/*.keras
-prediction/*.pkl
+
 prediction/*.tif
 prediction/data_rf2_tidy.csv
 
