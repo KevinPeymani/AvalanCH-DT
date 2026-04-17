@@ -49,9 +49,9 @@ Alpine3D/input/DAV3.sno
 
 # geoserver config 
 
-data/geoserver_data/gwc/*
-data/geoserver_data/logs/*
-data/geoserver_data/security/*
+data/geoserver_data/gwc/
+data/geoserver_data/logs/
+data/geoserver_data/security/
 
 
 
