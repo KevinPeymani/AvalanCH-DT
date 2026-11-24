@@ -4,7 +4,6 @@ set -euo pipefail
 WORKSPACE_DIR="${WORKSPACE_DIR:-/workspace}"
 RUN_SCRIPT_REL="${RUN_SCRIPT_REL:-scripts/run_alpine3d_publish_geoserver.sh}"
 RUN_SCRIPT="${WORKSPACE_DIR}/${RUN_SCRIPT_REL}"
-CACHE_DIR="${ALPINE3D_RUNTIME_CACHE:-/runtime-cache}"
 STATUS_FILE="${STATUS_FILE:-${WORKSPACE_DIR}/Alpine3D/output/scheduler/alpine3d_publish_status.json}"
 LOG_DIR="${LOG_DIR:-${WORKSPACE_DIR}/Alpine3D/output/scheduler/logs}"
 TRIGGER_FILE="${TRIGGER_FILE:-${WORKSPACE_DIR}/Alpine3D/output/scheduler/manual_run.request}"
@@ -29,7 +28,7 @@ if [[ ! "$SCHEDULE_TIME_UTC" =~ ^([01][0-9]|2[0-3]):([0-5][0-9])$ ]]; then
   exit 2
 fi
 
-mkdir -p "$(dirname "$STATUS_FILE")" "$(dirname "$TRIGGER_FILE")" "$LOG_DIR" "$CACHE_DIR"
+mkdir -p "$(dirname "$STATUS_FILE")" "$(dirname "$TRIGGER_FILE")" "$LOG_DIR"
 
 compute_next_run() {
   python3 - "$SCHEDULE_TIME_UTC" <<'PY'
@@ -168,7 +167,6 @@ run_once() {
 
   cmd=(
     bash "$RUN_SCRIPT"
-    --cache-dir "$CACHE_DIR"
     --station "$STATION"
     --days "$DAYS"
     --predict-days "$PREDICT_DAYS"

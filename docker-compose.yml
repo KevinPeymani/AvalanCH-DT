@@ -131,7 +131,6 @@ services:
       - GEOSERVER_URL=http://geoserver:8080/geoserver
       - WORKSPACE_DIR=/workspace
       - RUN_SCRIPT_REL=scripts/run_alpine3d_publish_geoserver.sh
-      - ALPINE3D_RUNTIME_CACHE=/runtime-cache
       - STATUS_FILE=/workspace/Alpine3D/output/scheduler/alpine3d_publish_status.json
       - TRIGGER_FILE=/workspace/Alpine3D/output/scheduler/manual_run.request
       - LOG_DIR=/workspace/Alpine3D/output/scheduler/logs
@@ -152,7 +151,6 @@ services:
     volumes:
       - ./:/workspace
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${ALPINE3D_RUNTIME_CACHE:-alpine3d_runtime_cache}:/runtime-cache
 
   worker-digest:
     image: swiss_worker_img

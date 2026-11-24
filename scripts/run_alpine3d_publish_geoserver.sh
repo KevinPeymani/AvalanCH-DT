@@ -7,7 +7,7 @@ set -euo pipefail
 
 usage() {
   cat <<'EOF'
-Usage: run_alpine3d_publish_geoserver.sh --cache-dir /path/on/ssd [options]
+Usage: run_alpine3d_publish_geoserver.sh [options]
 
 Options:
   --cache-dir PATH     Host path for the Alpine3D runtime cache (SSD recommended).
@@ -95,11 +95,6 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-if [[ -z "$CACHE_DIR" ]]; then
-  echo "Missing cache directory. Use --cache-dir /path/on/ssd or set ALPINE3D_RUNTIME_CACHE." >&2
-  exit 2
-fi
-
 if [[ -z "$PREDICT_DAYS" ]]; then
   PREDICT_DAYS="$DAYS"
 fi
@@ -150,7 +145,7 @@ purge_queue() {
 send_job() {
   local job_id="$1"
   compose exec -T worker-alpine3d \
-    /runtime-cache/alpine3d-venv/bin/python - <<PY
+    sh -c 'exec "${RUNTIME_VENV_DIR:-/app/alpine3d-venv}/bin/python" -' <<PY
 import json, pika
 payload = {
     "job_id":       "${job_id}",
@@ -205,8 +200,10 @@ main() {
   fi
 
   cd "$ROOT_DIR"
-  mkdir -p "$CACHE_DIR"
-  echo "Alpine3D runtime cache: $CACHE_DIR"
+  if [[ -n "$CACHE_DIR" ]]; then
+    mkdir -p "$CACHE_DIR"
+    echo "Alpine3D runtime cache: $CACHE_DIR"
+  fi
 
   if [[ "$SKIP_BUILD" -eq 0 ]]; then
     echo "Building worker-alpine3d..."
