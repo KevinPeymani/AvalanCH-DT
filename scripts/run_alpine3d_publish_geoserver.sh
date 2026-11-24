@@ -23,6 +23,7 @@ Options:
 
 Environment overrides:
   ALPINE3D_RUNTIME_CACHE  Same as --cache-dir.
+  ALPINE3D_USE_RUNNING_SERVICES  Set to 1 to use the existing Compose services.
   GEOSERVER_URL           Default: http://localhost:8081/geoserver
   GEOSERVER_USER          Default: admin
   GEOSERVER_PASSWORD      Default: geoserver
@@ -112,11 +113,11 @@ compose() {
 }
 
 wait_for_worker_ready() {
-  local since="$1"
   local deadline=$((SECONDS + 600))
   echo "Waiting for worker-alpine3d to be ready..."
   while (( SECONDS < deadline )); do
-    if compose logs --since "$since" worker-alpine3d 2>&1 | grep -q "Listening on queue"; then
+    if compose exec -T rabbitmq rabbitmqctl -q list_queues name consumers 2>/dev/null |
+      awk -v queue="$QUEUE_NAME" '$1 == queue && $2 > 0 { ready = 1 } END { exit !ready }'; then
       return 0
     fi
     sleep 5
@@ -216,13 +217,14 @@ main() {
   since="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
   local job_id="run-$(date +%Y%m%d-%H%M%S)-$$"
 
-  echo "Starting services (rabbitmq + geoserver)..."
-  compose up -d rabbitmq geoserver
+  if [[ "${ALPINE3D_USE_RUNNING_SERVICES:-0}" != "1" ]]; then
+    echo "Starting services (rabbitmq + geoserver)..."
+    compose up -d rabbitmq geoserver
+    echo "Starting worker-alpine3d..."
+    compose up -d worker-alpine3d
+  fi
+  wait_for_worker_ready
   purge_queue
-
-  echo "Starting worker-alpine3d..."
-  compose up -d worker-alpine3d
-  wait_for_worker_ready "$since"
 
   echo "Sending job job_id=${job_id}..."
   send_job "$job_id"
